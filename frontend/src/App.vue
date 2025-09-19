@@ -12,6 +12,9 @@ import HelloWorld from './components/HelloWorld.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
+  <div class="card">
+    <p>Click on the Vite and Vue logos to learn more</p>
+  </div>
 </template>
 
 <style scoped>
