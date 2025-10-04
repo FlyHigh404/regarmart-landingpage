@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="px-[145px]">
     <div class="whatsapp-background-blob-top-right"></div>
     <div class="whatsapp-background-blob-bottom-left"></div> 
     <section id="testihero" class="text-center pt-10">

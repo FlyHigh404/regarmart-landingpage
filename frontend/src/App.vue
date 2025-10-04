@@ -7,8 +7,8 @@ import WhatsAppButton from "./components/WhatsAppButton.vue";
 <template>
   <div>
     <Navbar />
-    
-    <main class="pt-20 px-[145px] min-h-screen"> 
+
+    <main class="pt-20 min-h-screen"> 
       <router-view />
     </main>
 
