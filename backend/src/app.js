@@ -1,7 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const apiRoutes = require('./routes');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import apiRoutes from './routes/index.js';
 
 const app = express();
 
@@ -17,4 +17,4 @@ app.get('/', (req, res) => {
   res.send('API is running..., please use /api for main routes');
 });
 
-module.exports = app;
+export default app;

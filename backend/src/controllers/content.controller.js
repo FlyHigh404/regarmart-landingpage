@@ -1,7 +1,6 @@
-const prisma = require('../config/prisma');
+import prisma from '../config/prisma.js';
 
-// Helper function untuk menangani response
-const handleRequest = async (model, req, res) => {
+const handleRequest = async (model, req, res, next) => {
   try {
     const { search, category } = req.query;
     let where = {};
@@ -10,19 +9,17 @@ const handleRequest = async (model, req, res) => {
       where.name = { contains: search };
     }
     if (category && model === 'product') {
-       // Asumsi 'category' adalah nama kategori, bukan ID
       where.category = { name: category };
     }
 
     const data = await prisma[model].findMany({ where });
     res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    next(error); 
   }
 };
 
-// Export masing-masing controller
-exports.getProducts = (req, res) => handleRequest('product', req, res);
-exports.getCategories = (req, res) => handleRequest('category', req, res);
-exports.getTestimonials = (req, res) => handleRequest('testimonial', req, res);
-exports.getFaqs = (req, res) => handleRequest('faq', req, res);
+export const getProducts = (req, res, next) => handleRequest('product', req, res, next);
+export const getCategories = (req, res, next) => handleRequest('category', req, res, next);
+export const getTestimonials = (req, res, next) => handleRequest('testimonial', req, res, next);
+export const getFaqs = (req, res, next) => handleRequest('faq', req, res, next);

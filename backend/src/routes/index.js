@@ -1,7 +1,8 @@
-const express = require('express');
-const contentRoutes = require('./content.routes');
+import express from 'express';
+import contentRoutes from './content.routes.js';
+
 const router = express.Router();
 
 router.use('/content', contentRoutes);
 
-module.exports = router;
+export default router;
