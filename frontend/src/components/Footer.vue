@@ -65,7 +65,10 @@
     <!-- Copyright -->
     <div class="mt-10 bg-gradient-to-r from-[#6EC568] to-[#34d058] py-4 text-center text-white text-sm">
       Copyright@2025 All Right Reserved RegarMart
+<<<<<<< HEAD
 >>>>>>> 95d1d41eeea7646fd4fc23ef4d1fdebb133eb874
+=======
+>>>>>>> c982b755cd6ec047d9989bcf1b4eabbcc89c5da2
     </div>
   </footer>
 </template>

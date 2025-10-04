@@ -1,4 +1,3 @@
-
 <script setup>
 import BaseButton from '@/components/BaseButton.vue';
 const products = [
@@ -279,4 +278,6 @@ const products = [
 </template>
 
 <style scoped>
+
 </style>
+

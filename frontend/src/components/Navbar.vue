@@ -1,6 +1,5 @@
 <template>
   <div class="fixed top-0 w-full z-50">
-    
     <nav class="max-w-[975px] mx-auto my-4 bg-white shadow-lg rounded-[40px] p-3 px-5 sm:px-8">
       
       <div class="flex items-center justify-between w-full">
@@ -177,5 +176,4 @@ onUnmounted(() => {
 .active-link::after {
   transform: scaleX(1);   
 }
-
 </style>
