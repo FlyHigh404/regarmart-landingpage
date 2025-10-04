@@ -1,1 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
 @import "tailwindcss";
+
+/* ROOT */
+:root {
+  --primary: #26a81d;
+
+  --font-family: "Nunito Sans", sans-serif;
+}
+
+/* MAIN */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  overflow-x: hidden;
+  list-style: none;
+}
+.whatsapp-background-blob-top-right {
+  border-radius: 500px;
+  background: rgba(38, 168, 29, 0.2);
+  filter: blur(150px);
+  width: 450px;
+  height: 450px;
+  aspect-ratio: 1 / 1;
+
+  position: absolute;
+  z-index: -1;
+  top: -100px;
+  right: -100px;
+}
+
+.whatsapp-background-blob-bottom-left {
+  border-radius: 600px;
+  background: rgba(38, 168, 29, 0.2);
+  filter: blur(150px);
+  width: 600px;
+  height: 600px;
+  aspect-ratio: 1 / 1;
+
+  position: absolute;
+  z-index: -1;
+  bottom: -150px;
+  left: -150px;
+}
