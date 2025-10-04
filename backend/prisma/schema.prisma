@@ -68,7 +68,7 @@ model Testimonial {
   id            Int     @id @default(autoincrement())
   customerName  String  @map("customer_name") @db.VarChar(150)
   customerTitle String  @map("customer_title") @db.VarChar(100)
-  rating        Float   @default(5.0) @db.Float
+  rating        Float?  @default(5.0) @db.Float
   content       String? @db.VarChar(255)
 
   product   Product @relation(fields: [productId], references: [id])
@@ -127,7 +127,6 @@ model Faq {
 
 model Lead {
   id        Int      @id @default(autoincrement())
-  name      String
   email     String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
