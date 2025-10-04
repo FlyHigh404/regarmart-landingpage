@@ -45,3 +45,17 @@ body {
   bottom: -150px;
   left: -150px;
 }
+
+@layer components {
+  .btn {
+    @apply w-full py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition;
+  }
+
+  .btn-green {
+    @apply text-white bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600;
+  }
+
+  .btn-outline {
+    @apply bg-white text-green-600 border border-green-600 hover:bg-green-50;
+  }
+}

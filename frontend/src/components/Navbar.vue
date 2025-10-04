@@ -136,7 +136,6 @@ onUnmounted(() => {
   
   position: relative; 
   display: inline-block; 
-  
 }
 
 .nav-link:hover {
@@ -176,8 +175,7 @@ onUnmounted(() => {
 }
 
 .active-link::after {
-  transform: scaleX(1); 
-  
+  transform: scaleX(1);   
 }
 
 </style>
