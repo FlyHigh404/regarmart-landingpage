@@ -7,12 +7,12 @@ import WhatsAppButton from "./components/WhatsAppButton.vue";
 <template>
   <div>
     <Navbar />
-
-    <main class="pt-20 min-h-screen"> 
+    <main class="pt-20 px-[145px] min-h-screen"> 
       <router-view />
     </main>
 
-    <Footer /> </div>
+    <Footer /> 
+  </div>
     <WhatsAppButton 
             phoneNumber="6281234567890" 
             initialMessage="Halo, saya ingin bertanya."

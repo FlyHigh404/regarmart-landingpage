@@ -279,4 +279,3 @@ const products = [
 
 <style scoped>
 </style>
-

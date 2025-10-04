@@ -1,8 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap");
 @import "tailwindcss";
 
 /* ROOT */
 :root {
+  --primary: #26a81d;
   --font-family: "Nunito Sans", sans-serif;
 }
 
@@ -43,7 +44,6 @@ body {
   bottom: -150px;
   left: -150px;
 }
-
 @layer components {
   .btn {
     @apply w-full py-2 rounded-lg font-medium flex items-center justify-center gap-2 transition;

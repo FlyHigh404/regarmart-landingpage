@@ -1,5 +1,4 @@
 <template>
-
   <!-- HERO -->
   <section class="relative w-screen bg-white py-16 overflow-hidden">
     <!-- Dekor buah kiri & kanan -->
@@ -222,3 +221,4 @@ export default {
   name: "VisionMissionPage",
 };
 </script>
+

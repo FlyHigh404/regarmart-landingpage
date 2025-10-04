@@ -1,7 +1,6 @@
 <template>
   <div class="fixed top-0 w-full z-50">
-    
-    <nav class="max-w-5xl mx-auto my-4 bg-white shadow-lg rounded-[40px] p-3 px-5 sm:px-8">
+    <nav class="max-w-[975px] mx-auto my-4 bg-white shadow-lg rounded-[40px] p-3 px-5 sm:px-8">
       
       <div class="flex items-center justify-between w-full">
         
@@ -132,7 +131,7 @@ onUnmounted(() => {
   color: rgb(55 65 81); 
   
   border-bottom: none; 
-  transition: color 0.15s;
+  transition: color 0.15s, transform 0.3s ease-out; 
   
   position: relative; 
   display: inline-block; 
@@ -140,6 +139,7 @@ onUnmounted(() => {
 
 .nav-link:hover {
   color: rgb(22 163 74); 
+  transform: translateY(-0.15rem);
 }
 
 .nav-link::after {
@@ -169,6 +169,8 @@ onUnmounted(() => {
 
 .active-link {
   color: rgb(22 163 74); 
+  transform: translateY(-0.15rem);
+  font-weight: 800; 
 }
 
 .active-link::after {
