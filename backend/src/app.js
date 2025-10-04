@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const apiRoutes = require('./routes');
 
 const app = express();
 
@@ -10,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rute Utama Aplikasi
-// app.use('/api', apiRoutes);
+app.use('/api', apiRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running..., please use /api for main routes');
