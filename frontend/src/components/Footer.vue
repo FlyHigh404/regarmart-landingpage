@@ -27,7 +27,7 @@
             type="email" 
             placeholder="Email" 
             aria-label="Masukkan Email"
-            class="flex-grow px-4 py-3 text-white placeholder-white bg-[#2b472f] border border-[#6EC568] rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            class="flex-grow px-4 py-3 text-white placeholder-white bg-[#2b472f] border border-[#6EC568] rounded-l-lg focus:outline-none transition"
           />
           <button 
             type="submit"

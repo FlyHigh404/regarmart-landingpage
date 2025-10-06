@@ -236,7 +236,7 @@
       </div>
     </section>
 
-    <section id="faq" class="py-12 md:py-20">
+    <section id="faq" class="pt-20">
     <div class="container mx-auto">
       <h2 class="text-3xl font-bold text-center mb-5 text-gray-800">
         <span class="text-[#26A81D]">Frequently </span>Ask Question

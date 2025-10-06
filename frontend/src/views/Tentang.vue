@@ -9,13 +9,15 @@
 
     <!-- Konten -->
     <div class="relative z-10 text-center max-w-3xl mx-auto px-4">
-      <h1 class="text-2xl sm:text-3xl md:text-[39px] font-bold leading-snug mb-4">
-        <span class="block text-green-600">Belanja Harian Jadi Lebih Mudah</span>
-        <span class="block text-black">
+      <h1 class="text-2xl sm:text-3xl md:text-[38px] font-extrabold leading-snug mb-4 text-center">
+        <span class="block">
+          <span class="text-green-600">Belanja Harian</span> Jadi Lebih Mudah
+        </span>
+        <span class="block">
           Bersama <span class="text-green-600">Regar Mart</span>
         </span>
       </h1>
-      <p class="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed">
+      <p class="text-gray-600 text-sm sm:text-base md:text-[18px] leading-relaxed">
         Kami hadir untuk memberikan pengalaman belanja kebutuhan pokok yang lebih
         <span class="font-semibold"> cepat, praktis, dan tetap segar.</span>
       </p>
@@ -134,23 +136,23 @@
         <h2 class="text-2xl font-bold text-green-600 mb-4">Misi</h2>
         <ul class="space-y-4">
           <li class="flex items-start">
-            <span class="flex-shrink-0 bg-green-600 text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">1</span>
+            <span class="flex-shrink-0 bg-gradient-to-r from-[#6EC568] to-[#34d058] text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">1</span>
             Membangun kepercayaan: Menyediakan produk sembako dan sayur-mayur yang segar, higienis, dan berkualitas setiap hari.
           </li>
           <li class="flex items-start">
-            <span class="flex-shrink-0 bg-green-600 text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">2</span>
+            <span class="flex-shrink-0 bg-gradient-to-r from-[#6EC568] to-[#34d058] text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">2</span>
             Menghubungkan komunitas: Menjalin kerja sama dengan petani lokal dan pemasok terpercaya untuk menjaga ketersediaan dan kualitas produk.
           </li>
           <li class="flex items-start">
-            <span class="flex-shrink-0 bg-green-600 text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">3</span>
+            <span class="flex-shrink-0 bg-gradient-to-r from-[#6EC568] to-[#34d058] text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">3</span>
             Memberikan pelayanan yang ramah, cepat, dan profesional kepada setiap pelanggan.
           </li>
           <li class="flex items-start">
-            <span class="flex-shrink-0 bg-green-600 text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">4</span>
+            <span class="flex-shrink-0 bg-gradient-to-r from-[#6EC568] to-[#34d058] text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">4</span>
             Menjaga harga tetap terjangkau tanpa mengorbankan kualitas.
           </li>
           <li class="flex items-start">
-            <span class="flex-shrink-0 bg-green-600 text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">5</span>
+            <span class="flex-shrink-0 bg-gradient-to-r from-[#6EC568] to-[#34d058] text-white w-8 h-8 flex items-center justify-center rounded-md font-bold mr-3">5</span>
             Menjaga harga tetap terjangkau tanpa mengorbankan kualitas.
           </li>
         </ul>
@@ -170,8 +172,8 @@
           <img src="/email.svg" alt="Email" class="w-12 h-12 mb-2" />
         </div>
         <div>
-          <h3 class="font-semibold text-green-600">Email Address</h3>
-          <p class="mt-3 text-gray-600">regarmart006@gmail.com</p>
+          <h3 class="font-semibold text-green-600 mt-3">Email Address</h3>
+          <p class="text-gray-600">regarmart006@gmail.com</p>
         </div>
       </div>
 
@@ -179,16 +181,16 @@
         <div class="w-20 h-20 flex flex-col items-center justify-center bg-green-600 rounded-full shadow hover:shadow-lg transition">
           <img src="/whatsapp.svg" alt="WhatsApp" class="w-12 h-12 mb-2" />
         </div>
-        <h3 class="font-semibold text-green-600">WhatsApp</h3>
-        <p class="mt-3 text-gray-600">+62 8567418101</p>
+        <h3 class="font-semibold text-green-600 mt-3">WhatsApp</h3>
+        <p class="text-gray-600">+62 8567418101</p>
       </div>
 
       <div class="flex flex-col items-center">
         <div class="w-20 h-20 flex flex-col items-center justify-center bg-green-600 rounded-full shadow hover:shadow-lg transition">
           <img src="/location.svg" alt="Location" class="w-12 h-12 mb-2" />
         </div>
-        <h3 class="font-semibold text-green-600">Office Location</h3>
-        <p class="mt-3 text-gray-600">Jl. Medokan Sawah No.32 Surabaya</p>
+        <h3 class="font-semibold text-green-600 mt-3">Office Location</h3>
+        <p class="text-gray-600">Jl. Medokan Sawah No.32 Surabaya</p>
       </div>
     </div>
 
@@ -221,3 +223,4 @@ export default {
   name: "VisionMissionPage",
 };
 </script>
+
