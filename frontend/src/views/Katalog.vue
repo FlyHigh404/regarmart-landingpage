@@ -89,12 +89,11 @@ const products = [
   <!-- Background -->
   <div class="whatsapp-background-blob-top-right"></div>
   <div class="whatsapp-background-blob-bottom-left"></div> 
-
-  <section class="w-full py-16 px-6 md:px-20 flex justify-center">
+  <section class="w-full pt-10 px-6 md:px-20 flex justify-center">
     <div class="bg-[#1c1c1e] rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between max-w-[975px] w-full h-[251px] p-8">
       
-      <div class="text-white max-w-lg md:pr-10">
-        <h1 class="text-3xl md:text-[36px] font-extrabold leading-snug">
+      <div class="text-white max-w-lg">
+        <h1 class="text-[35px] font-extrabold leading-snug">
           Belanja Harian <span class="text-green-500">Tanpa Ribet</span>
         </h1>
         <p class="mt-4 text-gray-300 text-base md:text-[18px] leading-relaxed">
@@ -112,17 +111,17 @@ const products = [
   </section>
   
   <!-- Section Produk -->
-  <section class="w-full py-16 px-6 md:px-[145px]">
-    <h2 class="text-2xl md:text-3xl font-bold mb-6">Semua Produk</h2>
+  <section class="w-full py-10 px-6 md:px-[145px]">
+    <h2 class="text-[25px] font-extrabold mb-2">Semua Produk</h2>
 
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
       <div class="flex items-center gap-2 flex-wrap">
-        <span class="font-medium">Urutkan</span>
-        <button class="px-4 py-1.5 text-green-500 rounded-xl border border-green-500 font-medium">Terlaris</button>
-        <button class="px-4 py-1.5 text-green-500 rounded-xl font-medium border border-green-500">Terbaru</button>
+        <span class="font-bold text-sm">Urutkan</span>
+        <button class="px-4 py-1.5 text-green-500 rounded-[7px] border border-green-500 font-medium text-sm">Terlaris</button>
+        <button class="px-4 py-1.5 text-green-500 rounded-[7px] font-medium border border-green-500 text-sm ">Terbaru</button>
         <div class="relative">
           <button
-            class="px-4 py-1.5 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white rounded-xl flex items-center gap-1"
+            class="px-4 py-1.5 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white rounded-[7px] flex items-center gap-1 text-sm"
           >
             Harga
             <img src="/panah.svg" class="w-4 h-4" alt="arrow" />
@@ -134,10 +133,10 @@ const products = [
         <input
           type="text"
           placeholder="Cari produk"
-          class="w-full border-1 border-green-500 rounded-l-lg px-4 py-2"
+          class="w-full border-1 border-green-500 rounded-l-[7px] px-4 text-sm"
         />
         <button
-          class="inline-flex items-center justify-center bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white px-6 h-12 border-1 border-green-500 rounded-r-lg font-medium whitespace-nowrap"
+          class="inline-flex items-center justify-center bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm px-6 h-9 border-2 border-green-500 rounded-r-[7px] font-medium whitespace-nowrap"
         >
           Cari Produk
         </button>
@@ -146,14 +145,14 @@ const products = [
 
 
     <div class="flex gap-8">
-      <aside class="w-full md:w-64 bg-white rounded-xl p-6 max-h-[420px] overflow-y-auto shadow-xl">
-        <h3 class="font-semibold mb-4">Filter pencarian</h3>
+      <aside class="w-full md:w-64 bg-white rounded-xl p-5 max-h-[335px] overflow-y-auto shadow-xl">
+        <h3 class="text-sm font-semibold mb-2.5">Filter pencarian</h3>
 
-        <div class="mb-6 relative">
-          <label class="block text-sm font-medium mb-2">Kategori</label>
+        <div class="mb-4 relative">
+          <label class="block text-xs text-[#6D706E] font-semibold mb-1">Kategori</label>
           
           <select
-            class="w-full rounded-lg px-3 py-2 pr-10 shadow-xl appearance-none focus:outline-none"
+            class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow-xl appearance-none focus:outline-none"
           >
             <option>Pilih kategori</option>
             <option>Telur</option>
@@ -168,9 +167,9 @@ const products = [
           />
         </div>
 
-        <div class="mb-6">
-          <h4 class="font-medium mb-2">Satuan buah</h4>
-          <div class="flex flex-col gap-3 text-sm">
+        <div class="mb-4">
+          <h4 class="text-xs text-[#6D706E] font-semibold mb-1">Satuan buah</h4>
+          <div class="flex flex-col gap-3 text-sm font-semibold">
             <label class="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
@@ -200,8 +199,8 @@ const products = [
         </div>
 
         <div>
-          <h4 class="font-medium mb-2 text-gray-500">Tipe produk</h4>
-          <div class="flex flex-col gap-3 text-sm">
+          <h4 class="mb-1 text-xs text-[#6D706E] font-semibold">Tipe produk</h4>
+          <div class="flex flex-col gap-3 text-sm font-semibold">
             <label class="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
@@ -243,31 +242,31 @@ const products = [
           />
 
           <div class="p-4">
-            <h4 class="font-semibold text-base">{{ item.name }}</h4>
+            <h4 class="text-sm font-bold mb-2">{{ item.name }}</h4>
             <p
-              class="text-green-600 text-sm mt-1"
+              class="text-green-600 font-semibold text-[12px] mb-1"
               v-if="item.stock"
             >
               Stok Tersedia
             </p>
-            <div class="mt-2">
-              <span class="font-bold text-lg">
+            <div class="">
+              <span class="text-[16px] font-bold">
                 Rp{{ item.price.toLocaleString("id-ID") }}
               </span>
               <span
                 v-if="item.oldPrice"
-                class="text-gray-400 text-sm line-through ml-2"
+                class="text-gray-400 text-xs line-through ml-2"
               >
                 Rp{{ item.oldPrice.toLocaleString("id-ID") }}
               </span>
             </div>
 
-          <BaseButton variant="green" class="mt-3 w-full whitespace-nowrap">
+          <BaseButton variant="green" class="mt-3 w-full whitespace-nowrap text-white py-1.5 rounded-[10px] text-center text-[12px]">
             <img src="/whatsapp.svg" alt="wa" class="w-4 h-4" />
             Pesan via WhatsApp
           </BaseButton>
 
-          <BaseButton variant="outline" class="mt-2 w-full whitespace-nowrap">
+          <BaseButton variant="outline" class="mt-2 w-full whitespace-nowrappy-1.5 rounded-[10px] text-[12px]">
             Quick View
           </BaseButton>
           </div>
