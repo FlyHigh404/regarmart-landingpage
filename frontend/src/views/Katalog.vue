@@ -91,13 +91,13 @@ const products = [
   <div class="whatsapp-background-blob-bottom-left"></div> 
 
   <section class="w-full py-16 px-6 md:px-20 flex justify-center">
-    <div class="bg-[#1c1c1e] rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between max-w-6xl w-full h-[251px] p-8">
+    <div class="bg-[#1c1c1e] rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-between max-w-[975px] w-full h-[251px] p-8">
       
       <div class="text-white max-w-lg md:pr-10">
-        <h1 class="text-3xl md:text-4xl font-bold leading-snug">
+        <h1 class="text-3xl md:text-[36px] font-extrabold leading-snug">
           Belanja Harian <span class="text-green-500">Tanpa Ribet</span>
         </h1>
-        <p class="mt-4 text-gray-300 text-base md:text-lg leading-relaxed">
+        <p class="mt-4 text-gray-300 text-base md:text-[18px] leading-relaxed">
           Lihat <span class="font-semibold">katalog</span> lengkap kami dan pesan
           <span class="font-semibold">kebutuhanmu</span> langsung lewat WhatsApp.
           <span class="font-semibold">Cepat</span>, <span class="font-semibold">praktis</span>, dan
@@ -122,7 +122,7 @@ const products = [
         <button class="px-4 py-1.5 text-green-500 rounded-xl font-medium border border-green-500">Terbaru</button>
         <div class="relative">
           <button
-            class="px-4 py-1.5 bg-green-500 text-white rounded-xl flex items-center gap-1"
+            class="px-4 py-1.5 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white rounded-xl flex items-center gap-1"
           >
             Harga
             <img src="/panah.svg" class="w-4 h-4" alt="arrow" />
@@ -134,10 +134,10 @@ const products = [
         <input
           type="text"
           placeholder="Cari produk"
-          class="w-full border-2 border-green-500 rounded-l-lg px-4 py-2 focus:outline-green-500"
+          class="w-full border-1 border-green-500 rounded-l-lg px-4 py-2"
         />
         <button
-          class="inline-flex items-center justify-center bg-green-500 text-white px-6 h-12 border-2 border-green-500 rounded-r-lg font-medium whitespace-nowrap"
+          class="inline-flex items-center justify-center bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white px-6 h-12 border-1 border-green-500 rounded-r-lg font-medium whitespace-nowrap"
         >
           Cari Produk
         </button>
@@ -146,7 +146,7 @@ const products = [
 
 
     <div class="flex gap-8">
-      <aside class="w-full md:w-64 bg-white shadow rounded-xl p-6">
+      <aside class="w-full md:w-64 bg-white rounded-xl p-6 max-h-[420px] overflow-y-auto shadow-xl">
         <h3 class="font-semibold mb-4">Filter pencarian</h3>
 
         <div class="mb-6 relative">
@@ -231,7 +231,7 @@ const products = [
         >
           <div
             v-if="item.promo"
-            class="absolute top-3 left-3 bg-green-500 text-white text-xs px-3 py-1 rounded-md shadow"
+            class="absolute top-3 left-3 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-xs px-3 py-1 rounded-md shadow"
           >
             Produk Promo
           </div>
@@ -262,14 +262,14 @@ const products = [
               </span>
             </div>
 
-            <BaseButton variant="green" class="mt-3 w-full">
-              <img src="/whatsapp.svg" alt="wa" class="w-4 h-4" />
-              Pesan via WhatsApp
-            </BaseButton>
+          <BaseButton variant="green" class="mt-3 w-full whitespace-nowrap">
+            <img src="/whatsapp.svg" alt="wa" class="w-4 h-4" />
+            Pesan via WhatsApp
+          </BaseButton>
 
-            <BaseButton variant="outline" class="mt-2 w-full">
-              Quick View
-            </BaseButton>
+          <BaseButton variant="outline" class="mt-2 w-full whitespace-nowrap">
+            Quick View
+          </BaseButton>
           </div>
         </div>
       </div>
@@ -278,6 +278,5 @@ const products = [
 </template>
 
 <style scoped>
-
 </style>
 

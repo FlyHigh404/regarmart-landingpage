@@ -259,7 +259,7 @@
                 
                 <nav aria-label="Number Pagination">
                     <ul class="flex items-center space-x-2">
-                        
+                         
                         <li>
                             <button
                                 class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm font-medium py-2.5 px-5 rounded-lg shadow-md transition duration-150 ease-in-out"
