@@ -61,6 +61,7 @@ model SearchHistory {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
+  @@unique([userToken, searchTerm])
   @@map("search_histories")
 }
 
