@@ -4,7 +4,6 @@
 /* ROOT */
 :root {
   --primary: #26a81d;
-
   --font-family: "Nunito Sans", sans-serif;
 }
 
@@ -58,4 +57,8 @@ body {
   .btn-outline {
     @apply bg-white text-green-600 border border-green-600 hover:bg-green-50;
   }
+}
+
+input{
+  accent-color: #26A81D;
 }
