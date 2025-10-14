@@ -20,71 +20,69 @@
             
             <div class="lg:col-span-2 space-y-4">
 
-              <div class="bg-white rounded-xl shadow-md border border-gray-100 p-2">
-                <div class="flex items-center justify-between">
-                  <div class="relative flex-grow mr-2 sm:mr-4 text-sm">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4 sm:h-5 sm:w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
-                    </svg>
-                    <input
-                      type="text"
-                      placeholder="Cari produk terbaik di RegarMart..."
-                      class="w-full pl-9 sm:pl-10 pr-2 py-1 sm:py-1 border-none rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 transition-colors text-xs sm:text-sm"
-                      style="padding-left: 2.25rem;" 
-                    />
-                  </div>
-                  <div class="pr-1 sm:pr-2">
-                    <button class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-[10px] sm:text-xs p-2 px-3 rounded-[7px] transition-colors shadow-md whitespace-nowrap">
-                      Cari Produk
-                    </button>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="p-4 sm:p-5 sm:pl-7 bg-white rounded-xl shadow-md border border-gray-100">
-                <h2 class="text-sm font-bold mb-3 text-[#1B1F1B]">Filter Pencarian</h2>
+              <div class="bg-white rounded-xl shadow-md p-4 max-w-lg mx-auto">
+    <div class="relative mb-4 border border-green-500 rounded-lg">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+        </svg>
+        <input
+            type="text"
+            placeholder="Cari produk terbaik di RegarMart..."
+            class="w-full pl-10 pr-4 py-2 border-none rounded-lg focus:outline-none focus:ring-0 text-sm"
+        />
+    </div>
 
-                <div class="mb-4 border-b border-gray-200 pb-4">
-                  <label class="block text-gray-700 text-xs mb-2">Kategori</label>
-                  <select class="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 appearance-none bg-white font-semibold">
-                    <option>Pilih Kategori</option>
-                    <option>Riska</option>
-                    <option>Dita</option>
-                    <option>Yazid</option>
-                    <option>Hafidz</option>
-                    <option></option>
-                  </select>
-                </div>
+    <h2 class="text-sm font-bold mb-3 text-[#1B1F1B]">Filter Pencarian</h2>
 
-                <div>
-                  <label class="text-gray-700 text-xs block mb-2">Satuan Produk</label>
-                  <div class="text-xs sm:text-sm flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 text-black"> 
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                      <input type="radio" name="satuan" class="text-green-600 focus:ring-green-500" />
-                      <span class="font-semibold">Pcs, Butir, Buah</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                      <input type="radio" name="satuan" class="text-green-600 focus:ring-green-500" />
-                      <span class="font-semibold">Bundling (Berat, Ikat)</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                      <input type="radio" name="satuan" class="text-green-600 focus:ring-green-500" />
-                      <span class="font-semibold">Karton, Box</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 text-xs mb-2">Kategori</label>
+        <div class="relative">
+            <select class="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 appearance-none bg-white font-semibold pr-10">
+                <option>Pilih Kategori</option>
+                <option>Riska</option>
+                <option>Dita</option>
+                <option>Yazid</option>
+                <option>Hafidz</option>
+            </select>
+            <svg class="h-5 w-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </div>
+    </div>
+
+    <div>
+        <label class="text-gray-700 text-xs block mb-2">Satuan Produk</label>
+        <div class="text-sm flex flex-wrap gap-2 text-black"> 
+            <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="satuan" class="form-radio text-green-600 focus:ring-green-500 h-4 w-4" />
+                <span class="font-semibold">Pcs, Butir, Buah</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="satuan" class="form-radio text-green-600 focus:ring-green-500 h-4 w-4" />
+                <span class="font-semibold">Bundling (Berat, Ikat)</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="satuan" class="form-radio text-green-600 focus:ring-green-500 h-4 w-4" />
+                <span class="font-semibold">Karton, Box</span>
+            </label>
+        </div>
+    </div>
+
+    <button class="w-full mt-3 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm py-2 rounded-lg transition-colors shadow-md font-semibold">
+        Cari Produk
+    </button>
+</div>
               
               <div class="p-5 pl-7 bg-white rounded-xl shadow-md border border-gray-100">
                 <h3 class="text-sm font-bold mb-3">Pencarian Terakhir</h3>
