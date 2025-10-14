@@ -2,7 +2,7 @@
   <a :href="whatsappLink" 
      target="_blank" 
      rel="noopener noreferrer"
-     class="fixed bottom-6 right-6 z-50 
+     class="fixed bottom-6 right-6 z-999 
             flex items-center justify-center 
             bg-gradient-to-br from-[#6EC568] to-[#26A81D] 
             hover:from-[#5aa855] hover:to-[#23991a] 
@@ -56,11 +56,11 @@ export default {
 @keyframes whatsapp-pulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Shadow default */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
   50% {
     transform: scale(1.05); 
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Shadow membesar */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 }
 
