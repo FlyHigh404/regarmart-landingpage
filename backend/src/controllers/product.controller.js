@@ -15,7 +15,7 @@ const getProducts = catchAsync(async (req, res) => {
 
   const products = await productModel.findAll(req.query);
 
-  if (!products || products.length === 0) {
+  if (!products.data || products.data.length === 0) {
     return res.status(httpStatus.OK).json({
       success: true,
       data: [],
@@ -25,7 +25,8 @@ const getProducts = catchAsync(async (req, res) => {
 
   return res.status(httpStatus.OK).json({
     success: true,
-    data: products,
+    data: products.data,
+    meta: products.meta,
     message: "Produk berhasil diambil.",
   });
 });

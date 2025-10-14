@@ -16,9 +16,19 @@ const validateGetProducts = [
   query("unit")
     .optional()
     .trim()
+    .escape(),
+  query("isPromo")
+    .optional()
+    .trim()
+    .escape(),
+  query("sortByType")
+    .optional()
+    .trim()
+    .escape(),
+  query("sortByPrice")
+    .optional()
+    .trim()
     .escape()
-    .isInt({ min: 1 })
-    .withMessage("Parameter 'unit' harus berupa angka positif.")
 ];
 
 export { validateGetProducts };
