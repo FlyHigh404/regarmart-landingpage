@@ -63,8 +63,10 @@ const findAll = async (queryParams = {}) => {
     let sortByColumn;
     if (sortByType === "bestseller") {
       sortByColumn = Prisma.raw("p.total_sold");
-    } else {
+    } else if( sortByType === "newest") {
       sortByColumn = Prisma.raw("p.created_at");
+    } else {
+      sortByColumn = Prisma.raw("RAND()");
     }
     orderByClause = Prisma.sql`ORDER BY ${sortByColumn} DESC`;
   }
