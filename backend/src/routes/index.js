@@ -4,11 +4,12 @@ import categoryController from '../controllers/category.controller.js';
 import unitController from '../controllers/unit.controller.js';
 import searchHistoryController from '../controllers/search_history.controller.js';
 import faqsController from '../controllers/faq.controller.js';
+import testimonialController from '../controllers/testimonial.controller.js';
 
 import userTokenMiddleware from '../middlewares/userToken.js';
 import { validate } from "../middlewares/validate.js";
 
-import { validateGetProducts } from '../utils/requestValidation.js';
+import { validateGetProducts, validateGetTestimonials } from '../utils/requestValidation.js';
 
 const router = express.Router();
 
@@ -25,5 +26,7 @@ router.get('/products/bestsellers', productController.getBestSellers);
 router.get('/search-histories', userTokenMiddleware, searchHistoryController.getSearchHistories);
 
 router.get('/faqs', faqsController.getFaqs);
+
+router.get('/testimonials', validateGetTestimonials, validate, testimonialController.getTestimonials);
 
 export default router;
