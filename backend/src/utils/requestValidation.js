@@ -51,4 +51,19 @@ const validateGetProducts = [
     .withMessage("Parameter 'limit' harus berupa angka antara 1 hingga 9."),
 ];
 
-export { validateGetProducts };
+const validateGetTestimonials = [
+  query("page")
+    .optional()
+    .trim()
+    .escape()
+    .isInt({ min: 1 })
+    .withMessage("Parameter 'page' harus berupa angka positif."),
+  query("limit")
+    .optional()
+    .trim()
+    .escape()
+    .isInt({ min: 1, max: 4 })
+    .withMessage("Parameter 'limit' harus berupa angka antara 1 hingga 4."),
+];
+
+export { validateGetProducts, validateGetTestimonials };
