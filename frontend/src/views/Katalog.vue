@@ -2,8 +2,32 @@
 import BaseButton from "@/components/BaseButton.vue";
 import { ref, computed, onMounted, watch, reactive } from 'vue' 
 import Pagination from '@/components/Pagination.vue'
-import { fetchProducts, fetchCategories, fetchUnits } from '@/services/productService'; // Pastikan path ini benar
+import { fetchProducts, fetchCategories, fetchUnits } from '@/services/productService'; 
 
+const router = { // Simulasi router sederhana untuk history API
+    replace: (url) => {
+        window.history.replaceState(null, '', url);
+    },
+    current: () => {
+        return new URL(window.location.href);
+    }
+}
+
+const getParamsFromUrl = () => {
+    const url = router.current();
+    return {
+        searchQuery: url.searchParams.get('s') || '',
+        // Pastikan Number() digunakan, dan jika tidak ada, gunakan null.
+        categoryFilter: url.searchParams.get('cat') ? Number(url.searchParams.get('cat')) : null,
+        // Map ke Number untuk array unit filters
+        unitFilters: url.searchParams.get('unit') ? url.searchParams.get('unit').split(',').map(id => Number(id)).filter(id => !isNaN(id)) : [],
+        isPromoFilter: url.searchParams.get('promo') || null,
+        sortBy: url.searchParams.get('sort') || '',
+        currentPage: url.searchParams.get('page') ? Number(url.searchParams.get('page')) : 1,
+    };
+};
+
+const initialParams = getParamsFromUrl();
 
 // 🔹 Data Produk, Loading, dan Error
 const products = ref([]);
@@ -13,29 +37,29 @@ const errorMessage = ref(null);
 
 // 🔹 Filter & Sort Parameters (Akan di-watch untuk memuat ulang produk)
 const filterParams = reactive({
-  searchQuery: '',        
-  categoryFilter: null,   
-  unitFilters: [],       
-  isPromoFilter: null,    
-  sortBy: '',      
+  searchQuery: initialParams.searchQuery,        
+  categoryFilter: initialParams.categoryFilter,   
+  unitFilters: initialParams.unitFilters,       
+  isPromoFilter: initialParams.isPromoFilter,    
+  sortBy: initialParams.sortBy,      
 });
 
 const localFilterParams = reactive({
-  searchQuery: '',        
-  categoryFilter: null,
-  unitFilters: [],
-  isPromoFilter: null,
+  searchQuery: initialParams.searchQuery,        
+  categoryFilter: initialParams.categoryFilter,
+  unitFilters: [...initialParams.unitFilters], // Gunakan spread untuk mencegah reactive issues
+  isPromoFilter: initialParams.isPromoFilter,
 });
 
 // 🔹 Data Filter Dinamis dari API
 const categories = ref([]); 
 const units = ref([]);
-const localSearchQuery = ref('');      
+const localSearchQuery = ref(initialParams.searchQuery);      
 
 // 🔹 Pagination State
 const totalItemsCount = ref(0); 
 const itemsPerPage = ref(9); 
-const currentPage = ref(1);
+const currentPage = ref(initialParams.currentPage);
 
 // 🔹 UI States
 const showHargaMenu = ref(false);
@@ -51,6 +75,20 @@ const openQuickView = (imageUrl) => {
 const closeQuickView = () => {
     isQuickViewOpen.value = false;
     quickViewImage.value = ''; 
+};
+
+const updateUrlWithParams = () => {
+    const url = router.current();
+    url.search = '';
+
+    if (filterParams.searchQuery) url.searchParams.set('s', filterParams.searchQuery);
+    if (filterParams.categoryFilter) url.searchParams.set('cat', filterParams.categoryFilter);
+    if (filterParams.unitFilters.length > 0) url.searchParams.set('unit', filterParams.unitFilters.join(','));
+    if (filterParams.isPromoFilter) url.searchParams.set('promo', filterParams.isPromoFilter);
+    if (filterParams.sortBy) url.searchParams.set('sort', filterParams.sortBy);
+    if (currentPage.value > 1) url.searchParams.set('page', currentPage.value);
+
+    router.replace(url.toString());
 };
 
 const ADMIN_WA_NUMBER = import.meta.env.VITE_ADMIN_WA_NUMBER || '6285263759398';
@@ -102,7 +140,11 @@ const loadProducts = async () => {
 
 const loadFilters = async () => {
     categories.value = await fetchCategories();
-    units.value = await fetchUnits();
+    let fetchedUnits = await fetchUnits();
+    units.value = fetchedUnits.map(unit => ({ 
+        ...unit, 
+        isSelected: initialParams.unitFilters.includes(unit.id) 
+    }));
 };
 
 // 🔹 Fungsi untuk berpindah halaman
@@ -180,6 +222,7 @@ watch(() => ({
     searchQuery: filterParams.searchQuery,
     currentPage: currentPage.value
 }), () => {
+    updateUrlWithParams(); 
     loadProducts();
 }, { deep: true, immediate: false });
 
@@ -581,7 +624,7 @@ onMounted(() => {
                 {{ item.name }}
               </h4>
               <p
-                class="text-green-600 font-bold text-[12px] md:text-[13px] mb-1"
+                class="text-[#26A81D] font-bold text-[12px] md:text-[13px] mb-1"
                 v-if="item.stock"
               >
                 Stok Tersedia
