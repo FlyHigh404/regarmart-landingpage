@@ -4,8 +4,8 @@ const BASE_URL = "http://localhost:5000/api";
 
 export const getFaqs = async () => {
   try {
-    const response = await axios.get($, { BASE_URL } / faqs);
-
+    const response = await axios.get(`${BASE_URL}/faqs`);
+    console.log(response);
     if (response.data.success && Array.isArray(response.data.data)) {
       return response.data.data;
     }

@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:5000/api";
 
 /**
  * @returns {Promise<Array>}
  */
 export const getCategories = async () => {
   try {
-    const response = await axios.get($, { BASE_URL } / api / categories);
+    const response = await axios.get(`${BASE_URL}/categories`);
 
     if (response.data.success && Array.isArray(response.data.data)) {
       return response.data.data;
