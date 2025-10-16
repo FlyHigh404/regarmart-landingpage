@@ -1,5 +1,8 @@
 <template>
-  <button
+  <component
+    :is="href ? 'a' : 'button'"  
+    :href="href"                
+    :target="href ? '_blank' : null" 
     :class="[ 
       'flex items-center justify-center font-medium transition',
       'w-full py-[8px] px-[20px] rounded-[8px] gap-[6px] whitespace-nowrap',
@@ -8,7 +11,7 @@
     ]"
   >
     <slot />
-  </button>
+  </component>
 </template>
 
 <script setup>
@@ -16,6 +19,10 @@ defineProps({
   variant: {
     type: String,
     default: 'green'
+  },
+  href: {         
+    type: String,
+    default: null
   }
 })
 </script>
