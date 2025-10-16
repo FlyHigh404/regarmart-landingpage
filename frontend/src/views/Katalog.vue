@@ -1,18 +1,126 @@
 <script setup>
 import BaseButton from "@/components/BaseButton.vue";
-import { ref } from "vue";
+import { ref, computed, onMounted, watch, reactive } from 'vue' 
+import Pagination from '@/components/Pagination.vue'
+import { fetchProducts, fetchCategories, fetchUnits } from '@/services/productService'; // Pastikan path ini benar
 
-// 🟢 State utama
-const sortBy = ref("");
+
+// 🔹 Data Produk, Loading, dan Error
+const products = ref([]);
+const isLoading = ref(false); 
+const isError = ref(false); 
+const errorMessage = ref(null); 
+
+// 🔹 Filter & Sort Parameters (Akan di-watch untuk memuat ulang produk)
+const filterParams = reactive({
+  searchQuery: '',        
+  categoryFilter: null,   
+  unitFilters: [],       
+  isPromoFilter: null,    
+  sortBy: '',      
+});
+
+const localFilterParams = reactive({
+  searchQuery: '',        
+  categoryFilter: null,
+  unitFilters: [],
+  isPromoFilter: null,
+});
+
+// 🔹 Data Filter Dinamis dari API
+const categories = ref([]); 
+const units = ref([]);
+const localSearchQuery = ref('');      
+
+// 🔹 Pagination State
+const totalItemsCount = ref(0); 
+const itemsPerPage = ref(9); 
+const currentPage = ref(1);
+
+// 🔹 UI States
 const showHargaMenu = ref(false);
-const searchQuery = ref("");
-const isFilterOpen = ref(false); // <— tambahkan ini!
+const isFilterOpen = ref(false);
+const isQuickViewOpen = ref(false);
+const quickViewImage = ref('');
+
+const openQuickView = (imageUrl) => {
+    quickViewImage.value = imageUrl;
+    isQuickViewOpen.value = true;
+};
+
+const closeQuickView = () => {
+    isQuickViewOpen.value = false;
+    quickViewImage.value = ''; 
+};
+
+const ADMIN_WA_NUMBER = import.meta.env.VITE_ADMIN_WA_NUMBER || '6285263759398';
+const getWhatsappLink = (productName) => {
+    const text = `Halo, saya tertarik dengan produk *${productName}* yang ada di katalog Anda. Apakah produk ini masih tersedia?`;
+    // Mengembalikan tautan WA dengan encoding URL
+    return `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodeURIComponent(text)}`;
+};
+
+
+// --- COMPUTED PROPERTIES ---
+
+// 🔹 Hitung total halaman berdasarkan jumlah item
+const totalPages = computed(() => {
+  if (totalItemsCount.value === 0 || itemsPerPage.value === 0) return 1;
+  return Math.ceil(totalItemsCount.value / itemsPerPage.value)
+})
+
+const loadProducts = async () => {
+  isLoading.value = true;
+  isError.value = false;
+  errorMessage.value = null;
+  
+  const params = {
+    ...filterParams,
+    currentPage: currentPage.value,
+    itemsPerPage: itemsPerPage.value,
+  };
+
+  try {
+    const result = await fetchProducts(params);
+    products.value = result.data;
+    totalItemsCount.value = result.meta.totalItems;
+    itemsPerPage.value = result.meta.itemsPerPage;
+    
+    if (result.data.length === 0 && currentPage.value > 1 && totalItemsCount.value > 0) {
+        currentPage.value = 1; 
+        loadProducts(); 
+    }
+  } catch (err) {
+    isError.value = true;
+    errorMessage.value = err.message;
+    products.value = [];
+    totalItemsCount.value = 0;
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const loadFilters = async () => {
+    categories.value = await fetchCategories();
+    units.value = await fetchUnits();
+};
+
+// 🔹 Fungsi untuk berpindah halaman
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
+    currentPage.value = page
+    window.scrollTo({
+        top: 350,
+        behavior: 'smooth' 
+    });
+  }
+}
 
 // 🟢 Fungsi sorting
 const setSort = (type) => {
-  sortBy.value = type;
+  filterParams.sortBy = type;
   showHargaMenu.value = false;
-  console.log("Sort by:", type);
+  currentPage.value = 1; 
 };
 
 // 🟢 Fungsi toggle dropdown harga
@@ -22,101 +130,72 @@ const toggleHargaDropdown = () => {
 
 // 🟢 Fungsi pencarian
 const searchProduct = () => {
-  console.log("Searching for:", searchQuery.value);
+  filterParams.searchQuery = localSearchQuery.value;
+  currentPage.value = 1;
 };
 
-// 🟢 Data produk
-const products = ref([
-  {
-    id: 1,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 20000,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-  {
-    id: 2,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 20000,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-  {
-    id: 3,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 20000,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-  {
-    id: 4,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 20000,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-  {
-    id: 5,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 20000,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-  {
-    id: 6,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 17500,
-    oldPrice: 20000,
-    promo: true,
-    image: "/telur.png",
-  },
-  {
-    id: 7,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 18500,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-  {
-    id: 8,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 20000,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-  {
-    id: 9,
-    name: "Telur Ayam Negeri 10 Butir",
-    stock: true,
-    price: 20000,
-    oldPrice: null,
-    promo: false,
-    image: "/telur.png",
-  },
-]);
-</script>
+// 🟢 Fungsi untuk toggle unit filter (checkbox)
+const toggleUnitFilter = (unitId) => {
+    const unit = units.value.find(u => u.id === unitId);
+    if (!unit) return;
 
+    unit.isSelected = !unit.isSelected;
+    
+    const index = localFilterParams.unitFilters.indexOf(unitId);
+    if (unit.isSelected) {
+        if (index === -1) localFilterParams.unitFilters.push(unitId);
+    } else {
+        if (index > -1) localFilterParams.unitFilters.splice(index, 1); 
+    }
+};
+
+// 🟢 Terapkan Filter (untuk modal mobile & tombol desktop)
+const applyFilter = () => {
+    filterParams.categoryFilter = localFilterParams.categoryFilter;
+    filterParams.isPromoFilter = localFilterParams.isPromoFilter;
+    filterParams.unitFilters = [...localFilterParams.unitFilters]; 
+    isFilterOpen.value = false;
+    currentPage.value = 1;
+};
+
+// 🟢 Reset Filter
+const resetFilter = () => {
+
+    localFilterParams.categoryFilter = null;
+    localFilterParams.isPromoFilter = null;
+    localFilterParams.unitFilters = [];
+    
+    units.value.forEach(unit => unit.isSelected = false); 
+    
+    applyFilter();
+    isFilterOpen.value = false;
+};
+
+// 🟢 Watcher: Panggil loadProducts setiap kali parameter filter/sort/page berubah
+watch(() => ({
+    categoryFilter: filterParams.categoryFilter, 
+    unitFilters: filterParams.unitFilters,
+    isPromoFilter: filterParams.isPromoFilter,
+    sortBy: filterParams.sortBy,
+    searchQuery: filterParams.searchQuery,
+    currentPage: currentPage.value
+}), () => {
+    loadProducts();
+}, { deep: true, immediate: false });
+
+
+// 🟢 Ambil data filter dan produk awal saat komponen dimuat
+onMounted(() => {
+    loadFilters();
+    loadProducts();
+});
+
+</script>
 
 <template>
   <div class="whatsapp-background-blob-top-right"></div>
   <div class="whatsapp-background-blob-bottom-left"></div>
 
-  <!-- Section Hero -->
   <section class="w-full pt-10 px-4 sm:px-8 md:px-16 flex justify-center">
     <div
       class="bg-[#1c1c1e] rounded-xl shadow-lg flex flex-row items-center justify-between max-w-[975px] w-full h-auto md:h-[251px] p-6 md:p-8 transition-all duration-300">
@@ -144,10 +223,10 @@ const products = ref([
     </div>
   </section>
 
-  <!-- Section Produk -->
   <section class="w-full pt-10 px-4 sm:px-8 md:px-16 flex justify-center">
     <div class="w-full max-w-[975px]">
       <h3 class="text-xl font-bold mb-2.5">Semua Produk</h3>      
+      
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
         <div class="flex items-center w-full lg:w-[400px] border border-[#26A81D] rounded-xl overflow-hidden shadow-sm order-1 lg:order-2">
           <div class="pl-4 hidden sm:flex">
@@ -168,14 +247,14 @@ const products = ref([
           </div>
 
           <input
-            v-model="searchQuery"
+            v-model="localSearchQuery"
+            @keyup.enter="searchProduct"
             type="text"
             placeholder="Cari produk"
             class="flex-grow h-[42px] w-full px-3 text-gray-700 text-sm sm:text-base focus:outline-none"
           />
 
           <div class="flex items-center gap-1 pr-2 sm:hidden">
-            <!-- Tombol Filter -->
             <button
               @click="isFilterOpen = true"
               id="filterButton"
@@ -217,28 +296,36 @@ const products = ref([
 
                   <div class="mb-4 relative">
                     <label class="block text-xs text-[#6D706E] font-semibold mb-1">Kategori</label>
-                    <select class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow appearance-none focus:outline-none">
-                      <option>Pilih kategori</option>
-                      <option>Telur</option>
-                      <option>Sayuran</option>
-                      <option>Daging</option>
+                    <select 
+                      v-model="localFilterParams.categoryFilter"
+                      class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow appearance-none focus:outline-none"
+                    >
+                      <option :value="null">Pilih kategori</option>
+                      <option 
+                          v-for="category in categories" 
+                          :key="category.id" 
+                          :value="category.id"
+                      >
+                          {{ category.name }}
+                      </option>
                     </select>
                   </div>
 
                   <div>
                     <label class="text-gray-700 text-xs">Satuan Buah</label>
-                    <div class="text-sm flex flex-wrap gap-4 text-black">
-                      <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="satuan[]" class="text-green-600 focus:ring-green-500" />
-                        <span class="font-semibold">Pcs, Butir, Buah</span>
-                      </label>
-                      <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="satuan[]" class="text-green-600 focus:ring-green-500" />
-                        <span class="font-semibold">Bundling (Berat, Ikat)</span>
-                      </label>
-                      <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="satuan[]" class="text-green-600 focus:ring-green-500" />
-                        <span class="font-semibold">Karton, Box</span>
+                    <div class="text-sm flex flex-col gap-2 text-black mt-1">
+                      <label 
+                          v-for="unit in units" 
+                          :key="unit.id"
+                          class="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <input 
+                          type="checkbox" 
+                          :checked="unit.isSelected"
+                          @change="toggleUnitFilter(unit.id)"
+                          class="text-green-600 focus:ring-green-500" 
+                        />
+                        <span class="font-semibold">{{ unit.name }}</span>
                       </label>
                     </div>
                   </div>
@@ -246,23 +333,29 @@ const products = ref([
                   <div class="mt-3">
                     <label class="text-gray-700 text-xs">Tipe Produk</label>
                     <div class="text-sm flex flex-wrap gap-4 text-black">
-                      <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="tipe" class="text-green-600 focus:ring-green-500" />
-                        <span class="font-semibold">Harga Normal</span>
-                      </label>
-                      <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="tipe" class="text-green-600 focus:ring-green-500" />
-                        <span class="font-semibold">Harga Promo</span>
-                      </label>
+                       <label class="flex items-center space-x-2 cursor-pointer">
+                          <input type="radio" name="tipe" :value="null" v-model="filterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
+                          <span class="font-semibold">Semua Tipe</span>
+                       </label>
+                       <label class="flex items-center space-x-2 cursor-pointer">
+                          <input type="radio" name="tipe" value="normal" v-model="filterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
+                          <span class="font-semibold">Harga Normal</span>
+                       </label>
+                       <label class="flex items-center space-x-2 cursor-pointer">
+                          <input type="radio" name="tipe" value="promo" v-model="filterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
+                          <span class="font-semibold">Harga Promo</span>
+                       </label>
                     </div>
                   </div>
 
                   <div class="flex flex-col gap-3 mt-6">
                     <button
+                      @click="applyFilter"
                       class="bg-gradient-to-r from-[#6EC568] to-[#26A81D] text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition text-[15px]">
                       Terapkan Filter
                     </button>
                     <button
+                      @click="resetFilter"
                       class="border border-[#26A81D] text-[#26A81D] font-semibold py-2 rounded-lg hover:bg-[#E9F8E8] transition text-[15px]">
                       Reset Filter
                     </button>
@@ -312,9 +405,9 @@ const products = ref([
             @click="setSort('terlaris')"
             :class="[
               'px-4 py-1.5 rounded-[7px] border text-sm font-medium h-[40px] md:px-[10px] transition-all duration-200',
-              sortBy === 'terlaris'
+              filterParams.sortBy === 'terlaris'
                 ? 'bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white border-transparent'
-                : 'border-green-500 text-green-500 hover:bg-green-50'
+                : 'border-[#26A81D] text-[#26A81D] hover:bg-green-50'
             ]"
           >
             Terlaris
@@ -323,9 +416,9 @@ const products = ref([
             @click="setSort('terbaru')"
             :class="[
               'px-4 py-1.5 rounded-[7px] border text-sm font-medium h-[40px] md:px-[10px] transition-all duration-200',
-              sortBy === 'terbaru'
+              filterParams.sortBy === 'terbaru'
                 ? 'bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white border-transparent'
-                : 'border-green-500 text-green-500 hover:bg-green-50'
+                : 'border-[#26A81D] text-[#26A81D] hover:bg-green-50'
             ]"
           >
             Terbaru
@@ -334,8 +427,12 @@ const products = ref([
           <div class="relative">
             <button
               @click="toggleHargaDropdown"
-              class="px-4 py-1.5 rounded-[7px] flex items-center gap-1 text-sm font-medium border border-transparent
-                      text-white bg-gradient-to-br from-[#6EC568] to-[#26A81D] hover:opacity-90 h-[40px] md:px-[10px] max-w-[90px]"
+              :class="[
+                  'px-4 py-1.5 rounded-[7px] flex items-center gap-1 text-sm font-medium border border-transparent hover:opacity-90 h-[40px] md:px-[10px] max-w-[90px] transition-all duration-200 text-white bg-gradient-to-br from-[#6EC568] to-[#26A81D]',
+                  (filterParams.sortBy === 'harga-asc' || filterParams.sortBy === 'harga-desc') 
+                    ? 'text-white bg-gradient-to-br from-[#6EC568] to-[#26A81D]' 
+                    : 'text-white border-green-500 hover:bg-green-50'
+              ]"
             >
               Harga
               <img src="/panah.svg" class="w-4 h-4" alt="arrow" />
@@ -343,55 +440,64 @@ const products = ref([
 
             <div
               v-if="showHargaMenu"
-              class="absolute top-10 left-0 bg-white border border-gray-200 rounded-lg shadow-md w-36 z-10"
+              class="absolute top-10 left-0 bg-white border border-gray-200 rounded-lg shadow-md w-48 z-10"
             >
               <button
                 class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
                 @click="setSort('harga-asc')"
               >
                 Termurah → Termahal
+                 <span v-if="filterParams.sortBy === 'harga-asc'" class="text-[#26A81D] ml-1">✓</span>
               </button>
               <button
                 class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
                 @click="setSort('harga-desc')"
               >
                 Termahal → Termurah
+                <span v-if="filterParams.sortBy === 'harga-desc'" class="text-[#26A81D] ml-1">✓</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <!--Filter Pencarian-->
       <div class="flex gap-8 items-start">
-        <aside class="w-full md:w-[210px] lg:w-[260px] bg-white rounded-xl p-5 max-h-[335px] overflow-y-auto shadow-xl hidden sm:inline">
+        <aside class="w-full md:w-[210px] lg:w-[260px] bg-white rounded-xl p-5 max-h-auto shadow-xl hidden sm:inline">
           <h3 class="text-sm font-semibold mb-2.5">Filter pencarian</h3>
           
           <div class="mb-4 relative">
             <label class="block text-xs text-[#6D706E] font-semibold mb-1">Kategori</label>
-            <select class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow appearance-none focus:outline-none">
-              <option>Pilih kategori</option>
-              <option>Telur</option>
-              <option>Sayuran</option>
-              <option>Daging</option>
+            <select 
+              v-model="localFilterParams.categoryFilter"
+              class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow appearance-none focus:outline-none"
+            >
+              <option :value="null">Pilih kategori</option>
+              <option 
+                  v-for="category in categories" 
+                  :key="category.id" 
+                  :value="category.id"
+              >
+                  {{ category.name }}
+              </option>
             </select>
             <img src="/panahhitam.svg" alt="arrow" class="absolute right-3 top-9 -translate-y-1/2 w-4 h-4 pointer-events-none" />
           </div>
 
           <div>
             <label class="text-gray-700 text-xs">Satuan Buah</label>
-            <div class="text-sm flex flex-wrap gap-4 text-black">
-              <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" name="satuan[]" class="text-green-600 focus:ring-green-500" />
-                <span class="font-semibold">Pcs, Butir, Buah</span>
-              </label>
-              <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" name="satuan[]" class="text-green-600 focus:ring-green-500" />
-                <span class="font-semibold">Bundling (Berat, Ikat)</span>
-              </label>
-              <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" name="satuan[]" class="text-green-600 focus:ring-green-500" />
-                <span class="font-semibold">Karton, Box</span>
+            <div class="text-sm flex flex-col gap-2 text-black mt-1">
+              <label 
+                  v-for="unit in units" 
+                  :key="unit.id"
+                  class="flex items-center space-x-2 cursor-pointer"
+              >
+                <input 
+                  type="checkbox" 
+                  :checked="unit.isSelected"
+                  @change="toggleUnitFilter(unit.id)"
+                  class="text-green-600 focus:ring-green-500" 
+                />
+                <span class="font-semibold">{{ unit.name }}</span>
               </label>
             </div>
           </div>
@@ -400,21 +506,28 @@ const products = ref([
             <label class="text-gray-700 text-xs">Tipe Produk</label>
             <div class="text-sm flex flex-wrap gap-4 text-black">
               <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="radio" name="tipe" class="text-green-600 focus:ring-green-500" />
+                <input type="radio" name="tipe_desktop" :value="null" v-model="localFilterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
+                <span class="font-semibold">Semua Tipe</span>
+              </label>
+              <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="tipe_desktop" value="normal" v-model="localFilterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
                 <span class="font-semibold">Harga Normal</span>
               </label>
               <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="radio" name="tipe" class="text-green-600 focus:ring-green-500" />
+                <input type="radio" name="tipe_desktop" value="promo" v-model="localFilterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
                 <span class="font-semibold">Harga Promo</span>
               </label>
             </div>
           </div>
+          
           <div class="flex flex-col gap-3 mt-6">
             <button
+              @click="applyFilter"
               class="bg-gradient-to-r from-[#6EC568] to-[#26A81D] text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition text-[15px]">
               Terapkan Filter
             </button>
             <button
+              @click="resetFilter"
               class="border border-[#26A81D] text-[#26A81D] font-semibold py-2 rounded-lg hover:bg-[#E9F8E8] transition text-[15px]">
               Reset Filter
             </button>
@@ -422,7 +535,30 @@ const products = ref([
         </aside>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 flex-1">
+          
+          <div v-if="isLoading" class="col-span-full text-center py-10">
+              <svg class="animate-spin h-8 w-8 text-[#26A81D] mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p class="text-lg font-semibold text-gray-600">Memuat produk...</p>
+          </div>
+          
+          <div v-else-if="isError" class="col-span-full text-center py-10 bg-red-50 border border-red-300 rounded-lg p-5">
+              <p class="text-lg font-bold text-red-700 mb-2">Gagal Memuat Produk! 😟</p>
+              <p class="text-sm text-red-600 mb-4">{{ errorMessage }}</p>
+              <BaseButton @click="loadProducts" variant="green" class="py-2.5">
+                  Coba Lagi
+              </BaseButton>
+          </div>
+
+          <div v-else-if="products.length === 0" class="col-span-full text-center py-10 rounded-lg p-5">
+              <p class="text-lg font-bold text-[#26A81D] mb-2">Produk Tidak Ditemukan 🔍</p>
+              <p class="text-sm text-black">Coba kata kunci, kategori, atau filter yang berbeda.</p>
+          </div>
+
           <div
+            v-else
             v-for="item in products"
             :key="item.id"
             class="bg-white rounded-xl shadow overflow-hidden relative hover:shadow-lg transition-shadow duration-200"
@@ -441,7 +577,7 @@ const products = ref([
             />
 
             <div class="p-3 sm:p-4 md:p-3">
-              <h4 class="text-[14px] md:text-[15px] font-extrabold mb-1 leading-snug">
+              <h4 class="text-[12px] md:text-[13px] font-extrabold mb-1 leading-snug">
                 {{ item.name }}
               </h4>
               <p
@@ -451,26 +587,27 @@ const products = ref([
                 Stok Tersedia
               </p>
               <p
-                class="text-gray-600 font-medium text-[11px] md:text-[12px] leading-tight mb-1"
-                v-if="item.stock"
+                class="text-gray-600 font-medium text-[9px] md:text-[9.5px] leading-tight mb-1"
+                v-if="item.description"
               >
-                Telur ayam negeri segar, kaya protein dan gizi. Ideal untuk masakan sehari-hari.
+                {{ item.description }}
               </p>
               <div>
                 <span class="text-[14px] md:text-[15px] font-bold">
-                  Rp{{ item.price.toLocaleString("id-ID") }}
+                  {{ item.priceFormatted }}
                 </span>
                 <span
                   v-if="item.oldPrice"
                   class="text-gray-400 text-xs line-through ml-2"
                 >
-                  Rp{{ item.oldPrice.toLocaleString("id-ID") }}
+                  {{ item.oldPriceFormatted }}
                 </span>
               </div>
 
               <BaseButton
                 variant="green"
-                class="mt-3 w-full whitespace-nowrap text-white py-1.5 rounded-[10px] text-center text-[12px] md:text-[13px]">
+                class="mt-3 w-full py-1.5 rounded-[10px] text-[12px] md:text-[13px]"
+                :href="getWhatsappLink(item.name)"  >
                 <img src="/whatsapp.svg" alt="wa" class="w-4 h-4" />
                 Pesan via WhatsApp
               </BaseButton>
@@ -478,16 +615,48 @@ const products = ref([
               <BaseButton
                 variant="outline"
                 class="mt-2 w-full whitespace-nowrap py-1.5 rounded-[10px] text-[12px] md:text-[13px]"
-              >
+                @click="openQuickView(item.image)">
                 Quick View
               </BaseButton>
             </div>
+          </div>
+          <div v-if="products.length > 0 && !isLoading" class="col-span-full">
+            <Pagination 
+              :current-page="currentPage" 
+              :total-pages="totalPages" 
+              :is-loading="isLoading" 
+              :go-to-page="goToPage" 
+              class="flex justify-center" />
           </div>
         </div>
       </div>
     </div>
   </section>
+  <transition name="fade">
+  <div
+    v-if="isQuickViewOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+    @click.self="closeQuickView"
+  >
+    <div class="bg-white rounded-lg shadow-2xl relative p-3 max-w-lg w-[90%] mx-auto">
+      
+      <button
+        @click="closeQuickView"
+        class="absolute top-0 right-0 m-2 text-white bg-black/50 hover:bg-black/70 rounded-full p-2 z-10"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
 
+      <img
+        :src="quickViewImage"
+        alt="Quick View Produk"
+        class="w-full h-auto object-contain max-h-[80vh] rounded-lg"
+      />
+    </div>
+  </div>
+</transition>
 </template>
 
 <style>
@@ -505,5 +674,12 @@ const products = ref([
   section div div img {
     width: 100px !important;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>

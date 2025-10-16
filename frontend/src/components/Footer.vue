@@ -50,7 +50,7 @@
 
       <div class="flex flex-col items-center md:items-start order-4 md:order-4">
         <h3 class="font-extrabold mb-4 text-[22px] text-[#1C1C1E]">Quick Links</h3>
-        <ul class="flex flex-col md:flex-row items-center md:items-end gap-2 font-bold text-[#1C1C1E]">
+        <ul class="flex flex-col md:flex-row items-center md:items-end gap-9 font-bold text-[#1C1C1E]">
           <li><a href="#" class="hover:text-[#6EC568]">Beranda</a></li>
           <li><a href="#" class="hover:text-[#6EC568]">Katalog</a></li>
           <li><a href="#" class="hover:text-[#6EC568]">Tentang Kami</a></li>
