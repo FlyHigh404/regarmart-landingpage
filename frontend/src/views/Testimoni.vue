@@ -17,53 +17,50 @@
       </div>
     </section>
 
-    <section class="review-section w-full pb-10">
+    <div v-if="isLoading" class="text-center py-20 text-[#6D706E]">
+      <svg class="animate-spin h-5 w-5 mr-3 inline-block text-[#26A81D]" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
+      </svg>
+      Memuat testimoni...
+    </div>
+
+    <div v-else-if="!isLoading && testimonials.length === 0" class="text-center py-20 text-[#6D706E]">
+      Belum ada testimoni.
+    </div>
+
+    <section v-else class="review-section w-full pb-10">
       <div class="container mx-auto">
 
-        <div v-if="isLoading" class="flex justify-center items-center h-48">
-          <svg class="animate-spin h-8 w-8 text-[#26A81D]" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-            </path>
-          </svg>
-          <p class="ml-3 text-lg text-[#6D706E]">Memuat testimoni...</p>
-        </div>
-
-        <div v-else-if="error" class="text-center py-10">
-          <p class="text-lg text-red-500">❌ Gagal memuat testimoni: {{ error }}</p>
-        </div>
-        <div v-else-if="testimonials.length === 0" class="text-center py-10">
-          <p class="text-lg text-[#6D706E]">Belum ada testimoni. Jadilah pelanggan pertama yang memberikan ulasan! 😊
-          </p>
-        </div>
-
-        <div v-else class="flex flex-wrap justify-center gap-4 sm:gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
 
           <div v-for="(testimonial, index) in testimonials" :key="testimonial.id"
-            class="w-full md:w-[calc(50%-12px)] lg:w-[49%] max-w-lg p-4 rounded-xl shadow-lg bg-white">
+            class="p-4 rounded-xl shadow-lg bg-white">
+
             <div class="flex justify-between items-center mb-3">
               <div class="flex items-center">
-                <img :src="testimonial.customerImage || '/default-avatar.jpg'"
-                  :alt="testimonial.customerName + ' Avatar'" class="w-10 h-10 rounded-full mr-3 object-cover">
+                <img :src="testimonial.customerImage || '/default-avatar.jpg'" :alt="testimonial.customerName"
+                  class="w-10 h-10 rounded-full mr-3 object-cover">
                 <div>
-                  <p class="text-sm font-semibold text-[#1B1F1B]">{{ testimonial.customerName }}</p>
-                  <p class="text-xs text-[#6D706E]">{{ testimonial.customerTitle }}</p>
+                  <p class="text-sm font-semibold text-[#1B1F1B]">{{ testimonial.customerName || 'Pelanggan' }}</p>
+                  <p class="text-xs text-[#6D706E]">{{ testimonial.customerTitle || 'Pelanggan Regar Mart' }}</p>
                 </div>
               </div>
               <span class="text-[12px] text-[#6D706E]">{{ testimonial.createdAt }}</span>
             </div>
 
             <div class="flex items-center mb-3 justify-between" @click="toggleRatingTags(index)"
-              :class="{ 'cursor-pointer md:cursor-default': isMobileOrTablet }">
+              :class="{ 'cursor-pointer md:cursor-default lg:cursor-default': isMobileOrTablet }">
               <div class="flex items-center">
-                <span class="text-[#26A81D] text-xl mr-2">
-                  {{ '★'.repeat(testimonial.rating) }}{{ '☆'.repeat(5 - testimonial.rating) }}
-                </span>
+                <span class="text-[#26A81D] text-xl mr-2">{{ '★'.repeat(testimonial.rating) + '☆'.repeat(5 -
+                  testimonial.rating)
+                }}</span>
                 <span class="text-[#1B1F1B] text-sm font-semibold">{{ testimonial.rating.toFixed(1) }}</span>
               </div>
-              <svg v-if="isMobileOrTablet" :class="{ 'rotate-180': openTagsIndex === index }"
+              <svg v-if="isMobileOrTablet && testimonial.ratingTags.length > 0"
+                :class="{ 'rotate-180': openTagsIndex === index }"
                 class="w-5 h-5 text-[#26A81D] transition-transform duration-300" xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd"
@@ -72,26 +69,24 @@
               </svg>
             </div>
 
-            <div v-if="testimonial.product"
-              class="flex items-center rounded-lg mb-4 bg-white shadow-md p-2 border border-gray-100">
-              <div class="w-16 h-16 mr-3 relative flex-shrink-0">
-                <img :src="testimonial.product.imageUrl || '/default-product.png'"
-                  :alt="'Produk ' + testimonial.product.name" class="w-full h-full object-cover rounded">
+            <div v-if="testimonial.product" class="flex items-center rounded-lg mb-4 bg-white shadow-md p-2">
+              <div class="w-16 h-16 mr-3 relative">
+                <img :src="testimonial.product.imageUrl || '/default-product.png'" :alt="testimonial.product.name"
+                  class="w-full h-full object-cover rounded">
               </div>
               <div class="text-[12px]">
-                <p class="font-medium text-[#1B1F1B] line-clamp-2">{{ testimonial.product.name }}</p>
+                <p class="font-medium text-[#1B1F1B]">{{ testimonial.product.name }}</p>
                 <p class="font-bold text-[#1B1F1B]">
-                  {{ formatRupiah(testimonial.product.isPromo ? testimonial.product.promoPrice :
+                  {{ new Intl.NumberFormat('id-ID', {
+                    style: 'currency', currency: 'IDR', minimumFractionDigits: 0
+                  }).format(testimonial.product.isPromo ? testimonial.product.promoPrice :
                     testimonial.product.basePrice) }}
                 </p>
               </div>
             </div>
 
-            <div class="mb-4" :class="{
-              'block': openTagsIndex === index,
-              'hidden md:block': openTagsIndex !== index && isMobileOrTablet,
-              'block': !isMobileOrTablet
-            }">
+            <div v-if="testimonial.ratingTags.length > 0" class="mb-4"
+              :class="{ 'block': openTagsIndex === index || !isMobileOrTablet, 'hidden': openTagsIndex !== index && isMobileOrTablet }">
               <div class="flex flex-wrap gap-2 font-bold">
                 <div v-for="(tag, tagIndex) in testimonial.ratingTags" :key="tagIndex"
                   class="flex items-center p-1 px-2 text-xs bg-[#E4F5E3] rounded-full text-[#26A81D]">
@@ -100,14 +95,11 @@
               </div>
             </div>
 
-            <div v-if="testimonial.images.length" class="flex gap-2 mb-4">
-              <img v-for="(image, imgIndex) in testimonial.images.slice(0, 3)" :key="'img-' + imgIndex" :src="image"
-                :alt="'Review Photo ' + (imgIndex + 1)" class="w-16 h-16 object-cover rounded border border-gray-300">
-              <div v-for="placeholderIndex in (3 - testimonial.images.length > 0 ? 3 - testimonial.images.length : 0)"
-                :key="'ph-' + placeholderIndex" class="w-16 h-16 bg-gray-200 rounded border border-gray-300"></div>
-            </div>
-            <div v-else class="flex gap-2 mb-4">
-              <div class="w-16 h-16 bg-gray-200 rounded border border-gray-300"></div>
+            <div v-if="testimonial.images.length > 0" class="flex gap-2 mb-4">
+              <img v-for="(image, imageIndex) in testimonial.images.slice(0, 3)" :key="imageIndex" :src="image"
+                :alt="`Review Photo ${imageIndex + 1}`" class="w-16 h-16 object-cover rounded border border-gray-300">
+              <div v-for="n in (3 - testimonial.images.length > 0 ? 3 - testimonial.images.length : 0)"
+                :key="`placeholder-${n}`" class="w-16 h-16 bg-gray-200 rounded border border-gray-300"></div>
             </div>
 
             <p class="text-sm text-[#1B1F1B]">
@@ -116,9 +108,7 @@
           </div>
         </div>
 
-        <div class="mt-10" v-if="meta.totalPages > 1">
-          <Pagination :currentPage="meta.currentPage" :totalPages="meta.totalPages" :goToPage="goToPage" />
-        </div>
+        <Pagination :currentPage="currentPage" :totalPages="totalPages" :goToPage="goToPage" />
 
       </div>
     </section>
@@ -126,138 +116,108 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-// Anda mungkin perlu menginstal axios: npm install axios
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import axios from 'axios';
 import Pagination from '@/components/Pagination.vue';
 
-// --- STATE MANAGEMENT ---
+// --- State Reaktif ---
 const testimonials = ref([]);
-const meta = ref({
-  totalItems: 0,
-  totalPages: 1,
-  currentPage: 1,
-  itemsPerPage: 4, // Default sesuai dengan model backend
-});
-const isLoading = ref(true);
-const error = ref(null);
-
-// State untuk UI Toggle (Mobile)
+const currentPage = ref(1);
+const totalPages = ref(1);
 const openTagsIndex = ref(null);
 const isMobileOrTablet = ref(false);
+const isLoading = ref(true); // State untuk loading
 
+// Asumsi API_BASE_URL Anda, sesuaikan jika perlu
+const API_BASE_URL = 'http://localhost:5000/api';
+const ITEMS_PER_PAGE = 4; // Sesuai dengan batasan backend (limit=4)
 
-// --- HELPER FUNCTIONS (Clean Code) ---
-
-/**
- * Mengubah angka menjadi format Rupiah.
- * @param {number} price 
- */
-const formatRupiah = (price) => {
-  if (price === undefined || price === null) return 'Rp0';
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(price);
-};
-
-// --- API CONSUMPTION (Best Practice) ---
+// --- Fungsi untuk Mengambil Data ---
 
 /**
- * Mengambil data testimoni dari API dengan parameter paginasi.
- * @param {number} page - Halaman yang akan dimuat.
+ * Mengambil data testimoni dari backend.
  */
-const fetchTestimonials = async (page = 1) => {
-  // 1. Setup State: Mengatur state loading dan error
+const fetchTestimonials = async (page) => {
   isLoading.value = true;
-  error.value = null;
+  openTagsIndex.value = null; // Tutup semua tag saat pindah halaman
 
   try {
-    // 2. HTTP Request: Menggunakan Axios dengan parameter query
-    const response = await axios.get('/api/testimonials', {
+    const response = await axios.get(`${API_BASE_URL}/testimonials`, {
       params: {
         page: page,
-        // Gunakan itemsPerPage dari state meta, atau default 4
-        limit: meta.value.itemsPerPage
-      }
+        limit: ITEMS_PER_PAGE,
+      },
     });
 
-    // 3. Data Handling: Memproses response yang sukses
-    if (response.data.success && response.data.data) {
-      testimonials.value = response.data.data;
-      meta.value = response.data.meta;
-      // Memastikan currentPage diperbarui sesuai dengan meta response
-      meta.value.currentPage = page;
-    } else if (response.data.success && response.data.data.length === 0) {
-      testimonials.value = [];
-      meta.value.currentPage = page;
-      // Opsional: set totalPages ke 1 jika data kosong
-      meta.value.totalPages = 1;
+    const data = response.data;
+    if (data.success && data.data) {
+      testimonials.value = data.data;
+      totalPages.value = data.meta.totalPages;
+      currentPage.value = data.meta.currentPage;
     } else {
-      // Menangani kegagalan API non-HTTP Error (misal: success: false)
-      error.value = response.data.message || 'Gagal memuat testimoni.';
       testimonials.value = [];
+      totalPages.value = 1;
+      currentPage.value = 1;
+      console.warn('API returned success=true but no data or meta:', data);
     }
-  } catch (err) {
-    // 4. Error Catching: Menangkap dan menampilkan error koneksi/server
-    console.error("Error fetching testimonials:", err);
-    error.value = err.response?.data?.message || err.message || 'Terjadi kesalahan saat koneksi ke server.';
+  } catch (error) {
+    console.error('Gagal mengambil testimoni:', error);
     testimonials.value = [];
+    totalPages.value = 1;
+    // Peringatan: Tambahkan notifikasi error ke user di aplikasi nyata
   } finally {
-    // 5. Final State: Menghentikan loading state
     isLoading.value = false;
   }
 };
 
-// --- HANDLERS (Clean Code) ---
+// --- Logika Halaman dan UI ---
 
 /**
- * Mengubah halaman paginasi dan memuat data baru.
- * @param {number} page - Halaman tujuan.
+ * Mengubah halaman pagination dan memuat data baru.
+ * @param {number} page - Nomor halaman yang dituju.
  */
 const goToPage = (page) => {
-  if (page >= 1 && page <= meta.value.totalPages && page !== meta.value.currentPage) {
-    // Memanggil API dengan halaman baru
-    fetchTestimonials(page);
-
-    // Opsional: Scroll ke atas section review setelah pindah halaman
-    document.querySelector('.review-section').scrollIntoView({ behavior: 'smooth' });
+  if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
+    currentPage.value = page;
   }
 };
 
 /**
- * Mengubah state tampilan rating tags di mobile.
- * @param {number} index - Index testimoni yang di-klik.
+ * Mengubah state tampilan tag rating (khusus mobile/tablet).
+ * @param {number} index - Index kartu testimoni.
  */
 const toggleRatingTags = (index) => {
-  // Hanya berlaku di mobile/tablet
   if (isMobileOrTablet.value) {
     openTagsIndex.value = openTagsIndex.value === index ? null : index;
   }
 };
 
 /**
- * Cek ukuran layar untuk menentukan state mobile.
+ * Mengecek ukuran layar untuk menentukan mode mobile/tablet.
  */
 const checkScreenSize = () => {
-  // Menggunakan breakpoint lg (1024px) sesuai Tailwind CSS
   isMobileOrTablet.value = window.innerWidth < 1024;
 
-  // Jika kembali ke desktop, tutup semua tag yang terbuka
+  // Tutup semua tag saat beralih ke mode desktop
   if (!isMobileOrTablet.value) {
     openTagsIndex.value = null;
   }
 };
 
+// --- Lifecycle Hooks dan Watcher ---
 
-// --- LIFECYCLE HOOKS ---
+// Watcher untuk memuat data setiap kali `currentPage` berubah
+watch(currentPage, (newPage) => {
+  fetchTestimonials(newPage);
+});
 
 onMounted(() => {
+  // Panggil data awal saat komponen dimuat
+  fetchTestimonials(currentPage.value);
+
+  // Inisialisasi pengecekan ukuran layar
   checkScreenSize();
   window.addEventListener('resize', checkScreenSize);
-  // Memuat data awal saat komponen dipasang
-  fetchTestimonials(meta.value.currentPage);
 });
 
 onUnmounted(() => {
@@ -266,11 +226,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Ensure multiline text on product name is handled gracefully */
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
+/* Anda dapat menambahkan gaya kustom di sini jika diperlukan */
+/* Pastikan Anda juga memiliki class CSS untuk whatsapp-background-blob-top-right dan whatsapp-background-blob-bottom-left */
 </style>

@@ -5,8 +5,8 @@
     <section id="hero" class="pt-5 sm:pt-10">
       <div class="container mx-auto">
         <h1 class="text-2xl sm:text-3xl lg:text-[38px] font-extrabold mb-4 text-center">
-          <span class="text-[#1B1F1B]">Semua Kebutuhan Harian,</span>
-          <span class="text-[#26A81D]"> Tinggal Klik!</span><br />
+          <span class="text-[#1B1F1B]">Semua Kebutuhan Harian, </span>
+          <span class="text-[#26A81D]">Tinggal Klik!</span><br />
           <span class="text-[#26A81D]">Kebutuhan Terpenuhi</span>
           <span class="text-[#1B1F1B]">, Hati Pun Tenang</span>
         </h1>
@@ -142,10 +142,10 @@
                 </div>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-6 flex-grow">
+              <div class="flex overflow-x-scroll space-x-4 sm:space-x-6 pb-4">
 
                 <div
-                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-64 md:w-72">
                   <div class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
                     <img src="/susu.png" alt="Susu UHT" class="h-full w-full object-cover" />
                   </div>
@@ -176,7 +176,7 @@
                 </div>
 
                 <div
-                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-64 md:w-72">
                   <div class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
                     <img src="/susu.png" alt="Susu UHT" class="h-full w-full object-cover" />
                   </div>
@@ -203,6 +203,20 @@
                         Quick View
                       </button>
                     </div>
+                  </div>
+                </div>
+
+                <div
+                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-64 md:w-72">
+                  <div class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
+                    <img src="/susu.png" alt="Susu UHT" class="h-full w-full object-cover" />
+                  </div>
+                  <div class="p-3 sm:p-4 flex flex-col flex-grow">
+                    <h3 class="text-sm font-bold mb-1">Susu UHT Cokelat 1 Liter (Card 3)</h3>
+                    <p class="text-green-600 font-semibold text-[10px] sm:text-[12px] mb-1">Stok Tersedia</p>
+                    <p class="text-gray-600 text-[9px] sm:text-[10px] mb-2 flex-grow">Susu UHT berkualitas dengan rasa
+                      creamy lezat, kaya nutrisi, dan praktis.</p>
+                    <p class="text-[14px] sm:text-[16px] font-bold mb-3">Rp23,000</p>
                   </div>
                 </div>
               </div>
@@ -229,7 +243,7 @@
 
           <div
             class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
-            <div class="w-full h-48 overflow-hidden"> <img src="/keunggulan.png"
+            <div class="w-full h-48 overflow-hidden"> <img src="/keunggulan1.png"
                 alt="Sustainability & Environmental Impact" class="h-full w-full object-cover">
             </div>
             <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
@@ -246,7 +260,7 @@
           <div
             class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
             <div class="w-full h-48 overflow-hidden">
-              <img src="/keunggulan.png" alt="Innovative & User Centric Technology" class="h-full w-full object-cover">
+              <img src="/keunggulan2.png" alt="Innovative & User Centric Technology" class="h-full w-full object-cover">
             </div>
             <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
               <h3 class="font-extrabold mb-3 text-[#26A81D] text-left text-base sm:text-lg">
@@ -262,7 +276,8 @@
           <div
             class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
             <div class="w-full h-48 overflow-hidden">
-              <img src="/keunggulan.png" alt="Market Potential & Growth Opportunity" class="h-full w-full object-cover">
+              <img src="/keunggulan3.png" alt="Market Potential & Growth Opportunity"
+                class="h-full w-full object-cover">
             </div>
             <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
               <h3 class="font-extrabold mb-3 text-[#26A81D] text-left text-base sm:text-lg">
