@@ -69,7 +69,7 @@ model Testimonial {
   id            Int     @id @default(autoincrement())
   customerName  String  @map("customer_name") @db.VarChar(150)
   customerTitle String  @map("customer_title") @db.VarChar(100)
-  customerImage String? @map("customer_image") @db.VarChar(255) 
+  customerImage String? @map("customer_image") @db.VarChar(255)
   rating        Float?  @default(5.0) @db.Float
   content       String? @db.VarChar(255)
 
@@ -129,7 +129,7 @@ model Faq {
 
 model Lead {
   id        Int      @id @default(autoincrement())
-  email     String
+  email     String   @unique
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
