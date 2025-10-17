@@ -62,9 +62,8 @@
                   <label class="text-gray-700 text-xs block mb-2">Satuan Produk</label>
                   <div class="text-sm flex flex-wrap gap-2 text-black">
                     <label v-for="unit in units" :key="unit.id" class="flex items-center space-x-2 cursor-pointer">
-                      <input type="checkbox" name="satuan"
-                        class="form-checkbox text-green-600 focus:ring-green-500 h-4 w-4" :value="unit.id"
-                        v-model="selectedUnits" />
+                      <input type="radio" name="satuan" class="form-radio text-green-600 focus:ring-green-500 h-4 w-4"
+                        :value="unit.id" v-model="selectedUnit" />
                       <span class="font-semibold">{{ unit.name }}</span>
                     </label>
                   </div>
