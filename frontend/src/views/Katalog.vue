@@ -377,10 +377,6 @@ onMounted(() => {
                     <label class="text-gray-700 text-xs">Tipe Produk</label>
                     <div class="text-sm flex flex-wrap gap-4 text-black">
                        <label class="flex items-center space-x-2 cursor-pointer">
-                          <input type="radio" name="tipe" :value="null" v-model="filterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
-                          <span class="font-semibold">Semua Tipe</span>
-                       </label>
-                       <label class="flex items-center space-x-2 cursor-pointer">
                           <input type="radio" name="tipe" value="normal" v-model="filterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
                           <span class="font-semibold">Harga Normal</span>
                        </label>
@@ -548,10 +544,6 @@ onMounted(() => {
           <div class="mt-3">
             <label class="text-gray-700 text-xs">Tipe Produk</label>
             <div class="text-sm flex flex-wrap gap-4 text-black">
-              <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="radio" name="tipe_desktop" :value="null" v-model="localFilterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
-                <span class="font-semibold">Semua Tipe</span>
-              </label>
               <label class="flex items-center space-x-2 cursor-pointer">
                 <input type="radio" name="tipe_desktop" value="normal" v-model="localFilterParams.isPromoFilter" class="text-green-600 focus:ring-green-500" />
                 <span class="font-semibold">Harga Normal</span>
