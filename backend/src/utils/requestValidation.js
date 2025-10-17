@@ -68,6 +68,7 @@ const validateGetTestimonials = [
 
 const validateLeadsInput = [
   body('email')
+    .trim()
     .notEmpty()
     .withMessage('Email tidak boleh kosong.')
     .isEmail()
