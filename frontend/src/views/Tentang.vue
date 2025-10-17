@@ -66,27 +66,42 @@
   <section class="relative w-screen py-12 bg-white mt-5 lg:mt-[80px]">
     <div class="flex gap-6 animate-slide">
 
-      <img src="/gambaranimasi.png" alt="Sayuran 1" 
+      <img src="/gambaranimasi1.png" alt="Sayuran 1" 
           class="rounded-xl object-cover flex-shrink-0 
                   w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
-      <img src="/gambaranimasi.png" alt="Sayuran 2" 
+      <img src="/gambaranimasi2.png" alt="Sayuran 2" 
           class="rounded-xl object-cover flex-shrink-0 
                   w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
-      <img src="/gambaranimasi.png" alt="Sayuran 3" 
+      <img src="/gambaranimasi3.png" alt="Sayuran 3" 
           class="rounded-xl object-cover flex-shrink-0 
                   w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
-      <img src="/gambaranimasi.png" alt="Sayuran 1" 
+      <img src="/gambaranimasi4.png" alt="Sayuran 1" 
           class="rounded-xl object-cover flex-shrink-0 
                   w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
-      <img src="/gambaranimasi.png" alt="Sayuran 2" 
+      <img src="/gambaranimasi5.png" alt="Sayuran 2" 
+          class="rounded-xl object-cover flex-shrink-0 
+                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+      <img src="/gambaranimasi1.png" alt="Sayuran 1" 
           class="rounded-xl object-cover flex-shrink-0 
                   w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
-      <img src="/gambaranimasi.png" alt="Sayuran 3" 
+      <img src="/gambaranimasi2.png" alt="Sayuran 2" 
+          class="rounded-xl object-cover flex-shrink-0 
+                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+
+      <img src="/gambaranimasi3.png" alt="Sayuran 3" 
+          class="rounded-xl object-cover flex-shrink-0 
+                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+
+      <img src="/gambaranimasi4.png" alt="Sayuran 1" 
+          class="rounded-xl object-cover flex-shrink-0 
+                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+
+      <img src="/gambaranimasi5.png" alt="Sayuran 2" 
           class="rounded-xl object-cover flex-shrink-0 
                   w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
     </div>
@@ -102,53 +117,59 @@
 
     <div class="text-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-      <div class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2">
-        <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
-          <div class="relative pt-[60%] bg-[#26A81D]"> 
-            <img src="/toko.png" alt="Sustainability & Environmental Impact" class="absolute inset-0 w-full h-full object-cover">
+      <div 
+        data-aos="flip-left" data-aos-duration="1000" class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px]">
+          <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
+              <div class="relative pt-[60%] bg-[#26A81D]"> 
+                  <img src="/toko.png" alt="Sustainability & Environmental Impact" class="absolute inset-0 w-full h-full object-cover">
+              </div>
           </div>
-        </div>
-        <div class="px-6 py-8 flex flex-col flex-grow">
-          <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
-            Awal Berdiri & Visi
-          </h3>
-          <p class="text-[14px] text-gray-700 text-center">
-            Panganku Fresh hadir dengan visi menyediakan bahan pangan segar, sehat, dan terjangkau. Kami menggabungkan penjualan online & offline untuk memudahkan pelanggan.
-          </p>
-        </div>
+          <div class="px-6 py-8 flex flex-col flex-grow">
+              <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
+                  Awal Berdiri & Visi
+              </h3>
+              <p class="text-[14px] text-gray-700 text-center">
+                  Panganku Fresh hadir dengan visi menyediakan bahan pangan segar, sehat, dan terjangkau. Kami menggabungkan penjualan online & offline untuk memudahkan pelanggan.
+              </p>
+          </div>
       </div>
 
-      <div class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 flex-1 h-full md:mt-0 lg:mt-6">
+      <div 
+        data-aos="flip-up" 
+        data-aos-duration="1000" class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] flex-1 h-full md:mt-0 lg:mt-6"
+    >
         <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
-          <div class="relative pt-[60%] bg-[#26A81D]">
-            <img src="/komitmen.png" alt="Innovative & User Centric Technology" class="absolute inset-0 w-full h-full object-cover">
-          </div>
+            <div class="relative pt-[60%] bg-[#26A81D]">
+                <img src="/komitmen.png" alt="Innovative & User Centric Technology" class="absolute inset-0 w-full h-full object-cover">
+            </div>
         </div> 
         <div class="px-6 py-8 flex flex-col flex-grow">
-          <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
-            Pelayanan & Komitmen
-          </h3>
-          <p class="text-[14px] text-gray-700 text-center">
-            Kami bukan sekadar tempat belanja, tapi mitra keluarga & usaha kuliner. Dengan layanan ramah & cepat, kami berkomitmen menjaga kepuasan pelanggan melalui kualitas terbaik, transparansi harga, dan layanan siap bantu.
-          </p>
+            <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
+                Pelayanan & Komitmen
+            </h3>
+            <p class="text-[14px] text-gray-700 text-center">
+                Kami bukan sekadar tempat belanja, tapi mitra keluarga & usaha kuliner. Dengan layanan ramah & cepat, kami berkomitmen menjaga kepuasan pelanggan melalui kualitas terbaik, transparansi harga, dan layanan siap bantu.
+            </p>
         </div>
-      </div>
+    </div>
 
-      <div class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 flex-1 h-full md:col-span-2 md:max-w-md md:mx-auto lg:col-span-1 lg:max-w-none lg:mx-0">
+      <div 
+        data-aos="flip-right" 
+        data-aos-duration="1000" class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px]">
         <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
-          <div class="relative pt-[60%] bg-[#26A81D]">
-            <img src="/produk.png" alt="Market Potential & Growth Opportunity" class="absolute inset-0 w-full h-full object-cover">
-          </div>
-        </div>
+            <div class="relative pt-[60%] bg-[#26A81D]">
+                <img src="/komitmen.png" alt="Innovative & User Centric Technology" class="absolute inset-0 w-full h-full object-cover">
+            </div>
+        </div> 
         <div class="px-6 py-8 flex flex-col flex-grow">
-          <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
-            Produk & Kemitraan
-          </h3>
-          <p class="text-[14px] text-gray-700 text-center">
-            Kami menyediakan sembako, sayur, dan buah berkualitas. Bekerja sama dengan petani lokal & pemasok terpercaya, produk kami terjamin segar dari ladang hingga meja makan.
-          </p>
+            <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
+                Pelayanan & Komitmen
+            </h3>
+            <p class="text-[14px] text-gray-700 text-center">
+                Kami bukan sekadar tempat belanja, tapi mitra keluarga & usaha kuliner. Dengan layanan ramah & cepat, kami berkomitmen menjaga kepuasan pelanggan melalui kualitas terbaik, transparansi harga, dan layanan siap bantu.
+            </p>
         </div>
-      </div>
+    </div>
     </div>
   </section>
 
@@ -207,7 +228,7 @@
 .animate-slide {
   display: flex;
   width: max-content;
-  animation: slide 25s linear infinite;
+  animation: slide 35s linear infinite;
 }
 
 @keyframes float {
