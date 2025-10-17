@@ -21,7 +21,8 @@
           <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
 
             <div class="lg:col-span-2 space-y-4">
-              <form @submit.prevent="performSearch" class="bg-white rounded-xl shadow-md p-4 max-w-lg mx-auto">
+
+              <div class="bg-white rounded-xl shadow-md p-4 max-w-lg mx-auto">
                 <div class="relative mb-4 border border-green-500 rounded-lg">
                   <svg xmlns="http://www.w3.org/2000/svg"
                     class="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none"
@@ -29,8 +30,9 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                  <input type="text" placeholder="Cari produk terbaik di RegarMart..." v-model="searchTerm"
-                    class="w-full pl-10 pr-4 py-2 border-none rounded-lg focus:outline-none focus:ring-0 text-sm" />
+                  <input type="text" placeholder="Cari produk terbaik di RegarMart..."
+                    class="w-full pl-10 pr-4 py-2 border-none rounded-lg focus:outline-none focus:ring-0 text-sm"
+                    v-model="searchQuery" @keyup.enter="searchProducts" />
                 </div>
 
                 <h2 class="text-sm font-bold mb-3 text-[#1B1F1B]">Filter Pencarian</h2>
@@ -38,32 +40,14 @@
                 <div class="mb-4">
                   <label class="block text-gray-700 text-xs mb-2">Kategori</label>
                   <div class="relative">
-                    <select v-if="isCategoryLoading" disabled
-                      class="text-sm w-full p-3 border border-gray-300 rounded-lg bg-gray-100 font-semibold pr-10">
-                      <option>Memuat Kategori...</option>
-                    </select>
-
-                    <select v-else-if="categoryError" disabled
-                      class="text-sm w-full p-3 border border-red-500 rounded-lg bg-red-50 font-semibold pr-10 text-red-700">
-                      <option>🚨 Error: {{ categoryError }}</option>
-                    </select>
-
-                    <select v-else-if="categories.length > 0" v-model="selectedCategory"
-                      class="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 appearance-none bg-white font-semibold pr-10">
-                      <option :value="null">Semua Kategori</option>
-
+                    <select
+                      class="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 appearance-none bg-white font-semibold pr-10"
+                      v-model="selectedCategory">
+                      <option value="">Pilih Kategori</option>
                       <option v-for="category in categories" :key="category.id" :value="category.id">
                         {{ category.name }}
                       </option>
-
                     </select>
-
-                    <select v-else disabled
-                      class="text-sm w-full p-3 border border-gray-300 rounded-lg bg-gray-100 font-semibold pr-10">
-                      <option>Data Kategori kosong.</option>
-                    </select>
-
-
                     <svg
                       class="h-5 w-5 absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none"
                       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -76,32 +60,36 @@
 
                 <div>
                   <label class="text-gray-700 text-xs block mb-2">Satuan Produk</label>
-                  <div v-if="isUnitLoading" class="text-sm text-gray-500">Memuat satuan...</div>
-                  <div v-else-if="unitError" class="text-sm text-red-500">Error: {{ unitError }}</div>
-                  <div v-else class="text-sm flex flex-wrap gap-2 text-black">
+                  <div class="text-sm flex flex-wrap gap-2 text-black">
                     <label v-for="unit in units" :key="unit.id" class="flex items-center space-x-2 cursor-pointer">
-                      <input type="checkbox" :value="unit.id" v-model="selectedUnits"
-                        class="form-checkbox text-green-600 focus:ring-green-500 h-4 w-4" />
+                      <input type="checkbox" name="satuan"
+                        class="form-checkbox text-green-600 focus:ring-green-500 h-4 w-4" :value="unit.id"
+                        v-model="selectedUnits" />
                       <span class="font-semibold">{{ unit.name }}</span>
                     </label>
                   </div>
                 </div>
 
-                <button type="submit"
-                  class="w-full mt-3 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm py-2 rounded-lg transition-colors shadow-md font-semibold">
+                <button
+                  class="w-full mt-3 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm py-2 rounded-lg transition-colors shadow-md font-semibold"
+                  @click="searchProducts">
                   Cari Produk
                 </button>
-              </form>
+              </div>
 
               <div class="p-5 pl-7 bg-white rounded-xl shadow-md border border-gray-100">
                 <h3 class="text-sm font-bold mb-3">Pencarian Terakhir</h3>
                 <ul class="text-sm text-semibold space-y-4">
-                  <li v-if="isHistoryLoading" class="text-gray-500">Memuat riwayat...</li>
-                  <li v-else-if="historyError" class="text-red-500">Error: {{ historyError }}</li>
-                  <li v-else-if="histories.length === 0" class="text-gray-500">Belum ada pencarian terakhir.</li>
-                  <li v-for="item in histories" :key="item.id" @click="handleSearchAgain(item.searchTerm)"
-                    class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors hover:text-blue-500">
-                    <span>{{ item.searchTerm }}</span>
+                  <li class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors">
+                    Cabai merah keriting
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none"
+                      viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </li>
+                  <li class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors">
+                    Telur ayam kampung omega
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none"
                       viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -110,6 +98,7 @@
                   </li>
                 </ul>
               </div>
+
             </div>
 
             <div class="lg:col-span-2 flex flex-col py-2">
@@ -314,179 +303,214 @@
 </template>
 
 
-<script setup>
-import { onMounted, ref, defineExpose } from 'vue';
+<script>
+// Pastikan path import API service sudah benar di proyek Anda
 import axios from 'axios';
-import Cookies from 'js-cookie';
-
-import { useSearchHistory } from '../api/useSearchHistory';
-import { getCategories } from '../api/category';
-import { getFaqs } from '../api/faq';
-import { getUnits } from '../api/unit';
-import { getBestSellers } from '../api/product';
+import { fetchCategories, fetchUnits } from '@/services/productService'; // Ganti jika Anda tidak menggunakan productService
+import { getFaqs } from '../api/faq'; // Sesuaikan path API yang baru
+import { getBestSellers } from '../api/product'; // Sesuaikan path API yang baru
+import { useSearchHistory } from '../api/useSearchHistory'; // Sesuaikan path API yang baru
+// Karena ini Options API, kita tidak bisa menggunakan hook secara langsung, 
+// jadi kita panggil fungsi fetch di methods.
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-// 1. STATE & LOGIKA RIWAYAT PENCARIAN
-const {
-  histories,
-  isLoading: isHistoryLoading,
-  error: historyError,
-  fetchSearchHistories
-} = useSearchHistory();
+export default {
+  name: 'Home',
+  data() {
+    return {
+      // === STATE DARI KODE LAMA & BARU ===
 
-const handleSearchAgain = (searchTerm) => {
-  console.log(`Searching again for: ${searchTerm}`);
-  window.location.href = `/products?search=${encodeURIComponent(searchTerm)}`;
-};
+      // 1. Pencarian
+      searchQuery: '', // Kata kunci pencarian
+      selectedCategory: '', // ID Kategori yang dipilih (di Options API, lebih mudah pakai string/ID tunggal)
+      selectedUnits: [],    // ID Satuan Produk yang dipilih (ARRAY, meniru kode baru)
 
+      // 2. Data Master & Konten (Meniru state ref() dari kode baru)
+      categories: [],
+      units: [],
+      faqData: [],
+      bestSellers: [],
+      histories: [],
 
-// 2. STATE & LOGIKA KATEGORI
-const categories = ref([]);
-const selectedCategory = ref(null);
-const isCategoryLoading = ref(true);
-const categoryError = ref(null);
+      // 3. Status Loading & Error (Tambahan dari kode baru untuk UI)
+      isCategoryLoading: true,
+      isUnitLoading: true,
+      isFaqLoading: true,
+      isBestSellerLoading: true,
+      isHistoryLoading: true,
 
-const fetchCategories = async () => {
-  isCategoryLoading.value = true;
-  categoryError.value = null;
-  try {
-    const data = await getCategories();
-    categories.value = data;
-    if (data.length > 0) {
-      selectedCategory.value = null;
+      categoryError: null,
+      unitError: null,
+      faqError: null,
+      bestSellerError: null,
+      historyError: null,
+
+      // 4. State FAQ (Dipertahankan)
+      activeIndex: null, // untuk toggle FAQ
+    };
+  },
+  async mounted() {
+    // Menggabungkan semua fetch data ke dalam mounted()
+    await Promise.all([
+      this.fetchSearchHistories(),
+      this.fetchCategories(),
+      this.fetchFaqs(),
+      this.fetchUnits(),
+      this.fetchBestSellers()
+    ]);
+  },
+  methods: {
+    // === METODE FILTER & DATA FETCHING (Disesuaikan dari kode baru) ===
+
+    // 1. RIWAYAT PENCARIAN (Baru)
+    async fetchSearchHistories() {
+      this.isHistoryLoading = true;
+      try {
+        // Asumsi: Kita menggunakan fungsi useSearchHistory() atau logika fetch-nya di sini
+        const { fetchSearchHistories: apiFetchHistory } = useSearchHistory();
+        const data = await apiFetchHistory();
+        this.histories = data;
+      } catch (err) {
+        this.historyError = err.message || 'Gagal memuat riwayat pencarian.';
+      } finally {
+        this.isHistoryLoading = false;
+      }
+    },
+
+    handleSearchAgain(searchTerm) {
+      console.log(`Searching again for: ${searchTerm}`);
+      // Menggunakan Vue Router untuk navigasi
+      this.$router.push({
+        name: 'Katalog', // Ganti dengan nama route katalog Anda
+        query: { search: encodeURIComponent(searchTerm) }
+      });
+    },
+
+    // 2. KATEGORI (Diperbarui dengan Loading/Error)
+    async fetchCategories() {
+      this.isCategoryLoading = true;
+      this.categoryError = null;
+      try {
+        const fetchedCategories = await fetchCategories(); // Menggunakan API lama yang diimpor
+        this.categories = fetchedCategories;
+        if (fetchedCategories.length > 0) {
+          this.selectedCategory = ''; // Reset pilihan kategori
+        }
+      } catch (err) {
+        this.categoryError = err.message || 'Terjadi kesalahan saat mengambil data kategori.';
+      } finally {
+        this.isCategoryLoading = false;
+      }
+    },
+
+    // 3. UNIT (Diperbarui dengan Loading/Error)
+    async fetchUnits() {
+      this.isUnitLoading = true;
+      this.unitError = null;
+      try {
+        const response = await fetchUnits(); // Menggunakan API lama yang diimpor
+        this.units = response.data || response; // Menyesuaikan jika respons API berubah
+      } catch (err) {
+        this.unitError = err.message || 'Gagal mengambil data satuan.';
+      } finally {
+        this.isUnitLoading = false;
+      }
+    },
+
+    // 4. FAQ (Baru)
+    async fetchFaqs() {
+      this.isFaqLoading = true;
+      this.faqError = null;
+      try {
+        const data = await getFaqs();
+        this.faqData = data;
+      } catch (err) {
+        this.faqError = err.message || 'Terjadi kesalahan saat mengambil data FAQ.';
+      } finally {
+        this.isFaqLoading = false;
+      }
+    },
+
+    // 5. BEST SELLERS (Baru)
+    async fetchBestSellers() {
+      this.isBestSellerLoading = true;
+      this.bestSellerError = null;
+      try {
+        const data = await getBestSellers();
+        this.bestSellers = data;
+      } catch (err) {
+        this.bestSellerError = err.message || 'Gagal mengambil data produk terlaris.';
+      } finally {
+        this.isBestSellerLoading = false;
+      }
+    },
+
+    // 6. TOGGLE FAQ (Dipertahankan)
+    toggleFaq(index) {
+      this.activeIndex = this.activeIndex === index ? null : index;
+    },
+
+    // 7. ANIMASI FAQ (Dipertahankan)
+    beforeEnter(el) { el.style.height = '0'; },
+    enter(el) { el.style.height = el.scrollHeight + 'px'; },
+    beforeLeave(el) { el.style.height = el.scrollHeight + 'px'; },
+    leave(el) { el.style.height = '0'; },
+
+    // 8. PENCARIAN UTAMA (Mengambil logika kompleks dari kode baru)
+    async searchProducts() {
+      const term = this.searchQuery.trim();
+
+      if (!term) {
+        alert("Mohon masukkan kata kunci pencarian.");
+        return;
+      }
+
+      const params = new URLSearchParams();
+      params.set('search', term);
+
+      if (this.selectedCategory) {
+        params.set('category', this.selectedCategory);
+      }
+
+      // Menggunakan selectedUnits (ARRAY) dan menggabungkannya dengan koma
+      if (this.selectedUnits.length > 0) {
+        params.set('unit', this.selectedUnits.join(','));
+      }
+
+      const queryString = params.toString();
+
+      // LOGIKA BARU: Melakukan AJAX GET ke backend untuk memicu
+      // penyimpanan riwayat dan/atau validasi login sebelum navigasi
+      try {
+        await axios.get(`${API_BASE_URL}/products?${queryString}`, {
+          withCredentials: true // Penting untuk mengirim cookie (misalnya untuk otentikasi)
+        });
+
+        // Setelah backend berhasil memproses (misalnya menyimpan riwayat), update riwayat lokal
+        this.fetchSearchHistories();
+
+        // Navigasi ke halaman produk menggunakan Vue Router
+        this.$router.push({
+          name: 'Katalog', // Ganti dengan nama route katalog Anda
+          query: {
+            search: term,
+            ...(this.selectedCategory && { category: this.selectedCategory }),
+            ...(this.selectedUnits.length > 0 && { unit: this.selectedUnits.join(',') }),
+          }
+        }).catch(err => {
+          if (err.name !== 'NavigationDuplicated') {
+            throw err;
+          }
+        });
+
+      } catch (error) {
+        alert("Gagal melakukan pencarian. Pastikan Anda sudah login.");
+        console.error("Error saat memicu pencarian/penyimpanan riwayat:", error);
+      }
     }
-  } catch (err) {
-    categoryError.value = err.message || 'Terjadi kesalahan saat mengambil data kategori.';
-  } finally {
-    isCategoryLoading.value = false;
   }
-};
-
-// 5. STATE & LOGIKA PRODUK TERLARIS (BESTSELLERS)
-const bestSellers = ref([]);
-const isBestSellerLoading = ref(true);
-const bestSellerError = ref(null);
-
-const fetchBestSellers = async () => {
-  isBestSellerLoading.value = true;
-  bestSellerError.value = null;
-  try {
-    const data = await getBestSellers();
-    console.log("Data Best Sellers yang diterima:", data);
-    if (data.length > 0) {
-      console.log("Tipe data harga produk pertama:", typeof data[0].price);
-      console.log("Nilai harga produk pertama:", data[0].price);
-    }
-    bestSellers.value = data;
-  } catch (err) {
-    bestSellerError.value = err.message || 'Gagal mengambil data produk terlaris.';
-  } finally {
-    isBestSellerLoading.value = false;
-  }
-};
-// 3. STATE & LOGIKA FAQ
-const faqData = ref([]);
-const activeIndex = ref(null);
-const isFaqLoading = ref(true);
-const faqError = ref(null);
-
-const fetchFaqs = async () => {
-  isFaqLoading.value = true;
-  faqError.value = null;
-  try {
-    const data = await getFaqs();
-    faqData.value = data;
-  } catch (err) {
-    faqError.value = err.message || 'Terjadi kesalahan tidak terduga saat mengambil data FAQ.';
-  } finally {
-    isFaqLoading.value = false;
-  }
-};
-
-const toggleFaq = (index) => {
-  activeIndex.value = activeIndex.value === index ? null : index;
-};
-
-const beforeEnter = (el) => { el.style.height = '0'; };
-const enter = (el) => { el.style.height = el.scrollHeight + 'px'; };
-const beforeLeave = (el) => { el.style.height = el.scrollHeight + 'px'; };
-const leave = (el) => { el.style.height = '0'; };
-
-// 4. STATE & LOGIKA UNIT (Satuan Produk)
-const units = ref([]);
-const selectedUnits = ref([]);
-const isUnitLoading = ref(true);
-const unitError = ref(null);
-
-const fetchUnits = async () => {
-  isUnitLoading.value = true;
-  unitError.value = null;
-  try {
-    const response = await getUnits();
-    units.value = response.data;
-  } catch (err) {
-    unitError.value = err.message || 'Gagal mengambil data satuan.';
-  } finally {
-    isUnitLoading.value = false;
-  }
-};
-
-// 5. LOGIKA PENCARIAN UTAMA
-const searchTerm = ref('');
-
-const performSearch = async () => {
-  const term = searchTerm.value.trim();
-
-  if (!term) {
-    alert("Mohon masukkan kata kunci pencarian.");
-    return;
-  }
-
-  const params = new URLSearchParams();
-  params.set('search', term);
-
-  if (selectedCategory.value) {
-    params.set('category', selectedCategory.value);
-  }
-
-  if (selectedUnits.value.length > 0) {
-    params.set('unit', selectedUnits.value.join(','));
-  }
-
-  const queryString = params.toString();
-  const targetUrl = `/products?${queryString}`;
-
-  try {
-    await axios.get(`${API_BASE_URL}/products?${queryString}`, {
-      withCredentials: true
-    });
-
-    fetchSearchHistories();
-
-    window.location.href = targetUrl;
-
-  } catch (error) {
-    alert("Gagal melakukan pencarian. Pastikan Anda sudah login.");
-    console.error("Error saat memicu pencarian/penyimpanan riwayat:", error);
-  }
-};
-
-// 6. LIFE CYCLE HOOKS
-onMounted(() => {
-  fetchSearchHistories();
-  fetchCategories();
-  fetchFaqs();
-  fetchUnits();
-  fetchBestSellers();
-});
-
-// 7. EXPOSE
-defineExpose({
-  selectedCategory,
-  categories,
-  fetchCategories
-});
+}
 </script>
 
 <style scoped>
