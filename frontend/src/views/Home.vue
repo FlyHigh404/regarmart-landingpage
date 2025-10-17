@@ -151,16 +151,39 @@
                     <p class="text-gray-600 text-[9px] sm:text-[10px] mb-2 flex-grow line-clamp-3">
                       {{ product.description || 'Deskripsi produk tidak tersedia.' }}
                     </p>
-                    <p class="text-[14px] sm:text-[16px] font-bold mb-3">
-                      Rp{{
-                        product.price
-                          ? Number(product.price).toLocaleString('id-ID', {
-                            minimumFractionDigits: 0, maximumFractionDigits:
-                              0
-                          })
-                          : 'N/A'
-                      }}
-                    </p>
+
+                    <div class="mb-3">
+                      <span v-if="product.isPromo" class="text-[14px] sm:text-[16px] font-bold">
+                        Rp{{
+                          product.promoPrice
+                            ? Number(product.promoPrice).toLocaleString('id-ID', {
+                              minimumFractionDigits: 0, maximumFractionDigits:
+                                0
+                            })
+                            : 'N/A'
+                        }}
+                      </span>
+                      <span v-else class="text-[14px] sm:text-[16px] font-bold">
+                        Rp{{
+                          product.basePrice
+                            ? Number(product.basePrice).toLocaleString('id-ID', {
+                              minimumFractionDigits: 0, maximumFractionDigits:
+                                0
+                            })
+                            : 'N/A'
+                        }}
+                      </span>
+                      <span v-if="product.isPromo" class="text-gray-400 text-xs line-through ml-2">
+                        Rp{{
+                          product.basePrice
+                            ? Number(product.basePrice).toLocaleString('id-ID', {
+                              minimumFractionDigits: 0, maximumFractionDigits:
+                                0
+                            })
+                            : 'N/A'
+                        }}
+                      </span>
+                    </div>
 
                     <div class="space-y-2 mt-auto">
                       <a :href="`https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20produk%20${product.name}`"
