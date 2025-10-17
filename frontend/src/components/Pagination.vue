@@ -6,10 +6,8 @@
           <li>
             <button
               class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm font-medium py-2.5 px-3 sm:px-5 rounded-lg shadow-md transition duration-150 ease-in-out"
-              :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1 }"
-              :disabled="currentPage === 1"
-              @click="goToPage(currentPage - 1)"
-            >
+              :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1 }" :disabled="currentPage === 1"
+              @click="goToPage(currentPage - 1)">
               Sebelumnya
             </button>
           </li>
@@ -21,17 +19,14 @@
                 page === currentPage
                   ? 'bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white shadow-md'
                   : 'border-[1px] border-[#26A81D] text-[#4CAF50]'
-              ]"
-              @click="goToPage(page)"
-            >
+              ]" @click="goToPage(page)">
               {{ page }}
             </button>
           </li>
-          
+
           <li class="sm:hidden">
             <span
-              class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-sm font-medium bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white shadow-md"
-            >
+              class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg text-sm font-medium bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white shadow-md">
               {{ currentPage }}
             </span>
           </li>
@@ -40,9 +35,7 @@
             <button
               class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm font-medium py-2.5 px-3 sm:px-5 rounded-lg shadow-md transition duration-150 ease-in-out"
               :class="{ 'opacity-50 cursor-not-allowed': currentPage === totalPages }"
-              :disabled="currentPage === totalPages"
-              @click="goToPage(currentPage + 1)"
-            >
+              :disabled="currentPage === totalPages" @click="goToPage(currentPage + 1)">
               Selanjutnya
             </button>
           </li>
@@ -52,17 +45,16 @@
       <nav aria-label="Page Select" class="flex items-center space-x-2 text-sm text-gray-700">
         <span>Page</span>
         <div class="relative">
-          <select
-            :value="currentPage"
-            @change="handlePageChange"
-            class="appearance-none bg-white border-1 border-[#26A81D] text-[#4CAF50] font-semibold py-2 px-3 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-[#4CAF50] transition duration-150 ease-in-out cursor-pointer"
-          >
+          <select :value="currentPage" @change="handlePageChange"
+            class="appearance-none bg-white border-1 border-[#26A81D] text-[#4CAF50] font-semibold py-2 px-3 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:border-[#4CAF50] transition duration-150 ease-in-out cursor-pointer">
             <option v-for="page in totalPages" :key="page" :value="page">
               {{ page }}
             </option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#4CAF50]">
-            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
           </div>
         </div>
         <span>of {{ totalPages }}</span>
@@ -95,5 +87,4 @@ const handlePageChange = (event) => {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

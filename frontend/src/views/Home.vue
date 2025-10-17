@@ -15,14 +15,14 @@
           <span class="font-bold">Regar Mart</span> siapin dengan <span class="font-bold">packing rapi</span> dan kirim
           langsung ke rumahmu.
         </p>
-        <img src="/beranda.png" alt="Pelanggan Puas" class="customer-satisfaction-badge">
+        <img src="/beranda.png" alt="Pelanggan Puas" class="customer-satisfaction-badge hidden lg:block" />
         <div class="container mx-auto mt-5 sm:mt-7">
 
           <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
 
             <div class="lg:col-span-2 space-y-4">
 
-              <div class="bg-white rounded-xl shadow-md p-4 max-w-lg mx-auto">
+              <div class="bg-white rounded-xl shadow-md p-4 mx-auto">
                 <div class="relative mb-4 border border-green-500 rounded-lg">
                   <svg xmlns="http://www.w3.org/2000/svg"
                     class="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none"
