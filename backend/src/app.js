@@ -9,6 +9,9 @@ import httpStatus from 'http-status';
 import apiRoutes from './routes/index.js';
 import corsOptions from './config/corsOptions.js';
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.js';
+
 const app = express();
 
 app.use(helmet());
@@ -20,6 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.send('API is running..., please use /api for main routes');
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use('/api', apiRoutes);
 
 // handle 404
