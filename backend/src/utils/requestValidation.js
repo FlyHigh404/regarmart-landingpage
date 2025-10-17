@@ -16,19 +16,54 @@ const validateGetProducts = [
   query("unit")
     .optional()
     .trim()
-    .escape(),
+    .escape()
+    .isInt({ min: 1 })
+    .withMessage("Parameter 'unit' harus berupa angka positif."),
   query("isPromo")
     .optional()
     .trim()
-    .escape(),
+    .escape()
+    .isIn(["true", "false"])
+    .withMessage("Parameter 'isPromo' harus bernilai 'true' atau 'false'."),
   query("sortByType")
     .optional()
     .trim()
-    .escape(),
+    .escape()
+    .isIn(["bestseller", "newest"])
+    .withMessage("Parameter 'sortByType' harus bernilai 'bestseller' atau 'newest'."),
   query("sortByPrice")
     .optional()
     .trim()
     .escape()
+    .isIn(["asc", "desc"])
+    .withMessage("Parameter 'sortByPrice' harus bernilai 'asc' atau 'desc'."),
+  query("page")
+    .optional()
+    .trim()
+    .escape()
+    .isInt({ min: 1 })
+    .withMessage("Parameter 'page' harus berupa angka positif."),
+  query("limit")
+    .optional()
+    .trim()
+    .escape()
+    .isInt({ min: 1, max: 9 })
+    .withMessage("Parameter 'limit' harus berupa angka antara 1 hingga 9."),
 ];
 
-export { validateGetProducts };
+const validateGetTestimonials = [
+  query("page")
+    .optional()
+    .trim()
+    .escape()
+    .isInt({ min: 1 })
+    .withMessage("Parameter 'page' harus berupa angka positif."),
+  query("limit")
+    .optional()
+    .trim()
+    .escape()
+    .isInt({ min: 1, max: 4 })
+    .withMessage("Parameter 'limit' harus berupa angka antara 1 hingga 4."),
+];
+
+export { validateGetProducts, validateGetTestimonials };
