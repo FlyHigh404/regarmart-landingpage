@@ -15,7 +15,7 @@
           <span class="font-bold">Regar Mart</span> siapin dengan <span class="font-bold">packing rapi</span> dan kirim
           langsung ke rumahmu.
         </p>
-        <img src="/beranda.png" alt="Pelanggan Puas" class="customer-satisfaction-badge"></img>
+        <img src="/beranda.png" alt="Pelanggan Puas" class="customer-satisfaction-badge">
         <div class="container mx-auto mt-5 sm:mt-7">
 
           <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
@@ -78,17 +78,25 @@
 
               <div class="p-5 pl-7 bg-white rounded-xl shadow-md border border-gray-100">
                 <h3 class="text-sm font-bold mb-3">Pencarian Terakhir</h3>
-                <ul class="text-sm text-semibold space-y-4">
-                  <li class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors">
-                    Cabai merah keriting
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </li>
-                  <li class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors">
-                    Telur ayam kampung omega
+
+                <div v-if="isHistoryLoading" class="text-center text-gray-500 text-sm py-4">
+                  Memuat riwayat...
+                </div>
+
+                <div v-else-if="historyError" class="text-center text-red-500 text-sm py-4">
+                  <p>Gagal memuat riwayat.</p>
+                </div>
+
+                <div v-else-if="!histories || histories.length === 0" class="text-center text-gray-500 text-sm py-4">
+                  Belum ada riwayat pencarian.
+                </div>
+
+                <ul v-else class="text-sm text-semibold space-y-4">
+                  <li v-for="history in histories" :key="history.id" @click="handleSearchAgain(history.search_term)"
+                    class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors hover:text-green-600">
+
+                    <span>{{ history.search_term }}</span>
+
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none"
                       viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -305,12 +313,10 @@
 <script>
 // Pastikan path import API service sudah benar di proyek Anda
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { fetchCategories, fetchUnits } from '@/services/productService'; // Ganti jika Anda tidak menggunakan productService
 import { getFaqs } from '../api/faq'; // Sesuaikan path API yang baru
 import { getBestSellers } from '../api/product'; // Sesuaikan path API yang baru
-import { useSearchHistory } from '../api/useSearchHistory'; // Sesuaikan path API yang baru
-// Karena ini Options API, kita tidak bisa menggunakan hook secara langsung, 
-// jadi kita panggil fungsi fetch di methods.
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -318,8 +324,6 @@ export default {
   name: 'Home',
   data() {
     return {
-      // === STATE DARI KODE LAMA & BARU ===
-
       // 1. Pencarian
       searchQuery: '', // Kata kunci pencarian
       selectedCategory: '', // ID Kategori yang dipilih (di Options API, lebih mudah pakai string/ID tunggal)
@@ -365,13 +369,31 @@ export default {
     // 1. RIWAYAT PENCARIAN (Baru)
     async fetchSearchHistories() {
       this.isHistoryLoading = true;
+      this.historyError = null;
       try {
-        // Asumsi: Kita menggunakan fungsi useSearchHistory() atau logika fetch-nya di sini
-        const { fetchSearchHistories: apiFetchHistory } = useSearchHistory();
-        const data = await apiFetchHistory();
-        this.histories = data;
+        const userToken = Cookies.get("user_token");
+
+        // Jika tidak ada token, tidak perlu fetch dan tampilkan pesan
+        if (!userToken) {
+          this.historyError = "Silakan login untuk melihat riwayat pencarian.";
+          this.histories = []; // Kosongkan riwayat
+          return; // Hentikan eksekusi
+        }
+
+        const response = await axios.get(`${API_BASE_URL}/search-histories`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        // Update data `histories` di komponen dengan `this`
+        this.histories = response.data;
+
       } catch (err) {
-        this.historyError = err.message || 'Gagal memuat riwayat pencarian.';
+        this.historyError = "Gagal memuat riwayat pencarian. " + (err.response?.data?.message || err.message);
+        this.histories = []; // Kosongkan jika error
+        console.error(this.historyError);
       } finally {
         this.isHistoryLoading = false;
       }
