@@ -1,19 +1,38 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
-import Katalog from "../views/Katalog.vue";
-import Tentang from "../views/Tentang.vue";
-import Testimoni from "../views/Testimoni.vue";
 
 const routes = [
-  { path: "/", name: "Home", component: Home },
-  { path: "/katalog", name: "Katalog", component: Katalog },
-  { path: "/tentang", name: "Tentang", component: Tentang },
-  { path: "/testimoni", name: "Testimoni", component: Testimoni },
+  {
+    path: "/",
+    name: "Home",
+    component: () => import("@/views/Home.vue"),
+  },
+  {
+    path: "/katalog",
+    name: "Katalog",
+    component: () => import("@/views/Katalog.vue"),
+  },
+  {
+    path: "/tentang",
+    name: "Tentang",
+    component: () => import("@/views/Tentang.vue"),
+  },
+  {
+    path: "/testimoni",
+    name: "Testimoni",
+    component: () => import("@/views/Testimoni.vue"),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition;
+
+    if (to.hash) return document.querySelector(to.hash).scrollIntoView({ behavior: 'smooth' });
+
+    return { top: 0, left: 0 };
+  },
 });
 
 export default router;

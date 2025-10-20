@@ -1,4 +1,4 @@
-import { query } from "express-validator";
+import { query, body } from "express-validator";
 
 const validateGetProducts = [
   query("search")
@@ -66,4 +66,14 @@ const validateGetTestimonials = [
     .withMessage("Parameter 'limit' harus berupa angka antara 1 hingga 4."),
 ];
 
-export { validateGetProducts, validateGetTestimonials };
+const validateLeadsInput = [
+  body('email')
+    .trim()
+    .notEmpty()
+    .withMessage('Email tidak boleh kosong.')
+    .isEmail()
+    .withMessage('Format email tidak valid.')
+    .normalizeEmail()
+];
+
+export { validateGetProducts, validateGetTestimonials, validateLeadsInput };

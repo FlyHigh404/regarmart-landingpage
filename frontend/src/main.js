@@ -5,7 +5,16 @@ import "./style.css";
 import 'aos/dist/aos.css';
 import AOS from 'aos'
 
-const app = createApp(App);
+import { VueReCaptcha } from 'vue-recaptcha-v3'
+
+const app = createApp(App)
+
+app.use(VueReCaptcha, {
+  siteKey: import.meta.env.VITE_RECAPTCHA_SITE_KEY,
+  loaderOptions: {
+    autoHideBadge: true 
+  }
+})
 
 app.use(router);
 app.mount("#app");

@@ -2,13 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from "cookie-parser";
-import { apiLimiter } from './middlewares/rateLimiter.js';
 import ApiError from './utils/apiError.js';
 import { globalErrorHandler } from './middlewares/errorHandler.js';
 import httpStatus from 'http-status';
 
 import apiRoutes from './routes/index.js';
 import corsOptions from './config/corsOptions.js';
+
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.js';
 
 const app = express();
 
@@ -21,7 +23,10 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.send('API is running..., please use /api for main routes');
 });
-app.use('/api', apiLimiter, apiRoutes);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use('/api', apiRoutes);
 
 // handle 404
 app.use((req, res, next) => {

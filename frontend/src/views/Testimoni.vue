@@ -116,37 +116,29 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import axios from 'axios';
 import Pagination from '@/components/Pagination.vue';
 
-// --- State Reaktif ---
 const testimonials = ref([]);
 const currentPage = ref(1);
 const totalPages = ref(1);
 const openTagsIndex = ref(null);
 const isMobileOrTablet = ref(false);
-const isLoading = ref(true); // State untuk loading
+const isLoading = ref(true);
+const isPageChanging = ref(false);
 
-// Asumsi API_BASE_URL Anda, sesuaikan jika perlu
 const API_BASE_URL = 'http://localhost:5000/api';
-const ITEMS_PER_PAGE = 4; // Sesuai dengan batasan backend (limit=4)
+const ITEMS_PER_PAGE = 4;
+const LOCAL_STORAGE_KEY = 'currentPageTestimonial';
 
-// --- Fungsi untuk Mengambil Data ---
-
-/**
- * Mengambil data testimoni dari backend.
- */
-const fetchTestimonials = async (page) => {
-  isLoading.value = true;
-  openTagsIndex.value = null; // Tutup semua tag saat pindah halaman
+const fetchTestimonials = async (page, isInitial = false) => {
+  if (isInitial) isLoading.value = true;
+  else isPageChanging.value = true;
 
   try {
     const response = await axios.get(`${API_BASE_URL}/testimonials`, {
-      params: {
-        page: page,
-        limit: ITEMS_PER_PAGE,
-      },
+      params: { page, limit: ITEMS_PER_PAGE },
     });
 
     const data = response.data;
@@ -158,64 +150,44 @@ const fetchTestimonials = async (page) => {
       testimonials.value = [];
       totalPages.value = 1;
       currentPage.value = 1;
-      console.warn('API returned success=true but no data or meta:', data);
     }
   } catch (error) {
     console.error('Gagal mengambil testimoni:', error);
     testimonials.value = [];
     totalPages.value = 1;
-    // Peringatan: Tambahkan notifikasi error ke user di aplikasi nyata
   } finally {
     isLoading.value = false;
+    isPageChanging.value = false;
   }
 };
 
-// --- Logika Halaman dan UI ---
-
-/**
- * Mengubah halaman pagination dan memuat data baru.
- * @param {number} page - Nomor halaman yang dituju.
- */
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value && page !== currentPage.value) {
     currentPage.value = page;
+    localStorage.setItem(LOCAL_STORAGE_KEY, page);
   }
 };
 
-/**
- * Mengubah state tampilan tag rating (khusus mobile/tablet).
- * @param {number} index - Index kartu testimoni.
- */
 const toggleRatingTags = (index) => {
   if (isMobileOrTablet.value) {
     openTagsIndex.value = openTagsIndex.value === index ? null : index;
   }
 };
 
-/**
- * Mengecek ukuran layar untuk menentukan mode mobile/tablet.
- */
 const checkScreenSize = () => {
   isMobileOrTablet.value = window.innerWidth < 1024;
-
-  // Tutup semua tag saat beralih ke mode desktop
-  if (!isMobileOrTablet.value) {
-    openTagsIndex.value = null;
-  }
+  if (!isMobileOrTablet.value) openTagsIndex.value = null;
 };
 
-// --- Lifecycle Hooks dan Watcher ---
-
-// Watcher untuk memuat data setiap kali `currentPage` berubah
-watch(currentPage, (newPage) => {
-  fetchTestimonials(newPage);
+watch(currentPage, (newPage, oldPage) => {
+  if (oldPage !== null) fetchTestimonials(newPage, false);
 });
 
 onMounted(() => {
-  // Panggil data awal saat komponen dimuat
-  fetchTestimonials(currentPage.value);
+  const savedPage = localStorage.getItem(LOCAL_STORAGE_KEY);
+  if (savedPage) currentPage.value = parseInt(savedPage, 10);
 
-  // Inisialisasi pengecekan ukuran layar
+  fetchTestimonials(currentPage.value, true);
   checkScreenSize();
   window.addEventListener('resize', checkScreenSize);
 });
@@ -225,7 +197,5 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
-/* Anda dapat menambahkan gaya kustom di sini jika diperlukan */
-/* Pastikan Anda juga memiliki class CSS untuk whatsapp-background-blob-top-right dan whatsapp-background-blob-bottom-left */
-</style>
+
+<style scoped></style>
