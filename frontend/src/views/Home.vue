@@ -62,8 +62,9 @@
                   <label class="text-gray-700 text-xs block mb-2">Satuan Produk</label>
                   <div class="text-sm flex flex-wrap gap-2 text-black">
                     <label v-for="unit in units" :key="unit.id" class="flex items-center space-x-2 cursor-pointer">
-                      <input type="radio" name="satuan" class="form-radio text-green-600 focus:ring-green-500 h-4 w-4"
-                        :value="unit.id" v-model="selectedUnit" />
+                      <input type="checkbox" name="satuan"
+                        class="form-radio text-green-600 focus:ring-green-500 h-4 w-4" :value="unit.id"
+                        v-model="selectedUnit" />
                       <span class="font-semibold">{{ unit.name }}</span>
                     </label>
                   </div>
@@ -111,12 +112,12 @@
             <div class="lg:col-span-2 flex flex-col py-2">
               <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg sm:text-xl font-bold text-[#1B1F1B]">Produk Terlaris</h2>
-                <div class="hidden sm:flex space-x-1">
-                  <button
+                <div class="flex space-x-1">
+                  <button @click="prevBestSeller"
                     class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm">
                     &lt;
                   </button>
-                  <button
+                  <button @click="nextBestSeller"
                     class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm">
                     &gt;
                   </button>
@@ -127,15 +128,17 @@
                 <p>Memuat produk terlaris...</p>
               </div>
               <div v-else-if="bestSellerError" class="text-center py-10 text-red-500">
-                <p>🚨 Gagal memuat data: {{ bestSellerError }}</p>
+                <p>Gagal memuat data: {{ bestSellerError }}</p>
               </div>
               <div v-else-if="bestSellers.length === 0" class="text-center py-10 text-gray-500">
                 <p>Belum ada produk terlaris saat ini.</p>
               </div>
 
-              <div v-else class="flex overflow-x-scroll space-x-4 sm:space-x-6 pb-4">
-                <div v-for="product in bestSellers" :key="product.id"
-                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-64 md:w-72">
+              <div v-else class="flex space-x-4 sm:space-x-6 pb-4 overflow-x-auto lg:overflow-x-visible">
+                <div
+                  v-for="product in bestSellers.slice(currentBestSellerIndex, currentBestSellerIndex + itemsPerSlide)"
+                  :key="product.id"
+                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-[240px] md:w-[220px]">
 
                   <div class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
                     <img :src="product.imageUrl || '/susu.png'" :alt="product.name"
@@ -283,13 +286,13 @@
           <span class="text-[#26A81D]">Frequently </span>Ask Question
         </h2>
 
-        <div v-if="isLoading" class="text-center p-10 text-gray-500">
+        <div v-if="isFaqLoading" class="text-center p-10 text-gray-500">
           Memuat pertanyaan dan jawaban...
         </div>
 
         <div v-else-if="error"
           class="text-center p-10 text-red-700 bg-red-100 border border-red-400 rounded-lg mx-auto max-w-lg">
-          🚨 Error: {{ error }}
+          Error: {{ error }}
         </div>
 
         <div v-else-if="faqData.length > 0" class="space-y-3 sm:space-y-4">
@@ -332,236 +335,233 @@
   </div>
 </template>
 
-
-<script>
-// Pastikan path import API service sudah benar di proyek Anda
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { fetchCategories, fetchUnits } from '@/services/productService'; // Ganti jika Anda tidak menggunakan productService
-import { getFaqs } from '../api/faq'; // Sesuaikan path API yang baru
-import { getBestSellers } from '../api/product'; // Sesuaikan path API yang baru
+import {
+  fetchCategories as apiFetchCategories,
+  fetchUnits as apiFetchUnits
+} from '@/services/productService';
+import { getFaqs } from '../api/faq';
+import { getBestSellers } from '../api/product';
 
 const API_BASE_URL = "http://localhost:5000/api";
+const router = useRouter();
 
-export default {
-  name: 'Home',
-  data() {
-    return {
-      // 1. Pencarian
-      searchQuery: '', // Kata kunci pencarian
-      selectedCategory: '', // ID Kategori yang dipilih (di Options API, lebih mudah pakai string/ID tunggal)
-      selectedUnits: [],    // ID Satuan Produk yang dipilih (ARRAY, meniru kode baru)
+// 1. Pencarian (State)
+const searchQuery = ref('');
+const selectedCategory = ref('');
+const selectedUnit = ref([]);
 
-      // 2. Data Master & Konten (Meniru state ref() dari kode baru)
-      categories: [],
-      units: [],
-      faqData: [],
-      bestSellers: [],
-      histories: [],
+// 2. Data Master & Konten (State)
+const categories = ref([]);
+const units = ref([]);
+const faqData = ref([]);
+const bestSellers = ref([]);
+const histories = ref([]);
 
-      // 3. Status Loading & Error (Tambahan dari kode baru untuk UI)
-      isCategoryLoading: true,
-      isUnitLoading: true,
-      isFaqLoading: true,
-      isBestSellerLoading: true,
-      isHistoryLoading: true,
+// 3. Status Loading & Error (State)
+const isCategoryLoading = ref(true);
+const isUnitLoading = ref(true);
+const isFaqLoading = ref(true);
+const isBestSellerLoading = ref(true);
+const isHistoryLoading = ref(true);
 
-      categoryError: null,
-      unitError: null,
-      faqError: null,
-      bestSellerError: null,
-      historyError: null,
+const bestSellerError = ref(null);
+const historyError = ref(null);
+const error = ref(null);
 
-      // 4. State FAQ (Dipertahankan)
-      activeIndex: null, // untuk toggle FAQ
-    };
-  },
-  async mounted() {
-    // Menggabungkan semua fetch data ke dalam mounted()
-    await Promise.all([
-      this.fetchSearchHistories(),
-      this.fetchCategories(),
-      this.fetchFaqs(),
-      this.fetchUnits(),
-      this.fetchBestSellers()
-    ]);
-  },
-  methods: {
-    // === METODE FILTER & DATA FETCHING (Disesuaikan dari kode baru) ===
+// 4. FAQ
+const activeIndex = ref(null);
 
-    // 1. RIWAYAT PENCARIAN (Baru)
-    async fetchSearchHistories() {
-      this.isHistoryLoading = true;
-      this.historyError = null;
-      try {
-        const userToken = Cookies.get("user_token");
+// 5. Slider Produk Terlaris
+const currentBestSellerIndex = ref(0);
+const itemsPerSlide = 2;
+let autoSlideInterval = null;
 
-        // Jika tidak ada token, tidak perlu fetch dan tampilkan pesan
-        if (!userToken) {
-          this.historyError = "Silakan login untuk melihat riwayat pencarian.";
-          this.histories = []; // Kosongkan riwayat
-          return; // Hentikan eksekusi
-        }
-
-        const response = await axios.get(`${API_BASE_URL}/search-histories`, {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        // Update data `histories` di komponen dengan `this`
-        this.histories = response.data;
-
-      } catch (err) {
-        this.historyError = "Gagal memuat riwayat pencarian. " + (err.response?.data?.message || err.message);
-        this.histories = []; // Kosongkan jika error
-        console.error(this.historyError);
-      } finally {
-        this.isHistoryLoading = false;
-      }
-    },
-
-    handleSearchAgain(searchTerm) {
-      console.log(`Searching again for: ${searchTerm}`);
-      // Menggunakan Vue Router untuk navigasi
-      this.$router.push({
-        name: 'Katalog', // Ganti dengan nama route katalog Anda
-        query: { search: encodeURIComponent(searchTerm) }
-      });
-    },
-
-    // 2. KATEGORI (Diperbarui dengan Loading/Error)
-    async fetchCategories() {
-      this.isCategoryLoading = true;
-      this.categoryError = null;
-      try {
-        const fetchedCategories = await fetchCategories(); // Menggunakan API lama yang diimpor
-        this.categories = fetchedCategories;
-        if (fetchedCategories.length > 0) {
-          this.selectedCategory = ''; // Reset pilihan kategori
-        }
-      } catch (err) {
-        this.categoryError = err.message || 'Terjadi kesalahan saat mengambil data kategori.';
-      } finally {
-        this.isCategoryLoading = false;
-      }
-    },
-
-    // 3. UNIT (Diperbarui dengan Loading/Error)
-    async fetchUnits() {
-      this.isUnitLoading = true;
-      this.unitError = null;
-      try {
-        const response = await fetchUnits(); // Menggunakan API lama yang diimpor
-        this.units = response.data || response; // Menyesuaikan jika respons API berubah
-      } catch (err) {
-        this.unitError = err.message || 'Gagal mengambil data satuan.';
-      } finally {
-        this.isUnitLoading = false;
-      }
-    },
-
-    // 4. FAQ (Baru)
-    async fetchFaqs() {
-      this.isFaqLoading = true;
-      this.faqError = null;
-      try {
-        const data = await getFaqs();
-        this.faqData = data;
-      } catch (err) {
-        this.faqError = err.message || 'Terjadi kesalahan saat mengambil data FAQ.';
-      } finally {
-        this.isFaqLoading = false;
-      }
-    },
-
-    // 5. BEST SELLERS (Baru)
-    async fetchBestSellers() {
-      this.isBestSellerLoading = true;
-      this.bestSellerError = null;
-      try {
-        const data = await getBestSellers();
-        this.bestSellers = data;
-      } catch (err) {
-        this.bestSellerError = err.message || 'Gagal mengambil data produk terlaris.';
-      } finally {
-        this.isBestSellerLoading = false;
-      }
-    },
-
-    // 6. TOGGLE FAQ (Dipertahankan)
-    toggleFaq(index) {
-      this.activeIndex = this.activeIndex === index ? null : index;
-    },
-
-    // 7. ANIMASI FAQ (Dipertahankan)
-    beforeEnter(el) { el.style.height = '0'; },
-    enter(el) { el.style.height = el.scrollHeight + 'px'; },
-    beforeLeave(el) { el.style.height = el.scrollHeight + 'px'; },
-    leave(el) { el.style.height = '0'; },
-
-    // 8. PENCARIAN UTAMA (Mengambil logika kompleks dari kode baru)
-    async searchProducts() {
-      const term = this.searchQuery.trim();
-
-      if (!term) {
-        alert("Mohon masukkan kata kunci pencarian.");
-        return;
-      }
-
-      const params = new URLSearchParams();
-      params.set('search', term);
-
-      if (this.selectedCategory) {
-        params.set('category', this.selectedCategory);
-      }
-
-      // Menggunakan selectedUnits (ARRAY) dan menggabungkannya dengan koma
-      if (this.selectedUnits.length > 0) {
-        params.set('unit', this.selectedUnits.join(','));
-      }
-
-      const queryString = params.toString();
-
-      // LOGIKA BARU: Melakukan AJAX GET ke backend untuk memicu
-      // penyimpanan riwayat dan/atau validasi login sebelum navigasi
-      try {
-        await axios.get(`${API_BASE_URL}/products?${queryString}`, {
-          withCredentials: true // Penting untuk mengirim cookie (misalnya untuk otentikasi)
-        });
-
-        // Setelah backend berhasil memproses (misalnya menyimpan riwayat), update riwayat lokal
-        this.fetchSearchHistories();
-
-        // Navigasi ke halaman produk menggunakan Vue Router
-        this.$router.push({
-          name: 'Katalog', // Ganti dengan nama route katalog Anda
-          query: {
-            search: term,
-            ...(this.selectedCategory && { category: this.selectedCategory }),
-            ...(this.selectedUnits.length > 0 && { unit: this.selectedUnits.join(',') }),
-          }
-        }).catch(err => {
-          if (err.name !== 'NavigationDuplicated') {
-            throw err;
-          }
-        });
-
-      } catch (error) {
-        alert("Gagal melakukan pencarian. Pastikan Anda sudah login.");
-        console.error("Error saat memicu pencarian/penyimpanan riwayat:", error);
-      }
+// 1. RIWAYAT PENCARIAN
+async function fetchSearchHistories() {
+  isHistoryLoading.value = true;
+  historyError.value = null;
+  try {
+    const userToken = Cookies.get("user_token");
+    if (!userToken) {
+      historyError.value = "Silakan login untuk melihat riwayat pencarian.";
+      histories.value = [];
+      return;
     }
+
+    const response = await axios.get(`${API_BASE_URL}/search-histories`, {
+      withCredentials: true,
+      headers: { "Content-Type": "application/json" },
+    });
+
+    histories.value = response.data;
+  } catch (err) {
+    historyError.value = "Gagal memuat riwayat pencarian. " + (err.response?.data?.message || err.message);
+    histories.value = [];
+    console.error(historyError.value);
+  } finally {
+    isHistoryLoading.value = false;
   }
 }
+
+function handleSearchAgain(searchTerm) {
+  console.log(`Searching again for: ${searchTerm}`);
+  router.push({
+    name: 'Katalog',
+    query: { s: searchTerm }
+  });
+}
+
+// 2. KATEGORI 
+async function fetchCategories() {
+  isCategoryLoading.value = true;
+  try {
+    const fetchedCategories = await apiFetchCategories();
+    categories.value = fetchedCategories;
+    if (fetchedCategories.length > 0) {
+      selectedCategory.value = '';
+    }
+  } catch (err) {
+  } finally {
+    isCategoryLoading.value = false;
+  }
+}
+
+// 3. UNIT 
+async function fetchUnits() {
+  isUnitLoading.value = true;
+  try {
+    const response = await apiFetchUnits();
+    units.value = response.data || response;
+  } catch (err) {
+  } finally {
+    isUnitLoading.value = false;
+  }
+}
+
+// 4. FAQ 
+async function fetchFaqs() {
+  isFaqLoading.value = true;
+  error.value = null;
+  try {
+    const data = await getFaqs();
+    faqData.value = data;
+  } catch (err) {
+    error.value = err.message || 'Terjadi kesalahan saat mengambil data FAQ.';
+  } finally {
+    isFaqLoading.value = false;
+  }
+}
+
+// 5. BEST SELLERS
+async function fetchBestSellers() {
+  isBestSellerLoading.value = true;
+  bestSellerError.value = null;
+  try {
+    const data = await getBestSellers();
+    bestSellers.value = data;
+  } catch (err) {
+    bestSellerError.value = err.message || 'Gagal mengambil data produk terlaris.';
+  } finally {
+    isBestSellerLoading.value = false;
+  }
+}
+
+// 6. TOGGLE FAQ 
+function toggleFaq(index) {
+  activeIndex.value = activeIndex.value === index ? null : index;
+}
+
+// 7. ANIMASI FAQ 
+const beforeEnter = (el) => { el.style.height = '0'; };
+const enter = (el) => { el.style.height = el.scrollHeight + 'px'; };
+const beforeLeave = (el) => { el.style.height = el.scrollHeight + 'px'; };
+const leave = (el) => { el.style.height = '0'; };
+
+// 8. PENCARIAN
+async function searchProducts() {
+  const term = searchQuery.value.trim();
+  if (!term) {
+    if (!selectedCategory.value && selectedUnit.value.length === 0) {
+      alert("Mohon masukkan kata kunci pencarian atau pilih filter.");
+      return;
+    }
+  }
+
+  const query = {};
+
+  if (term) query.s = term;
+
+  if (selectedCategory.value) query.cat = selectedCategory.value;
+
+  if (selectedUnit.value.length > 0) query.unit = selectedUnit.value.join(',');
+
+  const queryString = new URLSearchParams(query).toString();
+
+  try {
+    if (term) {
+      await axios.get(`${API_BASE_URL}/products?search=${term}`, { withCredentials: true });
+      fetchSearchHistories();
+    }
+
+    router.push({
+      name: 'Katalog',
+      query: query
+    }).catch(err => {
+      if (err.name !== 'NavigationDuplicated') throw err;
+    });
+  } catch (error) {
+    alert("Gagal melakukan pencarian. Silakan coba lagi.");
+    console.error("Error saat memicu pencarian/penyimpanan riwayat:", error);
+  }
+}
+
+
+// 9. SLIDER PRODUK TERLARIS 
+function nextBestSeller() {
+  if (bestSellers.value.length === 0) return;
+  currentBestSellerIndex.value = (currentBestSellerIndex.value + itemsPerSlide) % bestSellers.value.length;
+}
+
+function prevBestSeller() {
+  if (bestSellers.value.length === 0) return;
+  currentBestSellerIndex.value =
+    (currentBestSellerIndex.value - itemsPerSlide + bestSellers.value.length) % bestSellers.value.length;
+}
+
+function startAutoSlide() {
+  if (autoSlideInterval) clearInterval(autoSlideInterval);
+  autoSlideInterval = setInterval(() => {
+    nextBestSeller();
+  }, 5000);
+}
+
+
+// LIFECYCLE HOOKS 
+onMounted(async () => {
+  await Promise.all([
+    fetchSearchHistories(),
+    fetchCategories(),
+    fetchFaqs(),
+    fetchUnits(),
+    fetchBestSellers()
+  ]);
+
+  startAutoSlide();
+});
+
+onBeforeUnmount(() => {
+  if (autoSlideInterval) {
+    clearInterval(autoSlideInterval);
+  }
+});
 </script>
 
 <style scoped>
-.header-content {
-  position: relative;
-}
-
 @keyframes naikTurun {
   0% {
     transform: translateY(0);
