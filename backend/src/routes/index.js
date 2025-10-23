@@ -1,18 +1,22 @@
-import express from 'express';
-import productController from '../controllers/product.controller.js';
-import categoryController from '../controllers/category.controller.js';
-import unitController from '../controllers/unit.controller.js';
-import searchHistoryController from '../controllers/search_history.controller.js';
-import faqsController from '../controllers/faq.controller.js';
-import testimonialController from '../controllers/testimonial.controller.js';
-import leadsController from '../controllers/lead.controller.js';
+import express from "express";
+import productController from "../controllers/product.controller.js";
+import categoryController from "../controllers/category.controller.js";
+import unitController from "../controllers/unit.controller.js";
+import searchHistoryController from "../controllers/search_history.controller.js";
+import faqsController from "../controllers/faq.controller.js";
+import testimonialController from "../controllers/testimonial.controller.js";
+import leadsController from "../controllers/lead.controller.js";
 
-import userTokenMiddleware from '../middlewares/userToken.js';
-import { verifyRecaptcha } from '../middlewares/recaptcha.js';
+import userTokenMiddleware from "../middlewares/userToken.js";
+import { verifyRecaptcha } from "../middlewares/recaptcha.js";
 import { validate } from "../middlewares/validate.js";
-import { apiLimiter, emailLimiter } from '../middlewares/rateLimiter.js';
+import { apiLimiter, emailLimiter } from "../middlewares/rateLimiter.js";
 
-import { validateGetProducts, validateGetTestimonials, validateLeadsInput } from '../utils/requestValidation.js';
+import {
+  validateGetProducts,
+  validateGetTestimonials,
+  validateLeadsInput,
+} from "../utils/requestValidation.js";
 
 const router = express.Router();
 
@@ -32,8 +36,8 @@ const router = express.Router();
  * type: string
  * example: API is running...✅
  */
-router.get('/', (req, res) => {
-  res.send('API is running...✅');
+router.get("/", (req, res) => {
+  res.send("API is running...✅");
 });
 
 /**
@@ -51,7 +55,7 @@ router.get('/', (req, res) => {
  * schema:
  * $ref: '#/components/schemas/SuccessCategoryResponse'
  */
-router.get('/categories', apiLimiter, categoryController.getCategories);
+router.get("/categories", apiLimiter, categoryController.getCategories);
 
 /**
  * @swagger
@@ -68,7 +72,7 @@ router.get('/categories', apiLimiter, categoryController.getCategories);
  * schema:
  * $ref: '#/components/schemas/SuccessUnitResponse'
  */
-router.get('/units', apiLimiter, unitController.getUnits);
+router.get("/units", apiLimiter, unitController.getUnits);
 
 /**
  * @swagger
@@ -126,7 +130,14 @@ router.get('/units', apiLimiter, unitController.getUnits);
  * meta:
  * $ref: '#/components/schemas/PaginationMeta'
  */
-router.get('/products', apiLimiter, validateGetProducts, validate, userTokenMiddleware, productController.getProducts);
+router.get(
+  "/products",
+  apiLimiter,
+  validateGetProducts,
+  validate,
+  userTokenMiddleware,
+  productController.getProducts
+);
 
 /**
  * @swagger
@@ -149,7 +160,11 @@ router.get('/products', apiLimiter, validateGetProducts, validate, userTokenMidd
  * items:
  * $ref: '#/components/schemas/Product'
  */
-router.get('/products/bestsellers', apiLimiter, productController.getBestSellers);
+router.get(
+  "/products/bestsellers",
+  apiLimiter,
+  productController.getBestSellers
+);
 
 /**
  * @swagger
@@ -172,7 +187,12 @@ router.get('/products/bestsellers', apiLimiter, productController.getBestSellers
  * items:
  * $ref: '#/components/schemas/SearchHistory'
  */
-router.get('/search-histories', apiLimiter, userTokenMiddleware, searchHistoryController.getSearchHistories);
+router.get(
+  "/search-histories",
+  apiLimiter,
+  userTokenMiddleware,
+  searchHistoryController.getSearchHistories
+);
 
 /**
  * @swagger
@@ -195,7 +215,7 @@ router.get('/search-histories', apiLimiter, userTokenMiddleware, searchHistoryCo
  * items:
  * $ref: '#/components/schemas/Faq'
  */
-router.get('/faqs', apiLimiter, faqsController.getFaqs);
+router.get("/faqs", apiLimiter, faqsController.getFaqs);
 
 /**
  * @swagger
@@ -229,7 +249,13 @@ router.get('/faqs', apiLimiter, faqsController.getFaqs);
  * meta:
  * $ref: '#/components/schemas/PaginationMeta'
  */
-router.get('/testimonials', apiLimiter, validateGetTestimonials, validate, testimonialController.getTestimonials);
+router.get(
+  "/testimonials",
+  apiLimiter,
+  validateGetTestimonials,
+  validate,
+  testimonialController.getTestimonials
+);
 
 /**
  * @swagger
@@ -288,6 +314,13 @@ router.get('/testimonials', apiLimiter, validateGetTestimonials, validate, testi
  * schema:
  * $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/leads', emailLimiter, validateLeadsInput, validate, verifyRecaptcha, leadsController.createLead);
+router.post(
+  "/leads",
+  emailLimiter,
+  validateLeadsInput,
+  validate,
+  verifyRecaptcha,
+  leadsController.createLead
+);
 
 export default router;
