@@ -85,7 +85,10 @@
                 </div>
 
                 <div v-else-if="historyError" class="text-center text-red-500 text-sm py-4">
-                  <p>Gagal memuat riwayat.</p>
+                  <p>{{ historyError }}</p>
+                  <button @click="fetchSearchHistories" class="mt-2 text-green-600 hover:text-green-800 text-xs">
+                    Coba Lagi
+                  </button>
                 </div>
 
                 <div v-else-if="!histories || histories.length === 0" class="text-center text-gray-500 text-sm py-4">
@@ -93,13 +96,14 @@
                 </div>
 
                 <ul v-else class="text-sm text-semibold space-y-4">
-                  <li v-for="history in histories" :key="history.id" @click="handleSearchAgain(history.search_term)"
-                    class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors hover:text-green-600">
+                  <li v-for="history in histories" :key="history.id"
+                    @click="handleSearchAgain(history.searchTerm || history.search_term)"
+                    class="flex justify-between items-center text-gray-700 cursor-pointer transition-colors hover:text-green-600 hover:bg-green-50 p-0.5 rounded">
+                    <span class="truncate flex-1">{{ history.searchTerm || history.search_term }}</span>
 
-                    <span>{{ history.search_term }}</span>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -345,24 +349,25 @@ import {
   fetchUnits as apiFetchUnits
 } from '@/services/productService';
 import { getFaqs } from '../api/faq';
+import { getSearchHistories } from '@/services/searchHistoryService';
 import { getBestSellers } from '../api/product';
 
 const API_BASE_URL = "http://localhost:5000/api";
 const router = useRouter();
 
-// 1. Pencarian (State)
+// Pencarian (State)
 const searchQuery = ref('');
 const selectedCategory = ref('');
 const selectedUnit = ref([]);
 
-// 2. Data Master & Konten (State)
+// Data Master & Konten (State)
 const categories = ref([]);
 const units = ref([]);
 const faqData = ref([]);
 const bestSellers = ref([]);
 const histories = ref([]);
 
-// 3. Status Loading & Error (State)
+// Status Loading & Error (State)
 const isCategoryLoading = ref(true);
 const isUnitLoading = ref(true);
 const isFaqLoading = ref(true);
@@ -373,50 +378,51 @@ const bestSellerError = ref(null);
 const historyError = ref(null);
 const error = ref(null);
 
-// 4. FAQ
+// FAQ
 const activeIndex = ref(null);
 
-// 5. Slider Produk Terlaris
+// Slider Produk Terlaris
 const currentBestSellerIndex = ref(0);
 const itemsPerSlide = 2;
 let autoSlideInterval = null;
 
-// 1. RIWAYAT PENCARIAN
+// RIWAYAT PENCARIAN
 async function fetchSearchHistories() {
   isHistoryLoading.value = true;
   historyError.value = null;
   try {
-    const userToken = Cookies.get("user_token");
-    if (!userToken) {
-      historyError.value = "Silakan login untuk melihat riwayat pencarian.";
-      histories.value = [];
-      return;
-    }
+    const data = await getSearchHistories();
 
-    const response = await axios.get(`${API_BASE_URL}/search-histories`, {
-      withCredentials: true,
-      headers: { "Content-Type": "application/json" },
-    });
+    histories.value = Array.isArray(data) ? data : [];
 
-    histories.value = response.data;
+    console.log('Search histories loaded:', histories.value);
+    console.log('Raw response data:', data);
+    console.log('Processed histories:', histories.value);
+
+
   } catch (err) {
-    historyError.value = "Gagal memuat riwayat pencarian. " + (err.response?.data?.message || err.message);
+    historyError.value = err.message;
     histories.value = [];
-    console.error(historyError.value);
+    console.error('Error fetching search histories:', err);
   } finally {
     isHistoryLoading.value = false;
   }
 }
-
 function handleSearchAgain(searchTerm) {
-  console.log(`Searching again for: ${searchTerm}`);
+  const term = searchTerm || history.search_term;
+  console.log(`Searching again for: ${term}`);
+  console.log('Search term clicked:', searchTerm);
+  console.log('Current search query:', searchQuery.value);
+
+
+  searchQuery.value = term;
+
   router.push({
     name: 'Katalog',
-    query: { s: searchTerm }
+    query: { s: term }
   });
 }
-
-// 2. KATEGORI 
+// KATEGORI 
 async function fetchCategories() {
   isCategoryLoading.value = true;
   try {
@@ -431,7 +437,7 @@ async function fetchCategories() {
   }
 }
 
-// 3. UNIT 
+// UNIT 
 async function fetchUnits() {
   isUnitLoading.value = true;
   try {
@@ -443,7 +449,7 @@ async function fetchUnits() {
   }
 }
 
-// 4. FAQ 
+// FAQ 
 async function fetchFaqs() {
   isFaqLoading.value = true;
   error.value = null;
@@ -457,7 +463,7 @@ async function fetchFaqs() {
   }
 }
 
-// 5. BEST SELLERS
+// BEST SELLERS
 async function fetchBestSellers() {
   isBestSellerLoading.value = true;
   bestSellerError.value = null;
@@ -471,18 +477,18 @@ async function fetchBestSellers() {
   }
 }
 
-// 6. TOGGLE FAQ 
+// TOGGLE FAQ 
 function toggleFaq(index) {
   activeIndex.value = activeIndex.value === index ? null : index;
 }
 
-// 7. ANIMASI FAQ 
+// ANIMASI FAQ 
 const beforeEnter = (el) => { el.style.height = '0'; };
 const enter = (el) => { el.style.height = el.scrollHeight + 'px'; };
 const beforeLeave = (el) => { el.style.height = el.scrollHeight + 'px'; };
 const leave = (el) => { el.style.height = '0'; };
 
-// 8. PENCARIAN
+// PENCARIAN
 async function searchProducts() {
   const term = searchQuery.value.trim();
   if (!term) {
@@ -495,9 +501,7 @@ async function searchProducts() {
   const query = {};
 
   if (term) query.s = term;
-
   if (selectedCategory.value) query.cat = selectedCategory.value;
-
   if (selectedUnit.value.length > 0) query.unit = selectedUnit.value.join(',');
 
   const queryString = new URLSearchParams(query).toString();
@@ -520,8 +524,7 @@ async function searchProducts() {
   }
 }
 
-
-// 9. SLIDER PRODUK TERLARIS 
+// SLIDER PRODUK TERLARIS 
 function nextBestSeller() {
   if (bestSellers.value.length === 0) return;
   currentBestSellerIndex.value = (currentBestSellerIndex.value + itemsPerSlide) % bestSellers.value.length;
@@ -539,7 +542,6 @@ function startAutoSlide() {
     nextBestSeller();
   }, 5000);
 }
-
 
 // LIFECYCLE HOOKS 
 onMounted(async () => {
