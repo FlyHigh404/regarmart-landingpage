@@ -1,0 +1,118 @@
+{
+  "navbar": {
+    "home": "Beranda",
+    "catalog": "Katalog",
+    "about": "Tentang Kami",
+    "testimonials": "Testimoni",
+    "faq": "FAQ",
+    "contacts": "Kontak"
+  },
+  "hero": {
+    "title": [
+      "Semua Kebutuhan Harian,",
+      "Tinggal Klik!",
+      "Kebutuhan Terpenuhi,",
+      "Hati Pun Tenang"
+    ],
+    "subtitle": "Belanja semakin gampang, cukup pesan <span class='font-bold'>lewat WhatsApp.</span><br /><span class='font-bold'>Regar Mart</span> siapin dengan <span class='font-bold'>packing rapi</span> dan kirim langsung ke rumahmu.",
+    "cursorAnimation": "Pelanggan Puas"
+  },
+  "searchPlaceholder": "Cari produk terbaik di Regar Mart...",
+  "filterText": "Filter Pencarian",
+  "categoryLabel": "Kategori",
+  "selectCategoryPlaceholder": "Pilih Kategori",
+  "unitLabel": "Satuan Produk",
+  "productTypeLabel": "Tipe Produk",
+  "productPriceNormal": "Harga Normal",
+  "productPricePromo": "Harga Promo",
+  "productPromoBadge": "Produk Promo",
+  "searchHistory": "Riwayat Pencarian",
+  "bestSellerText": "Produk Terlaris",
+  "advantages": {
+    "title": [
+      "Keunggulan Berbelanja di ",
+      "Regar Mart"
+    ],
+    "subtitle": "Regar Mart hadir untuk memberikan <span class='font-bold'>pengalaman belanja yang lebih baik. </span>Kami menawarkan <br class='hidden sm:block' /><span class='font-bold'>keunggulan </span>yang membuat setiap transaksi <span class='font-bold'>lebih mudah, hemat, dan terpercaya.</span>",
+    "adv1": {
+      "title": "Harga Terjangkau dan Transparan",
+      "description": "Belanja lebih hemat dengan harga yang jujur. Regar Mart selalu menawarkan pilihan terbaik agar kebutuhan Anda terpenuhi tanpa menguras kantong."
+    },
+    "adv2": {
+      "title": "Produk Lengkap dan Berkualitas",
+      "description": "Semua kebutuhan harian tersedia dengan kualitas terbaik. Produk dipilih secara teliti agar pengalaman belanja Anda selalu nyaman, aman, dan memuaskan."
+    },
+    "adv3": {
+      "title": "Layanan Cepat dan Terpercaya",
+      "description": "Nikmati pengalaman belanja praktis dengan layanan sigap. Pengiriman cepat dan sistem terpercaya menjadikan Regar Mart selalu ada saat Anda butuh."
+    }
+  },
+  "faqTitle1": "Pertanyaan ",
+  "faqTitle2": "yang Sering Diajukan",
+  "catalogBannerTitle1": "Belanja Harian ",
+  "catalogBannerTitle2": "Tanpa Ribet",
+  "catalogBannerSubtitle": "Lihat <span class='font-semibold'>katalog</span> lengkap kami dan pesan <span class='font-semibold'>kebutuhanmu</span> langsung lewat WhatsApp. <span class='font-semibold'>Cepat</span>, <span class='font-semibold'>praktis</span>, dan <span class='font-semibold'>hemat waktu</span>.",
+  "productListTitle": "Semua Produk",
+  "availableStock": "Stok Tersedia",
+  "notAvailableStock": "Stok Habis",
+  "aboutUs": {
+    "title": {
+      "term1": "Belanja Harian",
+      "term2": "Jadi Lebih Mudah",
+      "term3": "Bersama",
+      "term4": "Regar Mart"
+    },
+    "subtitle": "Kami hadir untuk memberikan pengalaman belanja kebutuhan pokok yang lebih <span class='font-semibold'> cepat, praktis, dan tetap segar.</span>",
+    "service1": "Kesegaran Produk",
+    "service2": "Kepraktisan Berbelanja",
+    "service3": "Harga Bersahabat",
+    "visionTitle1": "Kami Hadir",
+    "visionTitle2": "untuk Anda"
+  },
+  "contacts": {
+    "title": "Temukan Kami di Sini",
+    "email": "Alamat Email",
+    "location": "Lokasi Operasional",
+    "whatsapp": "Nomor WhatsApp"
+  },
+  "testimonials": {
+    "title": [
+      "Cerita Mereka ",
+      "Adalah Inspirasi Kami Untuk Terus Memberikan ",
+      "Layanan Terbaik"
+    ],
+    "subtitle": "Temukan cerita dari para pelanggan <span class='font-bold'>Regar Mart</span> yang sudah merasakan sendiri <span class='font-bold'>kemudahan belanja</span> kebutuhan harian di sini."
+  },
+  "sortBy": {
+    "label": "Urutkan",
+    "options": {
+      "newest": "Terbaru",
+      "bestseller": "Terlaris",
+      "price": "Harga",
+      "lowToHigh": "Harga Terendah → Termahal",
+      "highToLow": "Harga Termahal → Terendah"
+    }
+  },
+  "pagination": {
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "page": "Halaman",
+    "of": "dari"
+  },
+  "buttons": {
+    "search": "Cari Produk",
+    "orderViaWhatsApp": "Pesan via WhatsApp",
+    "quickView": "Lihat Produk",
+    "filter": "Terapkan Filter",
+    "resetFilter": "Atur Ulang Filter",
+    "sendEmail": "Kirim"
+  },
+  "footer": {
+    "description": "Belanja mudah, cepat, dan hemat hanya di RegarMart.",
+    "rights": "&copy; {year} Regar Mart. Semua hak dilindungi.",
+    "newsletter": "Buletin Email",
+    "social": "Media Sosial",
+    "links": "Tautan Cepat",
+    "emailPlaceholder": "Masukkan alamat email Anda"
+  }
+}

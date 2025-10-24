@@ -17,19 +17,19 @@
             </h1>
           </div>
           <p class="text-[#1C1C1E] text-sm leading-relaxed max-w-[320px]">
-            Belanja mudah, cepat, dan hemat hanya di RegarMart.
+            {{ $t('footer.description') }}
           </p>
         </div>
 
         <!-- Kolom Newsletter (diganti dengan komponen baru) -->
         <div class="flex flex-col items-center md:items-start order-3 md:order-2">
-          <h3 class="font-extrabold mb-4 text-[22px] text-[#1C1C1E]">Newsletter</h3>
+          <h3 class="font-extrabold mb-4 text-[22px] text-[#1C1C1E]">{{ $t('footer.newsletter') }}</h3>
           <NewsletterForm />
         </div>
 
         <!-- Kolom Social Media -->
         <div class="flex flex-col items-center md:items-start order-2 md:order-3">
-          <h3 class="font-extrabold mb-4 text-[22px] text-[#1C1C1E]">Social Media</h3>
+          <h3 class="font-extrabold mb-4 text-[22px] text-[#1C1C1E]">{{ $t('footer.social') }}</h3>
           <div class="flex space-x-6">
             <a href="#" class="inline-block"><img src="/facebook.svg" alt="Facebook"
                 class="w-10 h-10 hover:scale-110 transition" /></a>
@@ -44,30 +44,32 @@
 
         <!-- Kolom Quick Links -->
         <div class="flex flex-col items-center md:items-start order-4 md:order-4">
-          <h3 class="font-extrabold mb-4 text-[22px] text-[#1C1C1E]">Quick Links</h3>
+          <h3 class="font-extrabold mb-4 text-[22px] text-[#1C1C1E]">{{ $t('footer.links') }}</h3>
           <ul class="flex flex-col md:flex-row items-center md:items-end gap-9 font-bold text-[#1C1C1E]">
             <li>
-              <RouterLink to="/" class="hover:text-[#6EC568]">Beranda</RouterLink>
+              <RouterLink to="/" class="hover:text-[#6EC568]">{{ $t('navbar.home') }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/katalog" class="hover:text-[#6EC568]">Katalog</RouterLink>
+              <RouterLink to="/katalog" class="hover:text-[#6EC568]">{{ $t('navbar.catalog') }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/tentang" class="hover:text-[#6EC568]">Tentang Kami</RouterLink>
+              <RouterLink to="/tentang" class="hover:text-[#6EC568]">{{ $t('navbar.about') }}</RouterLink>
             </li>
             <li>
-              <RouterLink :to="{ name: 'Home', hash: '#faq' }" class="hover:text-[#6EC568]">FAQ</RouterLink>
+              <RouterLink :to="{ name: 'Home', hash: '#faq' }" class="hover:text-[#6EC568]">{{ $t('navbar.faq') }}
+              </RouterLink>
             </li>
             <li>
-              <RouterLink :to="{ name: 'Tentang', hash: '#contacts' }" class="hover:text-[#6EC568]">Kontak</RouterLink>
+              <RouterLink :to="{ name: 'Tentang', hash: '#contacts' }" class="hover:text-[#6EC568]">{{
+                $t('navbar.contacts') }}</RouterLink>
             </li>
           </ul>
         </div>
 
       </div>
 
-      <div class="mt-10 bg-gradient-to-r from-[#6EC568] to-[#26A81D] py-4 text-center text-white text-sm">
-        Copyright@{{ copyrightYear }} All Right Reserved RegarMart
+      <div class="mt-10 bg-gradient-to-r from-[#6EC568] to-[#26A81D] py-4 text-center text-white text-sm"
+        v-html="$t('footer.rights', { year: copyrightYear })">
       </div>
     </footer>
   </div>

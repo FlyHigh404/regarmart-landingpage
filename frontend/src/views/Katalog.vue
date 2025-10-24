@@ -245,14 +245,10 @@ onMounted(() => {
         class="bg-[#1c1c1e] rounded-xl shadow-lg flex flex-row items-center justify-between max-w-[975px] w-full h-auto md:h-[251px] p-6 md:p-8 transition-all duration-300">
         <div class="text-white max-w-lg text-left flex-1">
           <h1 class="text-[20px] sm:text-[26px] md:text-[35px] font-extrabold leading-snug">
-            Belanja Harian <span class="text-[#26A81D]">Tanpa Ribet</span>
+            {{ $t('catalogBannerTitle1') }} <span class="text-[#26A81D]">{{ $t('catalogBannerTitle2') }}</span>
           </h1>
-          <p class="mt-3 sm:mt-4 text-gray-300 text-[13px] sm:text-[15px] md:text-[18px] leading-relaxed">
-            Lihat <span class="font-semibold">katalog</span> lengkap kami dan pesan
-            <span class="font-semibold">kebutuhanmu</span> langsung lewat WhatsApp.
-            <span class="font-semibold">Cepat</span>, <span class="font-semibold">praktis</span>, dan
-            <span class="font-semibold">hemat waktu</span>.
-          </p>
+          <p class="mt-3 sm:mt-4 text-gray-300 text-[13px] sm:text-[15px] md:text-[18px] leading-relaxed"
+            v-html="$t('catalogBannerSubtitle')"></p>
         </div>
 
         <div class="flex justify-center items-center ml-4 sm:ml-6 flex-shrink-0 animate-float">
@@ -264,11 +260,11 @@ onMounted(() => {
 
     <section class="w-full pt-10 px-4 sm:px-8 md:px-16 flex justify-center">
       <div class="w-full max-w-[975px]">
-        <h3 class="text-xl font-bold mb-2.5">Semua Produk</h3>
+        <h3 class="text-xl font-bold mb-2.5">{{ $t('productListTitle') }}</h3>
 
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
           <div
-            class="flex items-center w-full lg:w-[400px] border border-[#26A81D] rounded-xl overflow-hidden shadow-sm order-1 lg:order-2">
+            class="flex items-center w-full lg:w-[500px] border border-[#26A81D] rounded-xl overflow-hidden shadow-sm order-1 lg:order-2">
             <div class="pl-4 hidden sm:flex">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#26A81D]" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
@@ -276,12 +272,12 @@ onMounted(() => {
               </svg>
             </div>
 
-            <input v-model="localSearchQuery" @keyup.enter="searchProduct" type="text" placeholder="Cari produk"
+            <input v-model="localSearchQuery" type="text" :placeholder="$t('searchPlaceholder')"
               class="flex-grow h-[42px] w-full px-3 text-gray-700 text-sm sm:text-base focus:outline-none" />
 
             <div class="flex items-center gap-1 pr-2 sm:hidden">
               <button @click="isFilterOpen = true" id="filterButton"
-                class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white p-2 h-full flex items-center justify-center rounded-lg active:scale-95 transition">
+                class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white p-2 h-full flex items-center justify-center rounded-lg active:scale-95 transition cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -299,13 +295,13 @@ onMounted(() => {
                       ✕
                     </button>
 
-                    <h3 class="text-sm font-semibold mb-3">Filter pencarian</h3>
+                    <h3 class="text-sm font-semibold mb-3">{{ $t('filterText') }}</h3>
 
                     <div class="mb-4 relative">
-                      <label class="block text-xs text-[#6D706E] font-semibold mb-1">Kategori</label>
+                      <label class="block text-xs text-[#6D706E] font-semibold mb-1">{{ $t('categoryLabel') }}</label>
                       <select v-model="localFilterParams.categoryFilter"
-                        class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow appearance-none focus:outline-none">
-                        <option :value="null">Pilih kategori</option>
+                        class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow focus:outline-none">
+                        <option :value="null">{{ $t('selectCategoryPlaceholder') }}</option>
                         <option v-for="category in categories" :key="category.id" :value="category.id">
                           {{ category.name }}
                         </option>
@@ -313,7 +309,7 @@ onMounted(() => {
                     </div>
 
                     <div>
-                      <label class="text-gray-700 text-xs">Satuan Buah</label>
+                      <label class="text-gray-700 text-xs">{{ $t('unitLabel') }}</label>
                       <div class="text-sm flex flex-col gap-2 text-black mt-1">
                         <label v-for="unit in units" :key="unit.id" class="flex items-center space-x-2 cursor-pointer">
                           <input type="checkbox" :checked="unit.isSelected" @change="toggleUnitFilter(unit.id)"
@@ -324,29 +320,29 @@ onMounted(() => {
                     </div>
 
                     <div class="mt-3">
-                      <label class="text-gray-700 text-xs">Tipe Produk</label>
+                      <label class="text-gray-700 text-xs">{{ $t('productTypeLabel') }}</label>
                       <div class="text-sm flex flex-wrap gap-4 text-black">
                         <label class="flex items-center space-x-2 cursor-pointer">
                           <input type="radio" name="tipe" value="normal" v-model="filterParams.isPromoFilter"
                             class="text-green-600 focus:ring-green-500" />
-                          <span class="font-semibold">Harga Normal</span>
+                          <span class="font-semibold">{{ $t('productPriceNormal') }}</span>
                         </label>
                         <label class="flex items-center space-x-2 cursor-pointer">
                           <input type="radio" name="tipe" value="promo" v-model="filterParams.isPromoFilter"
                             class="text-green-600 focus:ring-green-500" />
-                          <span class="font-semibold">Harga Promo</span>
+                          <span class="font-semibold">{{ $t('productPricePromo') }}</span>
                         </label>
                       </div>
                     </div>
 
                     <div class="flex flex-col gap-3 mt-6">
                       <button @click="applyFilter"
-                        class="bg-gradient-to-r from-[#6EC568] to-[#26A81D] text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition text-[15px]">
-                        Terapkan Filter
+                        class="bg-gradient-to-r from-[#6EC568] to-[#26A81D] text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition text-[15px] cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]">
+                        {{ $t('buttons.filter') }}
                       </button>
                       <button @click="resetFilter"
-                        class="border border-[#26A81D] text-[#26A81D] font-semibold py-2 rounded-lg hover:bg-[#E9F8E8] transition text-[15px]">
-                        Reset Filter
+                        class="border border-[#26A81D] text-[#26A81D] font-semibold py-2 rounded-lg hover:bg-[#E9F8E8] transition text-[15px] cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]">
+                        {{ $t('buttons.resetFilter') }}
                       </button>
                     </div>
                   </div>
@@ -354,7 +350,7 @@ onMounted(() => {
               </transition>
 
               <button @click="searchProduct"
-                class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white p-2 h-full flex items-center justify-center rounded-lg active:scale-95 transition">
+                class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white p-2 h-full flex items-center justify-center rounded-lg active:scale-95 transition cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round"
@@ -364,42 +360,42 @@ onMounted(() => {
             </div>
 
             <button @click="searchProduct"
-              class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm sm:text-[12px] lg:text-[15px]
+              class="bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm sm:text-[13px] lg:text-[15px]
                   px-4 m-1 rounded-xl transition-all active:scale-95 active:shadow-inner
-                  whitespace-nowrap w-[50px] sm:w-[90px] lg:w-[110px] h-[37px] items-center justify-center hidden sm:flex">
-              Cari Produk
+                  whitespace-nowrap w-[50px] sm:w-[90px] lg:w-[135px] h-[37px] items-center justify-center hidden sm:flex cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]">
+              {{ $t('buttons.search') }}
             </button>
           </div>
 
           <div class="flex flex-wrap items-center gap-2 mt-3 md:mt-5 lg:mt-0 order-2 lg:order-1">
             <span class="font-bold text-[14px] md:text-[16px] w-full md:w-auto">
-              Urutkan
+              {{ $t('sortBy.label') }}
             </span>
             <button @click="setSort('terlaris')" :class="[
-              'px-4 py-1.5 rounded-[7px] border text-sm font-medium h-[40px] md:px-[10px] transition-all duration-200',
+              'px-4 py-1.5 rounded-[7px] border text-sm font-medium h-[40px] md:px-[10px] transition-all duration-200 cursor-pointer',
               filterParams.sortBy === 'terlaris'
                 ? 'bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white border-transparent'
                 : 'border-[#26A81D] text-[#26A81D] hover:bg-green-50'
             ]">
-              Terlaris
+              {{ $t('sortBy.options.bestseller') }}
             </button>
             <button @click="setSort('terbaru')" :class="[
-              'px-4 py-1.5 rounded-[7px] border text-sm font-medium h-[40px] md:px-[10px] transition-all duration-200',
+              'px-4 py-1.5 rounded-[7px] border text-sm font-medium h-[40px] md:px-[10px] transition-all duration-200 cursor-pointer',
               filterParams.sortBy === 'terbaru'
                 ? 'bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white border-transparent'
                 : 'border-[#26A81D] text-[#26A81D] hover:bg-green-50'
             ]">
-              Terbaru
+              {{ $t('sortBy.options.newest') }}
             </button>
 
             <div class="relative">
               <button @click="toggleHargaDropdown" :class="[
-                'px-4 py-1.5 rounded-[7px] flex items-center gap-1 text-sm font-medium border border-transparent hover:opacity-90 h-[40px] md:px-[10px] max-w-[90px] transition-all duration-200 text-white bg-gradient-to-br from-[#6EC568] to-[#26A81D]',
+                'px-4 py-1.5 rounded-[7px] flex items-center gap-1 text-sm font-medium border border-transparent hover:opacity-90 h-[40px] md:px-[10px] max-w-[90px] transition-all duration-200 text-white bg-gradient-to-br from-[#6EC568] to-[#26A81D] cursor-pointer',
                 (filterParams.sortBy === 'harga-asc' || filterParams.sortBy === 'harga-desc')
                   ? 'text-white bg-gradient-to-br from-[#6EC568] to-[#26A81D]'
                   : 'text-white border-green-500 hover:bg-green-50'
               ]">
-                Harga
+                {{ $t('sortBy.options.price') }}
                 <img src="/panah.svg" class="w-4 h-4" alt="arrow" />
               </button>
 
@@ -407,12 +403,12 @@ onMounted(() => {
                 class="absolute top-10 left-0 bg-white border border-gray-200 rounded-lg shadow-md w-48 z-10">
                 <button class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
                   @click="setSort('harga-asc')">
-                  Termurah → Termahal
+                  {{ $t('sortBy.options.lowToHigh') }}
                   <span v-if="filterParams.sortBy === 'harga-asc'" class="text-[#26A81D] ml-1">✓</span>
                 </button>
                 <button class="block w-full text-left px-3 py-2 text-sm hover:bg-gray-100"
                   @click="setSort('harga-desc')">
-                  Termahal → Termurah
+                  {{ $t('sortBy.options.highToLow') }}
                   <span v-if="filterParams.sortBy === 'harga-desc'" class="text-[#26A81D] ml-1">✓</span>
                 </button>
               </div>
@@ -422,13 +418,13 @@ onMounted(() => {
 
         <div class="flex gap-8 items-start">
           <aside class="w-full md:w-[210px] lg:w-[260px] bg-white rounded-xl p-5 max-h-auto shadow-xl hidden sm:inline">
-            <h3 class="text-sm font-semibold mb-2.5">Filter pencarian</h3>
+            <h3 class="text-sm font-semibold mb-2.5">{{ $t('filterText') }}</h3>
 
             <div class="mb-4 relative">
-              <label class="block text-xs text-[#6D706E] font-semibold mb-1">Kategori</label>
+              <label class="block text-xs text-[#6D706E] font-semibold mb-1">{{ $t('categoryLabel') }}</label>
               <select v-model="localFilterParams.categoryFilter"
                 class="w-full rounded-lg text-sm font-semibold px-3 py-2 pr-10 shadow appearance-none focus:outline-none">
-                <option :value="null">Pilih kategori</option>
+                <option :value="null">{{ $t('selectCategoryPlaceholder') }}</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">
                   {{ category.name }}
                 </option>
@@ -438,7 +434,7 @@ onMounted(() => {
             </div>
 
             <div>
-              <label class="text-gray-700 text-xs">Satuan Buah</label>
+              <label class="text-gray-700 text-xs">{{ $t('unitLabel') }}</label>
               <div class="text-sm flex flex-col gap-2 text-black mt-1">
                 <label v-for="unit in units" :key="unit.id" class="flex items-center space-x-2 cursor-pointer">
                   <input type="checkbox" :checked="unit.isSelected" @change="toggleUnitFilter(unit.id)"
@@ -449,29 +445,29 @@ onMounted(() => {
             </div>
 
             <div class="mt-3">
-              <label class="text-gray-700 text-xs">Tipe Produk</label>
-              <div class="text-sm flex flex-wrap gap-4 text-black">
+              <label class="text-gray-700 text-xs">{{ $t('productTypeLabel') }}</label>
+              <div class="text-sm flex flex-col gap-2 mt-1 text-black">
                 <label class="flex items-center space-x-2 cursor-pointer">
                   <input type="radio" name="tipe_desktop" value="normal" v-model="localFilterParams.isPromoFilter"
                     class="text-green-600 focus:ring-green-500" />
-                  <span class="font-semibold">Harga Normal</span>
+                  <span class="font-semibold">{{ $t('productPriceNormal') }}</span>
                 </label>
                 <label class="flex items-center space-x-2 cursor-pointer">
                   <input type="radio" name="tipe_desktop" value="promo" v-model="localFilterParams.isPromoFilter"
                     class="text-green-600 focus:ring-green-500" />
-                  <span class="font-semibold">Harga Promo</span>
+                  <span class="font-semibold">{{ $t('productPricePromo') }}</span>
                 </label>
               </div>
             </div>
 
             <div class="flex flex-col gap-3 mt-6">
               <button @click="applyFilter"
-                class="bg-gradient-to-r from-[#6EC568] to-[#26A81D] text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition text-[15px]">
-                Terapkan Filter
+                class="bg-gradient-to-r from-[#6EC568] to-[#26A81D] text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition text-[15px] cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]">
+                {{ $t('buttons.filter') }}
               </button>
               <button @click="resetFilter"
-                class="border border-[#26A81D] text-[#26A81D] font-semibold py-2 rounded-lg hover:bg-[#E9F8E8] transition text-[15px]">
-                Reset Filter
+                class="border border-[#26A81D] text-[#26A81D] font-semibold py-2 rounded-lg hover:bg-[#E9F8E8] transition text-[15px] cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]">
+                {{ $t('buttons.resetFilter') }}
               </button>
             </div>
           </aside>
@@ -507,7 +503,7 @@ onMounted(() => {
               class="bg-white rounded-xl shadow overflow-hidden relative hover:shadow-lg transition-shadow duration-200">
               <div v-if="item.promo"
                 class="absolute top-3 left-3 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-[11px] px-3 py-1 rounded-md shadow">
-                Produk Promo
+                {{ $t('productPromoBadge') }}
               </div>
 
               <img :src="item.image" alt="Produk"
@@ -517,8 +513,9 @@ onMounted(() => {
                 <h4 class="text-[12px] md:text-[13px] font-extrabold mb-1 leading-snug">
                   {{ item.name }}
                 </h4>
-                <p class="text-[#26A81D] font-bold text-[12px] md:text-[13px] mb-1" v-if="item.stock">
-                  Stok Tersedia
+                <p class="font-bold text-[12px] md:text-[13px] mb-1"
+                  :class="[item.stock > 0 ? 'text-[#26A81D]' : 'text-red-500']">
+                  {{ item.stock > 0 ? $t('availableStock') : $t('notAvailableStock') }}
                 </p>
                 <p class="text-gray-600 font-medium text-[9px] md:text-[9.5px] leading-tight mb-1"
                   v-if="item.description">
@@ -536,13 +533,13 @@ onMounted(() => {
                 <BaseButton variant="green" class="mt-3 w-full py-1.5 rounded-[10px] text-[12px] md:text-[13px]"
                   :href="getWhatsappLink(item.name)">
                   <img src="/whatsapp.svg" alt="wa" class="w-4 h-4" />
-                  Pesan via WhatsApp
+                  {{ $t('buttons.orderViaWhatsApp') }}
                 </BaseButton>
 
                 <BaseButton variant="outline"
                   class="mt-2 w-full whitespace-nowrap py-1.5 rounded-[10px] text-[12px] md:text-[13px]"
                   @click="openQuickView(item.image)">
-                  Quick View
+                  {{ $t('buttons.quickView') }}
                 </BaseButton>
               </div>
             </div>
@@ -561,7 +558,7 @@ onMounted(() => {
         <div class="bg-white rounded-lg shadow-2xl relative p-3 max-w-lg w-[90%] mx-auto">
 
           <button @click="closeQuickView"
-            class="absolute top-0 right-0 m-2 text-white bg-black/50 hover:bg-black/70 rounded-full p-2 z-10">
+            class="absolute top-0 right-0 m-2 text-white bg-black/50 hover:bg-black/70 rounded-full p-2 z-10 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />

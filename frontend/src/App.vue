@@ -13,6 +13,7 @@ import WhatsAppButton from "./components/WhatsAppButton.vue";
     </main>
 
     <Footer />
+    <WhatsAppButton />
   </div>
 </template>
 

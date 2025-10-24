@@ -1,11 +1,12 @@
 <template>
   <div class="w-full">
     <form class="flex flex-col sm:flex-row items-center sm:items-stretch gap-3" @submit.prevent="handleSubmit">
-      <input type="email" placeholder="Email" aria-label="Masukkan Email" v-model="email" :disabled="isLoading"
+      <input type="email" :placeholder="$t('footer.emailPlaceholder')" aria-label="Masukkan Email" v-model="email"
+        :disabled="isLoading"
         class="w-full px-4 py-3 text-black placeholder-[#1c1c1e]/50 bg-[#C7EBC6]/40 border border-green-500 rounded-lg focus:outline-none transition" />
       <button type="submit" :disabled="isLoading"
         class="w-full sm:w-auto bg-gradient-to-r from-[#26A81D] to-[#6EC568] hover:opacity-90 font-semibold px-6 py-3 rounded-lg cursor-pointer text-white transition-all active:scale-95 shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
-        {{ isLoading ? 'Loading...' : 'Kirim' }}
+        {{ isLoading ? 'Loading...' : $t('buttons.sendEmail') }}
       </button>
     </form>
 

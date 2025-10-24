@@ -1,0 +1,118 @@
+{
+  "navbar": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "about": "About Us",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "contacts": "Contacts"
+  },
+  "hero": {
+    "title": [
+      "All Your Daily Needs,",
+      "Just a Click Away!",
+      "Needs Fulfilled,",
+      "Peace of Mind Achieved"
+    ],
+    "subtitle": "Shopping is easier than ever, just order <span class='font-bold'>via WhatsApp.</span><br /><span class='font-bold'>Regar Mart</span> will prepare it with <span class='font-bold'>neat packing</span> and send it directly to your home.",
+    "cursorAnimation": "Satisfied Customers"
+  },
+  "searchPlaceholder": "Find the best products at Regar Mart...",
+  "filterText": "Search Filter",
+  "categoryLabel": "Categories",
+  "selectCategoryPlaceholder": "Select Category",
+  "unitLabel": "Product Units",
+  "productTypeLabel": "Product Types",
+  "productPriceNormal": "Normal Price",
+  "productPricePromo": "Promo Price",
+  "productPromoBadge": "Promo Product",
+  "searchHistory": "Search Histories",
+  "bestSellerText": "Best Seller Products",
+  "advantages": {
+    "title": [
+      "Advantages of Shopping at ",
+      "Regar Mart"
+    ],
+    "subtitle": "Regar Mart is here to provide a <span class='font-bold'>better shopping experience.</span> We offer <br class='hidden sm:block' /><span class='font-bold'>advantages</span> that make every transaction <span class='font-bold'>easier, more economical, and reliable.</span>",
+    "adv1": {
+      "title": "Affordable and Transparent Prices",
+      "description": "Shop more economically with honest prices. Regar Mart always offers the best options to meet your needs without draining your wallet."
+    },
+    "adv2": {
+      "title": "Complete and Quality Products",
+      "description": "All daily needs are available with the best quality. Products are carefully selected to ensure your shopping experience is always comfortable, safe, and satisfying."
+    },
+    "adv3": {
+      "title": "Fast and Reliable Service",
+      "description": "Enjoy a practical shopping experience with responsive service. Fast delivery and a reliable system make Regar Mart always there when you need it."
+    }
+  },
+  "faqTitle1": "Frequently ",
+  "faqTitle2": "Asked Questions",
+  "catalogBannerTitle1": "Daily Shopping ",
+  "catalogBannerTitle2": "Without Hassle",
+  "catalogBannerSubtitle": "Browse our complete <span class='font-semibold'>catalog</span> and order <span class='font-semibold'>your needs</span> directly via WhatsApp. <span class='font-semibold'>Fast</span>, <span class='font-semibold'>practical</span>, and <span class='font-semibold'>time-saving</span>.",
+  "productListTitle": "All Products",
+  "availableStock": "Available Stock",
+  "notAvailableStock": "Out of Stock",
+  "aboutUs": {
+    "title": {
+      "term1": "Daily Shopping",
+      "term2": "Is Easier",
+      "term3": "With",
+      "term4": "Regar Mart"
+    },
+    "subtitle": "We are here to provide a faster, more practical shopping experience while keeping your groceries fresh.<span class='font-semibold'> Quick, practical, and fresh.</span>",
+    "service1": "Product Freshness Guarantee",
+    "service2": "Shopping Convenience",
+    "service3": "Affordable Prices",
+    "visionTitle1": "We Are Here",
+    "visionTitle2": "For You"
+  },
+  "contacts": {
+    "title": "Find Us Here",
+    "email": "Email Address",
+    "location": "Office Location",
+    "whatsapp": "WhatsApp Number"
+  },
+  "testimonials": {
+    "title": [
+      "Their Stories ",
+      "Inspire Us to Continue Providing ",
+      "The Best Service"
+    ],
+    "subtitle": "Discover stories from <span class='font-bold'>Regar Mart</span> customers who have experienced <span class='font-bold'>the convenience of shopping</span> for their daily needs here."
+  },
+  "sortBy": {
+    "label": "Sort By",
+    "options": {
+      "newest": "Newest",
+      "bestseller": "Best Seller",
+      "price": "Price",
+      "lowToHigh": "Low → High",
+      "highToLow": "High → Low"
+    }
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of"
+  },
+  "buttons": {
+    "search": "Search Products",
+    "orderViaWhatsApp": "Order via WhatsApp",
+    "quickView": "Quick View",
+    "filter": "Apply Filter",
+    "resetFilter": "Reset Filter",
+    "sendEmail": "Send"
+  },
+  "footer": {
+    "description": "Easy, fast, and economical shopping only at RegarMart.",
+    "rights": "&copy; {year} Regar Mart. All rights reserved.",
+    "newsletter": "Email Newsletter",
+    "social": "Social Media",
+    "links": "Quick Links",
+    "emailPlaceholder": "Enter your email address"
+  }
+}

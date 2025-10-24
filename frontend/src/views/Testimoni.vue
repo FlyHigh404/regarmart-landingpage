@@ -6,14 +6,12 @@
     <section id="testihero" class="text-center pt-10">
       <div class="container mx-auto">
         <h1 class="text-2xl sm:text-[38px] font-extrabold leading-tight mb-4 mx-auto max-w-3xl">
-          <span class="text-[#26A81D]">Cerita Mereka </span>
-          <span class="text-[#1B1F1B]">Adalah Inspirasi Kami Untuk Terus Memberikan </span>
-          <span class="text-[#26A81D]">Layanan Terbaik</span>
+          <span v-for="(text, index) in $tm('testimonials.title')" :key="index"
+            :class="[index % 2 !== 0 ? 'text-[#1B1F1B]' : 'text-[#26A81D]']">
+            {{ $rt(text) }}
+          </span>
         </h1>
-        <p class="text-[#6D706E] text-sm sm:text-lg mx-auto max-w-3xl mb-10 px-4 sm:px-0">
-          Temukan cerita dari para pelanggan <span class="font-bold">Regar Mart</span> yang sudah merasakan sendiri
-          <span class="font-bold">kemudahan belanja</span> kebutuhan harian di sini.
-        </p>
+        <p class="text-[#6D706E] text-sm sm:text-lg mx-auto max-w-3xl mb-10 px-4 sm:px-0" v-html="$t('testimonials.subtitle')"></p>
       </div>
     </section>
 

@@ -14,16 +14,14 @@
       <div class="relative z-10 text-center max-w-2xl mx-auto px-23 sm:px-17 lg:px-9">
         <h1 class="text-2xl sm:text-3xl md:text-[30px] lg:text-[38px] font-extrabold leading-snug mb-4 text-center">
           <span class="block">
-            <span class="text-[#26A81D]">Belanja Harian</span> Jadi Lebih Mudah
+            <span class="text-[#26A81D]">{{ $t('aboutUs.title.term1') }}</span> {{ $t('aboutUs.title.term2') }}
           </span>
           <span class="block">
-            Bersama <span class="text-[#26A81D]">Regar Mart</span>
+            {{ $t('aboutUs.title.term3') }} <span class="text-[#26A81D]">{{ $t('aboutUs.title.term4') }}</span>
           </span>
         </h1>
-        <p class="text-gray-600 text-[15px] sm:text-base md:text-[18px] leading-relaxed">
-          Kami hadir untuk memberikan pengalaman belanja kebutuhan pokok yang lebih
-          <span class="font-semibold"> cepat, praktis, dan tetap segar.</span>
-        </p>
+        <p class="text-gray-600 text-[15px] sm:text-base md:text-[18px] leading-relaxed"
+          v-html="$t('aboutUs.subtitle')"></p>
       </div>
 
       <!-- Card Features -->
@@ -34,7 +32,8 @@
           <div class="flex justify-center items-center p-6 mb-4">
             <img src="/produk.svg" alt="Kesegaran Produk" class="w-14 h-14 sm:w-16 sm:h-16" />
           </div>
-          <p class="text-green-600 font-medium text-[12px] sm:text-[16px] lg:text-[20px]">Kesegaran Produk</p>
+          <p class="text-green-600 font-medium text-[12px] sm:text-[16px] lg:text-[20px]">{{ $t('aboutUs.service1') }}
+          </p>
         </div>
 
         <div
@@ -42,7 +41,8 @@
           <div class="flex justify-center items-center p-6 mb-4">
             <img src="/belanja.svg" alt="Kepraktisan Belanja" class="w-14 h-14 sm:w-16 sm:h-16" />
           </div>
-          <p class="text-green-600 font-medium text-[12px] sm:text-[16px] lg:text-[20px]">Kepraktisan Belanja</p>
+          <p class="text-green-600 font-medium text-[12px] sm:text-[16px] lg:text-[20px]">{{ $t('aboutUs.service2') }}
+          </p>
         </div>
 
         <div
@@ -50,11 +50,11 @@
           <div class="flex justify-center items-center p-6 mb-4">
             <img src="/harga.svg" alt="Harga Bersahabat" class="w-14 h-14 sm:w-16 sm:h-16" />
           </div>
-          <p class="text-green-600 font-medium text-[12px] sm:text-[16px] lg:text-[20px]">Harga Bersahabat</p>
+          <p class="text-green-600 font-medium text-[12px] sm:text-[16px] lg:text-[20px]">{{ $t('aboutUs.service3') }}
+          </p>
         </div>
       </div>
     </section>
-
 
     <!--Gambar Animasi-->
     <section class="relative w-screen py-12 bg-white mt-5 lg:mt-[80px]">
@@ -94,7 +94,7 @@
     <section class=" px-3 md:px-8 lg:px-[145px] mt-[80px]">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-[#1C1C1E]">
-          Kami Hadir <span class="text-[#26A81D]">untuk Anda</span>
+          {{ $t('aboutUs.visionTitle1') }} <span class="text-[#26A81D]">{{ $t('aboutUs.visionTitle2') }}</span>
         </h2>
       </div>
 
@@ -164,7 +164,7 @@
     <!--Temukan Kami-->
     <section class="mt-[150px] bg-white px-4 sm:px-8 lg:px-24">
       <h2 class="text-center text-2xl md:text-3xl font-bold mb-12">
-        Temukan Kami di Sini
+        {{ $t('contacts.title') }}
       </h2>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-center">
@@ -175,7 +175,7 @@
             <img src="/email.svg" alt="Email" class="w-8 h-8" />
           </div>
           <div>
-            <h3 class="font-bold text-[#26a81d] text-[16px] mt-3">Email Address</h3>
+            <h3 class="font-bold text-[#26a81d] text-[16px] mt-3">{{ $t('contacts.email') }}</h3>
             <p class="text-[#A0A0A0] text-[16px] font-semibold">regarmart006@gmail.com</p>
           </div>
         </div>
@@ -185,7 +185,7 @@
             class="w-16 h-16 flex items-center justify-center bg-green-600 rounded-full shadow hover:shadow-lg transition">
             <img src="/location.svg" alt="Location" class="w-8 h-8" />
           </div>
-          <h3 class="font-bold text-[#26a81d] text-[16px] mt-3">Office Location</h3>
+          <h3 class="font-bold text-[#26a81d] text-[16px] mt-3">{{ $t('contacts.location') }}</h3>
           <p class="text-[#A0A0A0] text-[16px] font-semibold px-2">Jl. Medokan Sawah No.32 Surabaya</p>
         </div>
 
@@ -194,7 +194,7 @@
             class="w-16 h-16 flex items-center justify-center bg-green-600 rounded-full shadow hover:shadow-lg transition">
             <img src="/whatsapp.svg" alt="WhatsApp" class="w-8 h-8" />
           </div>
-          <h3 class="font-bold text-[#26a81d] text-[16px] mt-3">WhatsApp</h3>
+          <h3 class="font-bold text-[#26a81d] text-[16px] mt-3">{{ $t('contacts.whatsapp') }}</h3>
           <p class="text-[#A0A0A0] text-[16px] font-semibold">+62 8567418101</p>
         </div>
       </div>

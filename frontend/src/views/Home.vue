@@ -5,17 +5,17 @@
     <section id="hero" class="pt-5 sm:pt-10">
       <div class="container mx-auto">
         <h1 class="text-2xl sm:text-3xl lg:text-[38px] font-extrabold mb-4 text-center">
-          <span class="text-[#1B1F1B]">Semua Kebutuhan Harian, </span>
-          <span class="text-[#26A81D]">Tinggal Klik!</span><br />
-          <span class="text-[#26A81D]">Kebutuhan Terpenuhi</span>
-          <span class="text-[#1B1F1B]">, Hati Pun Tenang</span>
+          <span v-for="(text, index) in $tm('hero.title')" :key="index" :class="{
+            'text-[#26A81D]': [1, 2].includes(index),
+            'text-[#1B1F1B]': ![1, 2].includes(index)
+          }">
+            {{ $rt(text) }}
+            <br v-if="index === 1" />
+          </span>
         </h1>
-        <p class="text-[#6D706E] text-center text-sm sm:text-[18px] mx-auto max-w-2xl">
-          Belanja semakin gampang, cukup pesan <span class="font-bold">lewat WhatsApp.</span><br />
-          <span class="font-bold">Regar Mart</span> siapin dengan <span class="font-bold">packing rapi</span> dan kirim
-          langsung ke rumahmu.
-        </p>
-        <img src="/beranda.png" alt="Pelanggan Puas" class="customer-satisfaction-badge hidden lg:block" />
+        <p class="text-[#6D706E] text-center text-sm sm:text-[18px] mx-auto max-w-2xl" v-html="$t('hero.subtitle')"></p>
+        <img :src="customerSatisfactionBadge" alt="Customer Satisfaction Badge"
+          class="customer-satisfaction-badge hidden lg:block" />
         <div class="container mx-auto mt-5 sm:mt-7">
 
           <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
@@ -30,20 +30,20 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
-                  <input type="text" placeholder="Cari produk terbaik di RegarMart..."
+                  <input type="text" :placeholder="$t('searchPlaceholder')"
                     class="w-full pl-10 pr-4 py-2 border-none rounded-lg focus:outline-none focus:ring-0 text-sm"
                     v-model="searchQuery" @keyup.enter="searchProducts" />
                 </div>
 
-                <h2 class="text-sm font-bold mb-3 text-[#1B1F1B]">Filter Pencarian</h2>
+                <h2 class="text-sm font-bold mb-3 text-[#1B1F1B]">{{ $t('filterText') }}</h2>
 
                 <div class="mb-4">
-                  <label class="block text-gray-700 text-xs mb-2">Kategori</label>
+                  <label class="block text-gray-700 text-xs mb-2">{{ $t('categoryLabel') }}</label>
                   <div class="relative">
                     <select
                       class="text-sm w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-green-500 focus:border-green-500 appearance-none bg-white font-semibold pr-10"
                       v-model="selectedCategory">
-                      <option value="">Pilih Kategori</option>
+                      <option value="">{{ $t('selectCategoryPlaceholder') }}</option>
                       <option v-for="category in categories" :key="category.id" :value="category.id">
                         {{ category.name }}
                       </option>
@@ -59,7 +59,7 @@
                 </div>
 
                 <div>
-                  <label class="text-gray-700 text-xs block mb-2">Satuan Produk</label>
+                  <label class="text-gray-700 text-xs block mb-2">{{ $t('unitLabel') }}</label>
                   <div class="text-sm flex flex-wrap gap-2 text-black">
                     <label v-for="unit in units" :key="unit.id" class="flex items-center space-x-2 cursor-pointer">
                       <input type="checkbox" name="satuan"
@@ -71,14 +71,14 @@
                 </div>
 
                 <button
-                  class="w-full mt-3 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm py-2 rounded-lg transition-colors shadow-md font-semibold"
+                  class="w-full mt-3 bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white text-sm py-2 rounded-lg transition-colors shadow-md font-semibold cursor-pointer hover:from-[#57b04a] hover:to-[#1f8c1a]"
                   @click="searchProducts">
-                  Cari Produk
+                  {{ $t('buttons.search') }}
                 </button>
               </div>
 
               <div class="p-5 pl-7 bg-white rounded-xl shadow-md border border-gray-100">
-                <h3 class="text-sm font-bold mb-3">Pencarian Terakhir</h3>
+                <h3 class="text-sm font-bold mb-3">{{ $t('searchHistory') }}</h3>
 
                 <div v-if="isHistoryLoading" class="text-center text-gray-500 text-sm py-4">
                   Memuat riwayat...
@@ -115,7 +115,7 @@
 
             <div class="lg:col-span-2 flex flex-col py-2">
               <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg sm:text-xl font-bold text-[#1B1F1B]">Produk Terlaris</h2>
+                <h2 class="text-lg sm:text-xl font-bold text-[#1B1F1B]">{{ $t('bestSellerText') }}</h2>
                 <div class="flex space-x-1">
                   <button @click="prevBestSeller"
                     class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm">
@@ -153,7 +153,7 @@
                     <h3 class="text-sm font-bold mb-1 line-clamp-2">{{ product.name }}</h3>
                     <p :class="[product.stock > 0 ? 'text-green-600' : 'text-red-500']"
                       class="font-semibold text-[10px] sm:text-[12px] mb-1">
-                      {{ product.stock > 0 ? 'Stok Tersedia' : 'Stok Habis' }}
+                      {{ product.stock > 0 ? $t('availableStock') : $t('notAvailableStock') }}
                     </p>
                     <p class="text-gray-600 text-[9px] sm:text-[10px] mb-2 flex-grow line-clamp-3">
                       {{ product.description || 'Deskripsi produk tidak tersedia.' }}
@@ -201,11 +201,11 @@
                             d="M14.6548 11.8156L12.1548 10.5656C12.0563 10.5166 11.9467 10.4944 11.837 10.5012C11.7273 10.5081 11.6213 10.5438 11.5298 10.6047L10.3821 11.3703C9.85526 11.0807 9.42171 10.6471 9.13209 10.1203L9.89772 8.97266C9.95863 8.88112 9.99432 8.77514 10.0012 8.6654C10.008 8.55567 9.98582 8.44606 9.93678 8.34766L8.68678 5.84766C8.63497 5.74302 8.55489 5.655 8.45561 5.59355C8.35633 5.5321 8.24182 5.4997 8.12506 5.5C7.29626 5.5 6.50141 5.82924 5.91536 6.41529C5.3293 7.00134 5.00006 7.7962 5.00006 8.625C5.00213 10.4477 5.72712 12.1952 7.01599 13.4841C8.30485 14.7729 10.0523 15.4979 11.8751 15.5C12.2854 15.5 12.6918 15.4192 13.0709 15.2621C13.4501 15.1051 13.7946 14.8749 14.0848 14.5847C14.375 14.2945 14.6051 13.95 14.7622 13.5709C14.9192 13.1917 15.0001 12.7854 15.0001 12.375C15.0001 12.2589 14.9679 12.145 14.9069 12.0462C14.8459 11.9474 14.7586 11.8676 14.6548 11.8156ZM11.8751 14.25C10.3837 14.2483 8.95395 13.6552 7.89942 12.6006C6.84488 11.5461 6.25172 10.1163 6.25006 8.625C6.24994 8.1915 6.40004 7.77135 6.6748 7.43605C6.94956 7.10075 7.33202 6.87101 7.75709 6.78594L8.65397 8.58281L7.89069 9.71875C7.83365 9.80431 7.7986 9.90262 7.78866 10.005C7.77871 10.1073 7.79417 10.2105 7.83366 10.3055C8.28083 11.3683 9.12633 12.2138 10.1891 12.6609C10.2844 12.7022 10.3884 12.7191 10.4917 12.7101C10.5951 12.7011 10.6946 12.6665 10.7813 12.6094L11.9227 11.8484L13.7196 12.7453C13.6339 13.1709 13.4031 13.5535 13.0667 13.8279C12.7304 14.1023 12.3092 14.2515 11.8751 14.25ZM10.0001 2.375C8.5973 2.37469 7.21836 2.73757 5.99745 3.4283C4.77654 4.11904 3.75526 5.1141 3.03301 6.31664C2.31077 7.51918 1.91216 8.88822 1.87599 10.2905C1.83983 11.6928 2.16733 13.0806 2.82663 14.3188L1.93991 16.9789C1.86646 17.1992 1.8558 17.4355 1.90913 17.6615C1.96245 17.8874 2.07765 18.0941 2.24182 18.2582C2.40599 18.4224 2.61264 18.5376 2.8386 18.5909C3.06456 18.6443 3.30091 18.6336 3.52116 18.5602L6.18131 17.6734C7.27098 18.253 8.47836 18.5767 9.7118 18.62C10.9453 18.6633 12.1724 18.425 13.3 17.9232C14.4276 17.4215 15.426 16.6694 16.2196 15.7241C17.0132 14.7789 17.5809 13.6652 17.8798 12.4678C18.1788 11.2703 18.2009 10.0205 17.9447 8.81315C17.6885 7.60584 17.1605 6.47276 16.401 5.49993C15.6415 4.52711 14.6703 3.74009 13.5612 3.19864C12.4521 2.65718 11.2343 2.37551 10.0001 2.375ZM10.0001 17.375C8.79145 17.3758 7.60405 17.0575 6.55788 16.4523C6.48128 16.4079 6.39612 16.3803 6.30803 16.3713C6.21995 16.3622 6.13095 16.372 6.04694 16.4L3.12506 17.375L4.09928 14.4531C4.12737 14.3692 4.13729 14.2802 4.1284 14.1921C4.11951 14.104 4.09201 14.0188 4.04772 13.9422C3.28989 12.632 2.98562 11.1083 3.18212 9.60747C3.37862 8.10667 4.0649 6.71267 5.13451 5.64171C6.20411 4.57076 7.59725 3.88271 9.09779 3.68431C10.5983 3.48592 12.1224 3.78826 13.4336 4.54444C14.7448 5.30062 15.7698 6.46837 16.3496 7.86652C16.9293 9.26468 17.0315 10.8151 16.6402 12.2773C16.249 13.7394 15.3861 15.0316 14.1855 15.9533C12.9849 16.875 11.5137 17.3748 10.0001 17.375Z"
                             fill="#FAFAFA" />
                         </svg>
-                        Pesan via WhatsApp
+                        {{ $t('buttons.orderViaWhatsApp') }}
                       </a>
                       <button
-                        class="w-full bg-gray-100 hover:bg-gray-200 text-black py-2 rounded-[10px] transition-colors text-[11px] sm:text-[12px]">
-                        Quick View
+                        class="w-full bg-gray-100 hover:bg-gray-200 text-black py-2 rounded-[10px] transition-colors text-[11px] sm:text-[12px] cursor-pointer">
+                        {{ $t('buttons.quickView') }}
                       </button>
                     </div>
                   </div>
@@ -220,35 +220,32 @@
     <section id="keunggulan" class="pt-10 sm:pt-20">
       <div class="container mx-auto text-center">
         <h2 class="text-2xl sm:text-3xl font-bold mb-4">
-          <span class="text-[#1B1F1B]">Keunggulan Berbelanja di</span>
-          <span class="text-[#26A81D]"> Regar Mart</span>
+          <span v-for="(text, index) in $tm('advantages.title')" :key="index" :class="index === 1 ? 'text-[#26A81D]' : 'text-[#1B1F1B]'
+            ">
+            {{ $rt(text) }}
+          </span>
         </h2>
-        <p class="text-[#6D706E] text-sm sm:text-[18px] mx-auto mb-6 sm:mb-8 max-w-3xl">
-          Regar Mart hadir untuk memberikan <span class="font-bold">pengalaman belanja yang lebih baik. </span>Kami
-          menawarkan <br class="hidden sm:block" />
-          <span class="font-bold">keunggulan </span>yang membuat setiap transaksi <span class="font-bold">lebih mudah,
-            hemat, dan terpercaya.</span>
-        </p>
-
+        <p class="text-[#6D706E] text-sm sm:text-[18px] mx-auto mb-6 sm:mb-8 max-w-3xl"
+          v-html="$t('advantages.subtitle')"></p>
         <div class="text-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
 
           <div
-            class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
-            <div class="w-full h-48 overflow-hidden"> <img src="/keunggulan1.png"
-                alt="Sustainability & Environmental Impact" class="h-full w-full object-cover">
+            class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2"
+            v-for="adv in advantages" :key="adv.title">
+            <div class="w-full h-48 overflow-hidden"> <img :src="adv.image" :alt="adv.title"
+                class="h-full w-full object-cover">
             </div>
             <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
               <h3 class="font-extrabold mb-3 text-[#26A81D] text-left text-base sm:text-lg">
-                Harga Terjangkau & Transparan
+                {{ adv.title }}
               </h3>
               <p class="text-[13px] sm:text-[14px] text-gray-700 text-left">
-                Belanja lebih hemat dengan harga yang jujur. Regar Mart selalu menawarkan pilihan terbaik agar kebutuhan
-                Anda terpenuhi tanpa menguras kantong.
+                {{ adv.description }}
               </p>
             </div>
           </div>
 
-          <div
+          <!-- <div
             class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
             <div class="w-full h-48 overflow-hidden">
               <img src="/keunggulan2.png" alt="Innovative & User Centric Technology" class="h-full w-full object-cover">
@@ -279,7 +276,7 @@
                 menjadikan Regar Mart selalu ada saat Anda butuh.
               </p>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
@@ -287,7 +284,7 @@
     <section id="faq" class="pt-10 sm:pt-20 pb-10">
       <div class="container mx-auto">
         <h2 class="text-2xl sm:text-3xl font-bold text-center mb-5 text-gray-800">
-          <span class="text-[#26A81D]">Frequently </span>Ask Question
+          <span class="text-[#26A81D]">{{ $t('faqTitle1') }} </span>{{ $t('faqTitle2') }}
         </h2>
 
         <div v-if="isFaqLoading" class="text-center p-10 text-gray-500">
@@ -340,10 +337,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import {
   fetchCategories as apiFetchCategories,
   fetchUnits as apiFetchUnits
@@ -351,6 +347,7 @@ import {
 import { getFaqs } from '../api/faq';
 import { getSearchHistories } from '@/services/searchHistoryService';
 import { getBestSellers } from '../api/product';
+import { useI18n } from 'vue-i18n';
 
 const API_BASE_URL = "http://localhost:5000/api";
 const router = useRouter();
@@ -386,6 +383,34 @@ const currentBestSellerIndex = ref(0);
 const itemsPerSlide = 2;
 let autoSlideInterval = null;
 
+const { t, locale } = useI18n();
+
+// Image Customer Satisfaction Badge
+const customerSatisfactionBadge = computed(() => {
+  return locale.value === 'eng' ? '/beranda_eng.png' : '/beranda.png';
+});
+
+// Advantages
+const advantages = computed(() => {
+  return [
+    {
+      title: t('advantages.adv1.title'),
+      description: t('advantages.adv1.description'),
+      image: '/keunggulan1.png'
+    },
+    {
+      title: t('advantages.adv2.title'),
+      description: t('advantages.adv2.description'),
+      image: '/keunggulan2.png'
+    },
+    {
+      title: t('advantages.adv3.title'),
+      description: t('advantages.adv3.description'),
+      image: '/keunggulan3.png'
+    }
+  ];
+});
+
 // RIWAYAT PENCARIAN
 async function fetchSearchHistories() {
   isHistoryLoading.value = true;
@@ -394,12 +419,6 @@ async function fetchSearchHistories() {
     const data = await getSearchHistories();
 
     histories.value = Array.isArray(data) ? data : [];
-
-    console.log('Search histories loaded:', histories.value);
-    console.log('Raw response data:', data);
-    console.log('Processed histories:', histories.value);
-
-
   } catch (err) {
     historyError.value = err.message;
     histories.value = [];
@@ -410,11 +429,6 @@ async function fetchSearchHistories() {
 }
 function handleSearchAgain(searchTerm) {
   const term = searchTerm || history.search_term;
-  console.log(`Searching again for: ${term}`);
-  console.log('Search term clicked:', searchTerm);
-  console.log('Current search query:', searchQuery.value);
-
-
   searchQuery.value = term;
 
   router.push({
@@ -422,6 +436,7 @@ function handleSearchAgain(searchTerm) {
     query: { s: term }
   });
 }
+
 // KATEGORI 
 async function fetchCategories() {
   isCategoryLoading.value = true;

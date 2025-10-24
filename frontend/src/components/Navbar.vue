@@ -4,7 +4,7 @@
 
       <div class="flex items-center justify-between w-full">
 
-        <div class="flex items-center space-x-8">
+        <div class="flex items-center space-x-16">
 
           <RouterLink to="/" class="flex items-center space-x-2">
             <img src="/logo.svg" alt="Regar Mart" class="h-8 w-8" />
@@ -16,16 +16,18 @@
 
           <ul class="hidden md:flex space-x-8 text-sm font-medium text-gray-700">
             <li>
-              <RouterLink to="/" class="nav-link" active-class="active-link">Beranda</RouterLink>
+              <RouterLink to="/" class="nav-link" active-class="active-link">{{ t('navbar.home') }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/katalog" class="nav-link" active-class="active-link">Katalog</RouterLink>
+              <RouterLink to="/katalog" class="nav-link" active-class="active-link">{{ t('navbar.catalog') }}
+              </RouterLink>
             </li>
             <li>
-              <RouterLink to="/tentang" class="nav-link" active-class="active-link">Tentang Kami</RouterLink>
+              <RouterLink to="/tentang" class="nav-link" active-class="active-link">{{ t('navbar.about') }}</RouterLink>
             </li>
             <li>
-              <RouterLink to="/testimoni" class="nav-link" active-class="active-link">Testimoni</RouterLink>
+              <RouterLink to="/testimoni" class="nav-link" active-class="active-link">{{ t('navbar.testimonials') }}
+              </RouterLink>
             </li>
           </ul>
         </div>
@@ -35,38 +37,46 @@
           <div class="relative" ref="dropdownRef">
 
             <button @click="toggleDropdown"
-              class="text-sm flex items-center px-4 sm:px-4 py-2 border border-green-600 text-black rounded-full font-semibold transition duration-150 hover:bg-green-50 flex-shrink-0"
+              class="text-sm flex items-center px-4 sm:px-4 py-2 border border-green-600 text-black rounded-full font-semibold transition duration-150 hover:bg-green-50 flex-shrink-0 cursor-pointer"
               aria-expanded="true" aria-haspopup="true">
               <svg class="w-4 h-4 mr-1 sm:mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
-              <span class="hidden sm:inline">{{ selectedLanguage }}</span>
-              <span class="sm:hidden">{{ selectedLanguage }}</span>
+              <span class="hidden sm:flex items-center gap-1">
+                {{ locale.toUpperCase() }}
+                <img :src="locale === 'id' ? '/id.svg' : '/us.svg'"
+                  :alt="locale === 'id' ? 'icon flag indonesia' : 'icon flag united states'" class="inline h-3 w-4" />
+              </span>
+              <span class="sm:hidden flex items-center gap-1">
+                {{ locale.toUpperCase() }}
+                <img :src="locale === 'id' ? '/id.svg' : '/us.svg'"
+                  :alt="locale === 'id' ? 'icon flag indonesia' : 'icon flag united states'" class="inline h-3 w-4" />
+              </span>
             </button>
 
             <div v-if="isOpen" class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-xl overflow-hidden z-20 
                         transition-all duration-200 origin-top-right">
 
+              <a href="#" @click.prevent="selectLanguage('ID')"
+                class="px-4 py-2 text-sm text-black hover:text-green-600 transition-colors flex justify-start items-center gap-1"
+                :class="{ 'font-bold bg-green-50 text-green-600': locale === 'id' }">
+                ID <img src="/id.svg" alt="icon flag indonesia" class="inline h-3 w-4" />
+              </a>
               <a href="#" @click.prevent="selectLanguage('ENG')"
-                class="block px-4 py-2 text-sm text-black hover:bg-green-50 hover:text-green-600 transition-colors"
-                :class="{ 'font-bold': selectedLanguage === 'ENG' }">
-                ENG
+                class="px-4 py-2 text-sm text-black hover:text-green-600 transition-colors flex justify-start items-center gap-1"
+                :class="{ 'font-bold bg-green-50 text-green-600': locale === 'eng' }">
+                ENG <img src="/us.svg" alt="icon flag united states" class="inline h-3 w-4" />
               </a>
 
-              <a href="#" @click.prevent="selectLanguage('ID')"
-                class="block px-4 py-2 text-sm text-black hover:bg-green-50 hover:text-green-600 transition-colors"
-                :class="{ 'font-bold': selectedLanguage === 'ID' }">
-                ID
-              </a>
             </div>
           </div>
 
-          <button @click="toggleMobileMenu" class="btn-toggle md:hidden ml-2 flex flex-col items-center justify-center 
+          <button @click="toggleMobileMenu" class="btn-toggle md:hidden ml-3 flex flex-col items-center justify-center 
                       bg-gradient-to-br from-[#6EC568] to-[#26A81D]
                       w-10 h-10 rounded-[8px] shadow-md 
-                      transition-all duration-300 ease-in-out transform hover:scale-105" aria-label="Toggle navigation"
-            :aria-expanded="isMobileMenuOpen.toString()">
+                      transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+            aria-label="Toggle navigation" :aria-expanded="isMobileMenuOpen.toString()">
             <span class="menu-bar"></span>
             <span class="menu-bar"></span>
             <span class="menu-bar"></span>
@@ -80,20 +90,24 @@
       class="md:hidden bg-white shadow-xl rounded-b-lg mx-auto max-w-sm sm:max-w-md mt-[-10px] pb-4 px-8 pt-4 z-40 relative">
       <ul class="flex flex-col space-y-3 text-sm font-medium text-gray-700 w-full text-center">
         <li>
-          <RouterLink to="/" class="mobile-nav-link" active-class="mobile-active-link" @click="closeMobileMenu">Beranda
+          <RouterLink to="/" class="mobile-nav-link" active-class="mobile-active-link" @click="closeMobileMenu">{{
+            t('navbar.home') }}
           </RouterLink>
         </li>
         <li>
           <RouterLink to="/katalog" class="mobile-nav-link" active-class="mobile-active-link" @click="closeMobileMenu">
-            Katalog</RouterLink>
+            {{ t('navbar.catalog') }}
+          </RouterLink>
         </li>
         <li>
           <RouterLink to="/tentang" class="mobile-nav-link" active-class="mobile-active-link" @click="closeMobileMenu">
-            Tentang Kami</RouterLink>
+            {{ t('navbar.about') }}
+          </RouterLink>
         </li>
         <li>
           <RouterLink to="/testimoni" class="mobile-nav-link" active-class="mobile-active-link"
-            @click="closeMobileMenu">Testimoni</RouterLink>
+            @click="closeMobileMenu">{{ t('navbar.testimonials') }}
+          </RouterLink>
         </li>
       </ul>
     </div>
@@ -101,11 +115,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n';
 import { ref, onMounted, onUnmounted } from 'vue';
 
+const { t, locale } = useI18n();
+
 const isOpen = ref(false);
-const selectedLanguage = ref('ID');
 const dropdownRef = ref(null);
+const isMobileMenuOpen = ref(false);
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
@@ -113,11 +130,10 @@ const toggleDropdown = () => {
 };
 
 const selectLanguage = (lang) => {
-  selectedLanguage.value = lang;
+  locale.value = lang.toLowerCase();
+  localStorage.setItem('lang', locale.value);
   isOpen.value = false;
 };
-
-const isMobileMenuOpen = ref(false);
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
