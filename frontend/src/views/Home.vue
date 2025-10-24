@@ -138,14 +138,21 @@
               <div v-else-if="bestSellers.length === 0" class="text-center py-10 text-gray-500">
                 {{ locale === "id" ? "Belum ada produk terlaris saat ini." : "There are currently no best seller products." }}
               </div>
+              <div v-else class="relative overflow-hidden">
+                <div class="overflow-visible">
+                  <div class="flex transition-transform duration-500 ease-in-out pb-4" :style="{
+                    transform: `translateX(-${(currentBestSellerIndex / itemsPerSlideComputed) * 100}%)`
+                  }">
+                    <div v-for="(product, index) in [...bestSellers, ...bestSellers]" :key="`${product.id}-${index}`"
+                      class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0"
+                      :class="{
+                        'w-full mx-0': itemsPerSlideComputed === 1,
+                        'w-1/2 md:w-1/2 lg:w-1/2 px-2': itemsPerSlideComputed > 1,
+                        'min-w-full': itemsPerSlideComputed === 1,
+                        'min-w-[50%]': itemsPerSlideComputed > 1,
+                      }">
 
-              <div v-else class="flex space-x-4 sm:space-x-6 pb-4 overflow-x-auto lg:overflow-x-visible">
-                <div
-                  v-for="product in bestSellers.slice(currentBestSellerIndex, currentBestSellerIndex + itemsPerSlide)"
-                  :key="product.id"
-                  class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-[240px] md:w-[220px]">
-
-                  <div class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
+                      <div class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
                     <img :src="product.imageUrl || 'https://placehold.co/100x100'" :alt="product.name"
                       class="h-full w-full object-cover" />
                   </div>
@@ -157,43 +164,41 @@
                       {{ product.stock > 0 ? $t('availableStock') : $t('notAvailableStock') }}
                     </p>
                     <p class="text-gray-600 text-[9px] sm:text-[10px] mb-2 flex-grow line-clamp-3">
-                      {{ product.description || 'Deskripsi produk tidak tersedia.' }}
+                      {{ product.description || '-' }}
                     </p>
 
-                    <div class="mb-3">
-                      <span v-if="product.isPromo" class="text-[14px] sm:text-[16px] font-bold">
-                        Rp{{
-                          product.promoPrice
-                            ? Number(product.promoPrice).toLocaleString('id-ID', {
-                              minimumFractionDigits: 0, maximumFractionDigits:
-                                0
-                            })
-                            : 'N/A'
-                        }}
-                      </span>
-                      <span v-else class="text-[14px] sm:text-[16px] font-bold">
-                        Rp{{
-                          product.basePrice
-                            ? Number(product.basePrice).toLocaleString('id-ID', {
-                              minimumFractionDigits: 0, maximumFractionDigits:
-                                0
-                            })
-                            : 'N/A'
-                        }}
-                      </span>
-                      <span v-if="product.isPromo" class="text-gray-400 text-xs line-through ml-2">
-                        Rp{{
-                          product.basePrice
-                            ? Number(product.basePrice).toLocaleString('id-ID', {
-                              minimumFractionDigits: 0, maximumFractionDigits:
-                                0
-                            })
-                            : 'N/A'
-                        }}
-                      </span>
-                    </div>
-                    <div class="space-y-2 mt-auto">
-                      <a :href="product.whatsappLink"
+                        <div class="mb-3">
+                          <span v-if="product.isPromo" class="text-[14px] sm:text-[16px] font-bold">
+                            Rp{{
+                              product.promoPrice
+                                ? Number(product.promoPrice).toLocaleString('id-ID', {
+                                  minimumFractionDigits: 0, maximumFractionDigits: 0
+                                })
+                                : 'N/A'
+                            }}
+                          </span>
+                          <span v-else class="text-[14px] sm:text-[16px] font-bold">
+                            Rp{{
+                              product.basePrice
+                                ? Number(product.basePrice).toLocaleString('id-ID', {
+                                  minimumFractionDigits: 0, maximumFractionDigits: 0
+                                })
+                                : 'N/A'
+                            }}
+                          </span>
+                          <span v-if="product.isPromo" class="text-gray-400 text-xs line-through ml-2">
+                            Rp{{
+                              product.basePrice
+                                ? Number(product.basePrice).toLocaleString('id-ID', {
+                                  minimumFractionDigits: 0, maximumFractionDigits: 0
+                                })
+                                : 'N/A'
+                            }}
+                          </span>
+                        </div>
+
+                        <div class="space-y-2 mt-auto">
+                          <a :href="product.whatsappLink"
                         target="_blank"
                         class="flex gap-1 items-center justify-center bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white py-2 rounded-[10px] text-center transition-colors text-[11px] sm:text-[12px]">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 20 21" fill="none">
@@ -203,10 +208,12 @@
                         </svg>
                         {{ $t('buttons.orderViaWhatsApp') }}
                       </a>
-                      <button
-                        class="w-full bg-gray-100 hover:bg-gray-200 text-black py-2 rounded-[10px] transition-colors text-[11px] sm:text-[12px] cursor-pointer">
-                        {{ $t('buttons.quickView') }}
-                      </button>
+                          <button @click="openQuickView(product.imageUrl || 'https://placehold.co/100x100')"
+                            class="w-full bg-gray-100 hover:bg-gray-200 text-black py-2 rounded-[10px] transition-colors text-[11px] sm:text-[12px] cursor-pointer">
+                            {{ $t('buttons.quickView') }}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -300,6 +307,25 @@
 
       </div>
     </section>
+    <transition name="fade">
+      <div v-if="isQuickViewOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+        @click.self="closeQuickView">
+        <div class="bg-white rounded-lg shadow-2xl relative p-3 max-w-lg w-[90%] mx-auto">
+
+          <button @click="closeQuickView"
+            class="absolute top-0 right-0 m-2 text-white bg-black/50 hover:bg-black/70 rounded-full p-2 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          <img :src="quickViewImage" alt="Quick View Produk"
+            class="w-full h-auto object-contain max-h-[80vh] rounded-lg" />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -370,8 +396,58 @@ const activeIndex = ref(null);
 
 // Slider Produk Terlaris
 const currentBestSellerIndex = ref(0);
-const itemsPerSlide = 2;
 let autoSlideInterval = null;
+const isTransitioning = ref(false);
+const windowWidth = ref(window.innerWidth);
+
+// Quick View State
+const isQuickViewOpen = ref(false);
+const quickViewImage = ref('');
+
+const itemsPerSlideComputed = computed(() => {
+  return windowWidth.value < 768 ? 1 : 2;
+});
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+// Fungsi SLIDER PRODUK TERLARIS 
+function nextBestSeller() {
+  const step = itemsPerSlideComputed.value;
+  if (bestSellers.value.length === 0 || isTransitioning.value) return;
+
+  isTransitioning.value = true;
+
+  if (currentBestSellerIndex.value + step >= bestSellers.value.length) {
+    currentBestSellerIndex.value = 0;
+  } else {
+    currentBestSellerIndex.value += step;
+  }
+
+  setTimeout(() => {
+    isTransitioning.value = false;
+  }, 500);
+}
+
+function prevBestSeller() {
+  const step = itemsPerSlideComputed.value;
+  if (bestSellers.value.length === 0 || isTransitioning.value) return;
+
+  isTransitioning.value = true;
+
+  if (currentBestSellerIndex.value - step < 0) {
+    const totalItems = bestSellers.value.length;
+    const maxIndex = Math.floor((totalItems - 1) / step) * step;
+    currentBestSellerIndex.value = maxIndex;
+  } else {
+    currentBestSellerIndex.value -= step;
+  }
+
+  setTimeout(() => {
+    isTransitioning.value = false;
+  }, 500);
+}
 
 const { t, locale } = useI18n();
 
@@ -400,6 +476,26 @@ const advantages = computed(() => {
     }
   ];
 });
+
+function startAutoSlide() {
+  if (autoSlideInterval) {
+    clearInterval(autoSlideInterval);
+  }
+  autoSlideInterval = setInterval(() => {
+    nextBestSeller();
+  }, 5000);
+}
+
+// Fungsi Quick View
+const openQuickView = (imageUrl) => {
+  quickViewImage.value = imageUrl;
+  isQuickViewOpen.value = true;
+};
+
+const closeQuickView = () => {
+  isQuickViewOpen.value = false;
+  quickViewImage.value = '';
+};
 
 // RIWAYAT PENCARIAN
 async function fetchSearchHistories() {
@@ -509,8 +605,6 @@ async function searchProducts() {
   if (selectedCategory.value) query.cat = selectedCategory.value;
   if (selectedUnit.value.length > 0) query.unit = selectedUnit.value.join(',');
 
-  const queryString = new URLSearchParams(query).toString();
-
   try {
     if (term) {
       await axios.get(`${API_BASE_URL}/products?search=${term}`, { withCredentials: true });
@@ -529,27 +623,12 @@ async function searchProducts() {
   }
 }
 
-// SLIDER PRODUK TERLARIS 
-function nextBestSeller() {
-  if (bestSellers.value.length === 0) return;
-  currentBestSellerIndex.value = (currentBestSellerIndex.value + itemsPerSlide) % bestSellers.value.length;
-}
-
-function prevBestSeller() {
-  if (bestSellers.value.length === 0) return;
-  currentBestSellerIndex.value =
-    (currentBestSellerIndex.value - itemsPerSlide + bestSellers.value.length) % bestSellers.value.length;
-}
-
-function startAutoSlide() {
-  if (autoSlideInterval) clearInterval(autoSlideInterval);
-  autoSlideInterval = setInterval(() => {
-    nextBestSeller();
-  }, 5000);
-}
 
 // LIFECYCLE HOOKS 
 onMounted(async () => {
+  window.addEventListener('resize', updateWindowWidth);
+  updateWindowWidth();
+
   await Promise.all([
     fetchSearchHistories(),
     fetchCategories(),
@@ -562,6 +641,7 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowWidth);
   if (autoSlideInterval) {
     clearInterval(autoSlideInterval);
   }
@@ -605,6 +685,16 @@ input {
 
 .accordion-enter,
 .accordion-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
