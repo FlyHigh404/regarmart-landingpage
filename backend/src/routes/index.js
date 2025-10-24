@@ -55,7 +55,7 @@ router.get("/", (req, res) => {
  * schema:
  * $ref: '#/components/schemas/SuccessCategoryResponse'
  */
-router.get("/categories", apiLimiter, categoryController.getCategories);
+router.get("/categories", categoryController.getCategories);
 
 /**
  * @swagger
@@ -72,7 +72,7 @@ router.get("/categories", apiLimiter, categoryController.getCategories);
  * schema:
  * $ref: '#/components/schemas/SuccessUnitResponse'
  */
-router.get("/units", apiLimiter, unitController.getUnits);
+router.get("/units", unitController.getUnits);
 
 /**
  * @swagger
@@ -132,7 +132,6 @@ router.get("/units", apiLimiter, unitController.getUnits);
  */
 router.get(
   "/products",
-  apiLimiter,
   validateGetProducts,
   validate,
   userTokenMiddleware,
@@ -162,7 +161,6 @@ router.get(
  */
 router.get(
   "/products/bestsellers",
-  apiLimiter,
   productController.getBestSellers
 );
 
@@ -215,7 +213,7 @@ router.get(
  * items:
  * $ref: '#/components/schemas/Faq'
  */
-router.get("/faqs", apiLimiter, faqsController.getFaqs);
+router.get("/faqs", faqsController.getFaqs);
 
 /**
  * @swagger
@@ -251,7 +249,6 @@ router.get("/faqs", apiLimiter, faqsController.getFaqs);
  */
 router.get(
   "/testimonials",
-  apiLimiter,
   validateGetTestimonials,
   validate,
   testimonialController.getTestimonials
