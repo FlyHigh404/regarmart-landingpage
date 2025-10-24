@@ -107,10 +107,10 @@
           </div>
           <div class="px-6 py-8 flex flex-col flex-grow">
             <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
-              Awal Berdiri & Visi
+              {{ $t('aboutUs.visions1.title') }}
             </h3>
             <p class="text-[14px] text-gray-700 text-center">
-              Panganku Fresh hadir dengan visi menyediakan pangan segar, sehat, dan terjangkau.
+              {{ $t('aboutUs.visions1.description') }}
             </p>
           </div>
         </div>
@@ -119,16 +119,15 @@
           class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] flex-1 h-full md:mt-0 lg:mt-6">
           <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
             <div class="relative pt-[60%] bg-[#26A81D]">
-              <img src="/komitmen.png" alt="Pelayanan & Komitmen"
-                class="absolute inset-0 w-full h-full object-cover">
+              <img src="/komitmen.png" alt="Pelayanan & Komitmen" class="absolute inset-0 w-full h-full object-cover">
             </div>
           </div>
           <div class="px-6 py-8 flex flex-col flex-grow">
             <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
-              Pelayanan & Komitmen
+              {{ $t('aboutUs.visions2.title') }}
             </h3>
             <p class="text-[14px] text-gray-700 text-center">
-              Kami bukan sekadar tempat belanja, tapi mitra keluarga. Dengan layanan ramah, cepat, dan transparan, kami selalu menjaga kepuasan pelanggan.
+              {{ $t('aboutUs.visions2.description') }}
             </p>
           </div>
         </div>
@@ -137,16 +136,15 @@
           class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px]">
           <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
             <div class="relative pt-[60%] bg-[#26A81D]">
-              <img src="/komitmen.png" alt="Kualitas Produk"
-                class="absolute inset-0 w-full h-full object-cover">
+              <img src="/komitmen.png" alt="Kualitas Produk" class="absolute inset-0 w-full h-full object-cover">
             </div>
           </div>
           <div class="px-6 py-8 flex flex-col flex-grow">
             <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
-              Kualitas Produk
+              {{ $t('aboutUs.visions3.title') }}
             </h3>
             <p class="text-[14px] text-gray-700 text-center">
-              Panganku Fresh menghadirkan produk segar dari petani lokal, berkualitas dan terpercaya.
+              {{ $t('aboutUs.visions3.description') }}
             </p>
           </div>
         </div>
@@ -252,6 +250,7 @@ useHead({
     }
   ]
 })
+
 export default {
   name: "VisionMissionPage",
 };

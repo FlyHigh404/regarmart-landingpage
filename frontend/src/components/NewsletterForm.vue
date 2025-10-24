@@ -56,12 +56,13 @@ const handleSubmit = async () => {
   }
 
   isLoading.value = true;
+  const BASE_URL = import.meta.env.VITE_BACKEND_API_URL;
 
   try {
     await recaptchaLoaded();
     const recaptchaToken = await executeRecaptcha('submitLead');
 
-    const response = await axios.post('http://localhost:5000/api/leads', {
+    const response = await axios.post(`${BASE_URL}/leads`, {
       email: email.value,
       recaptchaToken: recaptchaToken,
     });

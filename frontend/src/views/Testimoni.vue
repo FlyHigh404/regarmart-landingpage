@@ -22,11 +22,11 @@
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
         </path>
       </svg>
-      Memuat testimoni...
+      {{ locale === "id" ? "Memuat Testimoni..." : "Loading Testimonials..." }}
     </div>
 
     <div v-else-if="!isLoading && testimonials.length === 0" class="text-center py-20 text-[#6D706E]">
-      Belum ada testimoni.
+      {{ locale === "id" ? "Belum ada testimoni." : "No testimonials yet." }}
     </div>
 
     <section v-else class="review-section w-full pb-10">
@@ -118,6 +118,7 @@ import { useHead } from '@vueuse/head'
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import axios from 'axios';
 import Pagination from '@/components/Pagination.vue';
+import { useI18n } from 'vue-i18n';
 
 useHead({
   title: 'Testimoni Pelanggan - Regar Mart',
@@ -149,7 +150,9 @@ const isMobileOrTablet = ref(false);
 const isLoading = ref(true);
 const isPageChanging = ref(false);
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const { locale } = useI18n();
+
+const API_BASE_URL = import.meta.env.VITE_BACKEND_API_URL;
 const ITEMS_PER_PAGE = 4;
 const LOCAL_STORAGE_KEY = 'currentPageTestimonial';
 

@@ -67,7 +67,19 @@
     "service2": "Kepraktisan Berbelanja",
     "service3": "Harga Bersahabat",
     "visionTitle1": "Kami Hadir",
-    "visionTitle2": "untuk Anda"
+    "visionTitle2": "untuk Anda",
+    "visions1": {
+      "title": "Awal Berdiri & Visi",
+      "description": "Panganku Fresh hadir dengan visi menyediakan pangan segar, sehat, dan terjangkau."
+    },
+    "visions2": {
+      "title": "Pelayanan & Komitmen",
+      "description": "Kami bukan sekadar tempat belanja, tapi mitra keluarga. Dengan layanan ramah, cepat, dan transparan, kami selalu menjaga kepuasan pelanggan."
+    },
+    "visions3": {
+      "title": "Kualitas Produk",
+      "description": "Panganku Fresh menghadirkan produk segar dari petani lokal, berkualitas dan terpercaya."
+    }
   },
   "contacts": {
     "title": "Temukan Kami di Sini",

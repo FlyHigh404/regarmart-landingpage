@@ -81,18 +81,18 @@
                 <h3 class="text-sm font-bold mb-3">{{ $t('searchHistory') }}</h3>
 
                 <div v-if="isHistoryLoading" class="text-center text-gray-500 text-sm py-4">
-                  Memuat riwayat...
+                  {{ locale === "id" ? "Memuat riwayat..." : "Loading history..." }}
                 </div>
 
                 <div v-else-if="historyError" class="text-center text-red-500 text-sm py-4">
                   <p>{{ historyError }}</p>
                   <button @click="fetchSearchHistories" class="mt-2 text-green-600 hover:text-green-800 text-xs">
-                    Coba Lagi
+                    {{ locale === "id" ? "Coba lagi" : "Try again" }}
                   </button>
                 </div>
 
                 <div v-else-if="!histories || histories.length === 0" class="text-center text-gray-500 text-sm py-4">
-                  Belum ada riwayat pencarian.
+                  {{ locale === "id" ? "Belum ada riwayat pencarian." : "No search history yet." }}
                 </div>
 
                 <ul v-else class="text-sm text-semibold space-y-4">
@@ -129,13 +129,14 @@
               </div>
 
               <div v-if="isBestSellerLoading" class="text-center py-10 text-gray-500">
-                <p>Memuat produk terlaris...</p>
+                {{ locale === "id" ? "Memuat produk terlaris..." : "Loading best seller products..." }}
               </div>
               <div v-else-if="bestSellerError" class="text-center py-10 text-red-500">
-                <p>Gagal memuat data: {{ bestSellerError }}</p>
+                {{ locale === "id" ? `Gagal memuat data: ${bestSellerError}` : `Failed to load data: ${bestSellerError}`
+                }}
               </div>
               <div v-else-if="bestSellers.length === 0" class="text-center py-10 text-gray-500">
-                <p>Belum ada produk terlaris saat ini.</p>
+                {{ locale === "id" ? "Belum ada produk terlaris saat ini." : "There are currently no best seller products." }}
               </div>
 
               <div v-else class="flex space-x-4 sm:space-x-6 pb-4 overflow-x-auto lg:overflow-x-visible">
@@ -145,7 +146,7 @@
                   class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-[240px] md:w-[220px]">
 
                   <div class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
-                    <img :src="product.imageUrl || '/susu.png'" :alt="product.name"
+                    <img :src="product.imageUrl || 'https://placehold.co/100x100'" :alt="product.name"
                       class="h-full w-full object-cover" />
                   </div>
 
@@ -191,9 +192,8 @@
                         }}
                       </span>
                     </div>
-
                     <div class="space-y-2 mt-auto">
-                      <a :href="`https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20produk%20${product.name}`"
+                      <a :href="product.whatsappLink"
                         target="_blank"
                         class="flex gap-1 items-center justify-center bg-gradient-to-br from-[#6EC568] to-[#26A81D] text-white py-2 rounded-[10px] text-center transition-colors text-[11px] sm:text-[12px]">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 20 21" fill="none">
@@ -255,7 +255,7 @@
         </h2>
 
         <div v-if="isFaqLoading" class="text-center p-10 text-gray-500">
-          Memuat pertanyaan dan jawaban...
+          {{ locale === "id" ? "Memuat pertanyaan dan jawaban..." : "Loading questions and answers..." }}
         </div>
 
         <div v-else-if="faqError"
@@ -295,7 +295,7 @@
         </div>
 
         <div v-else class="text-center p-10 text-gray-500">
-          Data FAQ kosong. Silakan tambahkan data di backend Anda.
+          {{ locale === "id" ? "Data FAQ kosong." : "FAQ is empty." }}
         </div>
 
       </div>
@@ -339,7 +339,7 @@ useHead({
   ],
 });
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = import.meta.env.VITE_BACKEND_API_URL;
 const router = useRouter();
 
 // Pencarian (State)

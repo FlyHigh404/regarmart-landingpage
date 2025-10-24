@@ -4,6 +4,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { ref, computed, onMounted, watch, reactive } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import { fetchProducts, fetchCategories, fetchUnits } from '@/services/productService';
+import { useI18n } from 'vue-i18n';
 
 useHead({
   title: 'Katalog Produk RegarMart - Belanja Buah Segar dan Berkualitas',
@@ -26,6 +27,8 @@ useHead({
     },
   ]
 });
+
+const { locale } = useI18n();
 
 const router = { 
   replace: (url) => {
@@ -112,12 +115,6 @@ const updateUrlWithParams = () => {
   router.replace(url.toString());
 };
 
-const ADMIN_WA_NUMBER = import.meta.env.VITE_ADMIN_WA_NUMBER || '6285263759398';
-const getWhatsappLink = (productName) => {
-  const text = `Halo, saya tertarik dengan produk *${productName}* yang ada di katalog Anda. Apakah produk ini masih tersedia?`;
-  return `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodeURIComponent(text)}`;
-};
-
 // 🔹 Hitung total halaman berdasarkan jumlah item
 const totalPages = computed(() => {
   if (totalItemsCount.value === 0 || itemsPerPage.value === 0) return 1;
@@ -142,8 +139,6 @@ const loadProducts = async () => {
     itemsPerPage.value = result.meta.itemsPerPage;
 
     if (result.data.length === 0 && currentPage.value > 1 && totalItemsCount.value > 0) {
-      // MODIFIKASI: Hapus panggilan loadProducts() rekursif.
-      // Cukup set currentPage.value = 1, biarkan 'watch' block yang re-trigger loadProducts.
       currentPage.value = 1; 
     }
   } catch (err) {
@@ -505,16 +500,22 @@ onMounted(() => {
 
             <div v-else-if="isError"
               class="col-span-full text-center py-10 bg-red-50 border border-red-300 rounded-lg p-5">
-              <p class="text-lg font-bold text-red-700 mb-2">Gagal Memuat Produk! 😟</p>
+              <p class="text-lg font-bold text-red-700 mb-2">
+                {{ locale === "id" ? "Gagal Memuat Produk! 😟" : "Failed to load products! 😟" }}
+              </p>
               <p class="text-sm text-red-600 mb-4">{{ errorMessage }}</p>
               <BaseButton @click="loadProducts" variant="green" class="py-2.5">
-                Coba Lagi
+                {{ locale === "id" ? "Coba lagi" : "Try again" }}
               </BaseButton>
             </div>
 
             <div v-else-if="products.length === 0" class="col-span-full text-center py-10 rounded-lg p-5">
-              <p class="text-lg font-bold text-[#26A81D] mb-2">Produk Tidak Ditemukan 🔍</p>
-              <p class="text-sm text-black">Coba kata kunci, kategori, atau filter yang berbeda.</p>
+              <p class="text-lg font-bold text-[#26A81D] mb-2">
+                {{ locale === "id" ? "Produk Tidak Ditemukan 🔍" : "Product Not Found 🔍" }}
+              </p>
+              <p class="text-sm text-black">
+                {{ locale === "id" ? "Coba kata kunci, kategori, atau filter yang berbeda." : "Try different keywords, categories, or filters." }}
+              </p>
             </div>
 
             <div v-else v-for="item in products" :key="item.id"
@@ -549,7 +550,7 @@ onMounted(() => {
                 </div>
 
                 <BaseButton variant="green" class="mt-3 w-full py-1.5 rounded-[10px] text-[12px] md:text-[13px]"
-                  :href="getWhatsappLink(item.name)">
+                  :href="item.whatsappLink">
                   <img src="/whatsapp.svg" alt="wa" class="w-4 h-4" />
                   {{ $t('buttons.orderViaWhatsApp') }}
                 </BaseButton>

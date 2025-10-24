@@ -67,7 +67,19 @@
     "service2": "Shopping Convenience",
     "service3": "Affordable Prices",
     "visionTitle1": "We Are Here",
-    "visionTitle2": "For You"
+    "visionTitle2": "For You",
+    "visions1": {
+      "title": "Our Founding & Vision",
+      "description": "Panganku Fresh was founded with the vision of providing fresh, healthy, and affordable food."
+    },
+    "visions2": {
+      "title": "Service & Commitment",
+      "description": "We are not just a place to shop, but a partner for families. With friendly, fast, and transparent service, we always maintain customer satisfaction."
+    },
+    "visions3": {
+      "title": "Product Quality",
+      "description": "Panganku Fresh offers fresh products from local farmers that are high-quality and reliable."
+    }
   },
   "contacts": {
     "title": "Find Us Here",
