@@ -35,7 +35,7 @@
                     v-model="searchQuery" @keyup.enter="searchProducts" />
                 </div>
 
-                <h2 class="text-sm font-bold mb-3 text-[#1B1F1B]">{{ $t('filterText') }}</h2>
+                <h3 class="text-sm font-bold mb-3 text-[#1B1F1B]">{{ $t('filterText') }}</h3>
 
                 <div class="mb-4">
                   <label class="block text-gray-700 text-xs mb-2">{{ $t('categoryLabel') }}</label>
@@ -244,39 +244,6 @@
               </p>
             </div>
           </div>
-
-          <!-- <div
-            class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
-            <div class="w-full h-48 overflow-hidden">
-              <img src="/keunggulan2.png" alt="Innovative & User Centric Technology" class="h-full w-full object-cover">
-            </div>
-            <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
-              <h3 class="font-extrabold mb-3 text-[#26A81D] text-left text-base sm:text-lg">
-                Produk Lengkap & Berkualitas
-              </h3>
-              <p class="text-[13px] sm:text-[14px] text-gray-700 text-left">
-                Semua kebutuhan harian tersedia dengan kualitas terbaik. Produk dipilih secara teliti agar pengalaman
-                belanja Anda selalu nyaman, aman, dan memuaskan.
-              </p>
-            </div>
-          </div>
-
-          <div
-            class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
-            <div class="w-full h-48 overflow-hidden">
-              <img src="/keunggulan3.png" alt="Market Potential & Growth Opportunity"
-                class="h-full w-full object-cover">
-            </div>
-            <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
-              <h3 class="font-extrabold mb-3 text-[#26A81D] text-left text-base sm:text-lg">
-                Layanan Cepat & Terpercaya
-              </h3>
-              <p class="text-[13px] sm:text-[14px] text-gray-700 text-left">
-                Nikmati pengalaman belanja praktis dengan layanan sigap. Pengiriman cepat dan sistem terpercaya
-                menjadikan Regar Mart selalu ada saat Anda butuh.
-              </p>
-            </div>
-          </div> -->
         </div>
       </div>
     </section>
@@ -291,7 +258,7 @@
           Memuat pertanyaan dan jawaban...
         </div>
 
-        <div v-else-if="error"
+        <div v-else-if="faqError"
           class="text-center p-10 text-red-700 bg-red-100 border border-red-400 rounded-lg mx-auto max-w-lg">
           Error: {{ error }}
         </div>
@@ -337,6 +304,7 @@
 </template>
 
 <script setup>
+import { useHead } from '@vueuse/head'
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
@@ -348,6 +316,28 @@ import { getFaqs } from '../api/faq';
 import { getSearchHistories } from '@/services/searchHistoryService';
 import { getBestSellers } from '../api/product';
 import { useI18n } from 'vue-i18n';
+
+useHead({
+  title: 'Regar Mart - Solusi Belanja Kebutuhan Harian via WhatsApp',
+  meta: [
+    {
+      name: 'description',
+      content: 'Regar Mart memudahkan Anda berbelanja kebutuhan harian melalui WhatsApp. Nikmati harga terjangkau, produk berkualitas, dan layanan cepat di Surabaya.',
+    },
+    {
+      name: 'keywords',
+      content: 'Regar Mart, belanja kebutuhan harian, belanja via WhatsApp, produk harian Surabaya, layanan pengiriman cepat, produk berkualitas, harga terjangkau',
+    },
+    {
+      property: 'og:title',
+      content: 'Regar Mart - Solusi Belanja Kebutuhan Harian via WhatsApp',
+    },
+    {
+      property: 'og:description',
+      content: 'Regar Mart memudahkan Anda berbelanja kebutuhan harian melalui WhatsApp. Nikmati harga terjangkau, produk berkualitas, dan layanan cepat di Surabaya.',
+    },
+  ],
+});
 
 const API_BASE_URL = "http://localhost:5000/api";
 const router = useRouter();

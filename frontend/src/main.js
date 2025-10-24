@@ -1,8 +1,10 @@
 import { createApp } from "vue";
+import { createHead } from '@vueuse/head' 
 import { createI18n } from 'vue-i18n'
 import App from "@/App.vue";
 import router from "@/router";
 import "@/style.css";
+
 import 'aos/dist/aos.css';
 import AOS from 'aos'
 
@@ -23,6 +25,7 @@ const i18n = createI18n({
 })
 
 const app = createApp(App)
+const head = createHead()
 
 app.use(VueReCaptcha, {
   siteKey: import.meta.env.VITE_RECAPTCHA_SITE_KEY,
@@ -30,13 +33,15 @@ app.use(VueReCaptcha, {
     autoHideBadge: true 
   }
 })
+
+app.use(head);
 app.use(i18n);
 app.use(router);
 app.mount("#app");
 
 setTimeout(() => {
     AOS.init({
-        duration: 1000,    
-        once: true,      
+        duration: 1000,
+        once: true,
     });
 }, 100);

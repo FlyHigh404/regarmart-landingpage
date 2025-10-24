@@ -1,10 +1,33 @@
 <script setup>
+import { useHead } from '@vueuse/head'
 import BaseButton from "@/components/BaseButton.vue";
 import { ref, computed, onMounted, watch, reactive } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import { fetchProducts, fetchCategories, fetchUnits } from '@/services/productService';
 
-const router = { // Simulasi router sederhana untuk history API
+useHead({
+  title: 'Katalog Produk RegarMart - Belanja Buah Segar dan Berkualitas',
+  meta: [
+    {
+      name: 'description',
+      content: 'Jelajahi katalog lengkap RegarMart untuk berbagai buah segar berkualitas. Pesan mudah via WhatsApp, cepat dan praktis!'
+    },
+    {
+      name: 'keywords',
+      content: 'katalog produk, buah segar, belanja buah online, RegarMart, pesan buah via WhatsApp'
+    },
+    {
+      property: 'og:title',
+      content: 'Katalog Produk RegarMart - Belanja Buah Segar dan Berkualitas'
+    },
+    {
+      property: 'og:description',
+      content: 'Jelajahi katalog lengkap RegarMart untuk berbagai buah segar berkualitas. Pesan mudah via WhatsApp, cepat dan praktis!'
+    },
+  ]
+});
+
+const router = { 
   replace: (url) => {
     window.history.replaceState(null, '', url);
   },
@@ -17,9 +40,7 @@ const getParamsFromUrl = () => {
   const url = router.current();
   return {
     searchQuery: url.searchParams.get('s') || '',
-    // Pastikan Number() digunakan, dan jika tidak ada, gunakan null.
     categoryFilter: url.searchParams.get('cat') ? Number(url.searchParams.get('cat')) : null,
-    // Map ke Number untuk array unit filters
     unitFilters: url.searchParams.get('unit') ? url.searchParams.get('unit').split(',').map(id => Number(id)).filter(id => !isNaN(id)) : [],
     isPromoFilter: url.searchParams.get('promo') || null,
     sortBy: url.searchParams.get('sort') || '',
@@ -35,7 +56,7 @@ const isLoading = ref(false);
 const isError = ref(false);
 const errorMessage = ref(null);
 
-// 🔹 Filter & Sort Parameters (Akan di-watch untuk memuat ulang produk)
+// 🔹 Filter & Sort Parameters
 const filterParams = reactive({
   searchQuery: initialParams.searchQuery,
   categoryFilter: initialParams.categoryFilter,
@@ -47,7 +68,7 @@ const filterParams = reactive({
 const localFilterParams = reactive({
   searchQuery: initialParams.searchQuery,
   categoryFilter: initialParams.categoryFilter,
-  unitFilters: [...initialParams.unitFilters], // Gunakan spread untuk mencegah reactive issues
+  unitFilters: [...initialParams.unitFilters], 
   isPromoFilter: initialParams.isPromoFilter,
 });
 
@@ -94,12 +115,8 @@ const updateUrlWithParams = () => {
 const ADMIN_WA_NUMBER = import.meta.env.VITE_ADMIN_WA_NUMBER || '6285263759398';
 const getWhatsappLink = (productName) => {
   const text = `Halo, saya tertarik dengan produk *${productName}* yang ada di katalog Anda. Apakah produk ini masih tersedia?`;
-  // Mengembalikan tautan WA dengan encoding URL
   return `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodeURIComponent(text)}`;
 };
-
-
-// --- COMPUTED PROPERTIES ---
 
 // 🔹 Hitung total halaman berdasarkan jumlah item
 const totalPages = computed(() => {
@@ -125,8 +142,9 @@ const loadProducts = async () => {
     itemsPerPage.value = result.meta.itemsPerPage;
 
     if (result.data.length === 0 && currentPage.value > 1 && totalItemsCount.value > 0) {
-      currentPage.value = 1;
-      loadProducts();
+      // MODIFIKASI: Hapus panggilan loadProducts() rekursif.
+      // Cukup set currentPage.value = 1, biarkan 'watch' block yang re-trigger loadProducts.
+      currentPage.value = 1; 
     }
   } catch (err) {
     isError.value = true;
@@ -191,7 +209,7 @@ const toggleUnitFilter = (unitId) => {
   }
 };
 
-// 🟢 Terapkan Filter (untuk modal mobile & tombol desktop)
+// 🟢 Terapkan Filter
 const applyFilter = () => {
   filterParams.categoryFilter = localFilterParams.categoryFilter;
   filterParams.isPromoFilter = localFilterParams.isPromoFilter;
@@ -323,12 +341,12 @@ onMounted(() => {
                       <label class="text-gray-700 text-xs">{{ $t('productTypeLabel') }}</label>
                       <div class="text-sm flex flex-wrap gap-4 text-black">
                         <label class="flex items-center space-x-2 cursor-pointer">
-                          <input type="radio" name="tipe" value="normal" v-model="filterParams.isPromoFilter"
+                          <input type="radio" name="tipe" value="normal" v-model="localFilterParams.isPromoFilter"
                             class="text-green-600 focus:ring-green-500" />
                           <span class="font-semibold">{{ $t('productPriceNormal') }}</span>
                         </label>
                         <label class="flex items-center space-x-2 cursor-pointer">
-                          <input type="radio" name="tipe" value="promo" v-model="filterParams.isPromoFilter"
+                          <input type="radio" name="tipe" value="promo" v-model="localFilterParams.isPromoFilter"
                             class="text-green-600 focus:ring-green-500" />
                           <span class="font-semibold">{{ $t('productPricePromo') }}</span>
                         </label>

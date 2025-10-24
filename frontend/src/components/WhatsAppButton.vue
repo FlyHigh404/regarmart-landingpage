@@ -27,9 +27,15 @@ const initialMessage = `Halo Admin Panganku Fresh!
 Saya tertarik dengan produk sayur mayur dan sembako yang tersedia di website Panganku Fresh. 
 Boleh minta info lebih lanjut soal ketersediaan dan pengiriman? Terima kasih!`
 
-const cleanNumber = phoneNumber.replace(/\D/g, '')
+const cleanNumber = phoneNumber ? phoneNumber.replace(/\D/g, '') : '6281234567890';
 const encodedMessage = encodeURIComponent(initialMessage)
-const whatsappLink = computed(() => `https://wa.me/${cleanNumber}?text=${encodedMessage}`)
+
+const whatsappLink = computed(() => {
+    if (cleanNumber) {
+        return `https://wa.me/${cleanNumber}?text=${encodedMessage}`
+    }
+    return '#'; 
+})
 </script>
 
 <style scoped>
