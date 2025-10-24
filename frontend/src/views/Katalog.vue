@@ -1,8 +1,31 @@
 <script setup>
+import { useHead } from '@vueuse/head'
 import BaseButton from "@/components/BaseButton.vue";
 import { ref, computed, onMounted, watch, reactive } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import { fetchProducts, fetchCategories, fetchUnits } from '@/services/productService';
+
+useHead({
+  title: 'Katalog Produk RegarMart - Belanja Buah Segar dan Berkualitas',
+  meta: [
+    {
+      name: 'description',
+      content: 'Jelajahi katalog lengkap RegarMart untuk berbagai buah segar berkualitas. Pesan mudah via WhatsApp, cepat dan praktis!'
+    },
+    {
+      name: 'keywords',
+      content: 'katalog produk, buah segar, belanja buah online, RegarMart, pesan buah via WhatsApp'
+    },
+    {
+      property: 'og:title',
+      content: 'Katalog Produk RegarMart - Belanja Buah Segar dan Berkualitas'
+    },
+    {
+      property: 'og:description',
+      content: 'Jelajahi katalog lengkap RegarMart untuk berbagai buah segar berkualitas. Pesan mudah via WhatsApp, cepat dan praktis!'
+    },
+  ]
+});
 
 const router = { 
   replace: (url) => {
@@ -119,8 +142,9 @@ const loadProducts = async () => {
     itemsPerPage.value = result.meta.itemsPerPage;
 
     if (result.data.length === 0 && currentPage.value > 1 && totalItemsCount.value > 0) {
-      currentPage.value = 1;
-      loadProducts();
+      // MODIFIKASI: Hapus panggilan loadProducts() rekursif.
+      // Cukup set currentPage.value = 1, biarkan 'watch' block yang re-trigger loadProducts.
+      currentPage.value = 1; 
     }
   } catch (err) {
     isError.value = true;
@@ -321,12 +345,12 @@ onMounted(() => {
                       <label class="text-gray-700 text-xs">Tipe Produk</label>
                       <div class="text-sm flex flex-wrap gap-4 text-black">
                         <label class="flex items-center space-x-2 cursor-pointer">
-                          <input type="radio" name="tipe" value="normal" v-model="filterParams.isPromoFilter"
+                          <input type="radio" name="tipe" value="normal" v-model="localFilterParams.isPromoFilter"
                             class="text-green-600 focus:ring-green-500" />
                           <span class="font-semibold">Harga Normal</span>
                         </label>
                         <label class="flex items-center space-x-2 cursor-pointer">
-                          <input type="radio" name="tipe" value="promo" v-model="filterParams.isPromoFilter"
+                          <input type="radio" name="tipe" value="promo" v-model="localFilterParams.isPromoFilter"
                             class="text-green-600 focus:ring-green-500" />
                           <span class="font-semibold">Harga Promo</span>
                         </label>

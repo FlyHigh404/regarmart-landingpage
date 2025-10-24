@@ -15,7 +15,7 @@
           <span class="font-bold">Regar Mart</span> siapin dengan <span class="font-bold">packing rapi</span> dan kirim
           langsung ke rumahmu.
         </p>
-        <img src="/beranda.png" alt="Pelanggan Puas" class="customer-satisfaction-badge hidden lg:block" />
+        <img src="/beranda.png" alt="Jaminan Kepuasan Belanja Kebutuhan Harian di Regar Mart Surabaya" class="customer-satisfaction-badge hidden lg:block" />
         <div class="container mx-auto mt-5 sm:mt-7">
 
           <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
@@ -35,7 +35,7 @@
                     v-model="searchQuery" @keyup.enter="searchProducts" />
                 </div>
 
-                <h2 class="text-sm font-bold mb-3 text-[#1B1F1B]">Filter Pencarian</h2>
+                <h3 class="text-sm font-bold mb-3 text-[#1B1F1B]">Filter Pencarian</h3>
 
                 <div class="mb-4">
                   <label class="block text-gray-700 text-xs mb-2">Kategori</label>
@@ -111,6 +111,13 @@
             <div class="lg:col-span-2 flex flex-col py-2">
               <div class="flex justify-between items-center mb-4">
                 <h2 class="text-lg sm:text-xl font-bold text-[#1B1F1B]">Produk Terlaris</h2>
+                
+                <component 
+                  :is="'script'" 
+                  type="application/ld+json" 
+                  v-html="JSON.stringify(bestSellerStructuredData)">
+                </component>
+
                 <div class="hidden sm:flex space-x-1">
                   <button
                     class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm">
@@ -228,7 +235,7 @@
           <div
             class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
             <div class="w-full h-48 overflow-hidden"> <img src="/keunggulan1.png"
-                alt="Sustainability & Environmental Impact" class="h-full w-full object-cover">
+                alt="Harga produk Regar Mart terjangkau dan transparan" class="h-full w-full object-cover">
             </div>
             <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
               <h3 class="font-extrabold mb-3 text-[#26A81D] text-left text-base sm:text-lg">
@@ -244,7 +251,7 @@
           <div
             class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
             <div class="w-full h-48 overflow-hidden">
-              <img src="/keunggulan2.png" alt="Innovative & User Centric Technology" class="h-full w-full object-cover">
+              <img src="/keunggulan2.png" alt="Berbagai produk harian Regar Mart lengkap dan berkualitas" class="h-full w-full object-cover">
             </div>
             <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
               <h3 class="font-extrabold mb-3 text-[#26A81D] text-left text-base sm:text-lg">
@@ -260,7 +267,7 @@
           <div
             class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] transition duration-400 ease-in-out hover:shadow-2xl hover:-translate-y-2">
             <div class="w-full h-48 overflow-hidden">
-              <img src="/keunggulan3.png" alt="Market Potential & Growth Opportunity"
+              <img src="/keunggulan3.png" alt="Layanan pengiriman Regar Mart cepat dan terpercaya di Surabaya"
                 class="h-full w-full object-cover">
             </div>
             <div class="px-5 py-6 sm:px-9 sm:py-8 flex flex-col flex-grow">
@@ -279,6 +286,12 @@
 
     <section id="faq" class="pt-10 sm:pt-20 pb-10">
       <div class="container mx-auto">
+        <component 
+          :is="'script'" 
+          type="application/ld+json" 
+          v-html="JSON.stringify(faqStructuredData)">
+        </component>
+
         <h2 class="text-2xl sm:text-3xl font-bold text-center mb-5 text-gray-800">
           <span class="text-[#26A81D]">Frequently </span>Ask Question
         </h2>
@@ -334,12 +347,34 @@
 
 
 <script>
-// Pastikan path import API service sudah benar di proyek Anda
+import { useHead } from '@vueuse/head'
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { fetchCategories, fetchUnits } from '@/services/productService'; // Ganti jika Anda tidak menggunakan productService
-import { getFaqs } from '../api/faq'; // Sesuaikan path API yang baru
-import { getBestSellers } from '../api/product'; // Sesuaikan path API yang baru
+import { fetchCategories, fetchUnits } from '@/services/productService'; 
+import { getFaqs } from '../api/faq'; 
+import { getBestSellers } from '../api/product';
+
+useHead({
+  title: 'Regar Mart - Solusi Belanja Kebutuhan Harian via WhatsApp',
+  meta: [
+    {
+      name: 'description',
+      content: 'Regar Mart memudahkan Anda berbelanja kebutuhan harian melalui WhatsApp. Nikmati harga terjangkau, produk berkualitas, dan layanan cepat di Surabaya.',
+    },
+    {
+      name: 'keywords',
+      content: 'Regar Mart, belanja kebutuhan harian, belanja via WhatsApp, produk harian Surabaya, layanan pengiriman cepat, produk berkualitas, harga terjangkau',
+    },
+    {
+      property: 'og:title',
+      content: 'Regar Mart - Solusi Belanja Kebutuhan Harian via WhatsApp',
+    },
+    {
+      property: 'og:description',
+      content: 'Regar Mart memudahkan Anda berbelanja kebutuhan harian melalui WhatsApp. Nikmati harga terjangkau, produk berkualitas, dan layanan cepat di Surabaya.',
+    },
+  ],
+});
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -347,19 +382,16 @@ export default {
   name: 'Home',
   data() {
     return {
-      // 1. Pencarian
-      searchQuery: '', // Kata kunci pencarian
-      selectedCategory: '', // ID Kategori yang dipilih (di Options API, lebih mudah pakai string/ID tunggal)
-      selectedUnits: '',    // ID Satuan Produk yang dipilih (ARRAY, meniru kode baru)
+      searchQuery: '',
+      selectedCategory: '',
+      selectedUnits: '',
 
-      // 2. Data Master & Konten (Meniru state ref() dari kode baru)
       categories: [],
       units: [],
       faqData: [],
       bestSellers: [],
       histories: [],
 
-      // 3. Status Loading & Error (Tambahan dari kode baru untuk UI)
       isCategoryLoading: true,
       isUnitLoading: true,
       isFaqLoading: true,
@@ -372,12 +404,61 @@ export default {
       bestSellerError: null,
       historyError: null,
 
-      // 4. State FAQ (Dipertahankan)
-      activeIndex: null, // untuk toggle FAQ
+      activeIndex: null,
     };
   },
+
+  computed: {
+    faqStructuredData() {
+      if (!this.faqData || this.faqData.length === 0) return null;
+
+      const mainEntity = this.faqData.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }));
+
+      return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": mainEntity
+      };
+    },
+
+    bestSellerStructuredData() {
+      if (!this.bestSellers || this.bestSellers.length === 0) return null;
+
+      return {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Produk Terlaris Regar Mart",
+        "itemListOrder": "https://schema.org/ItemListOrderDescending",
+        "itemListElement": this.bestSellers.map((product, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "item": {
+            "@type": "Product",
+            "name": product.name,
+            "image": product.imageUrl || 'https://regarmart.com/images/default-product.png', 
+            "description": product.description || product.name,
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "IDR",
+              "price": product.isPromo ? product.promoPrice : product.basePrice, 
+              "itemCondition": "https://schema.org/NewCondition",
+              "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+              "url": `https://regarmart.com/katalog/${product.id}` 
+            }
+          }
+        }))
+      };
+    }
+  },
+  
   async mounted() {
-    // Menggabungkan semua fetch data ke dalam mounted()
     await Promise.all([
       this.fetchSearchHistories(),
       this.fetchCategories(),
@@ -387,20 +468,17 @@ export default {
     ]);
   },
   methods: {
-    // === METODE FILTER & DATA FETCHING (Disesuaikan dari kode baru) ===
 
-    // 1. RIWAYAT PENCARIAN (Baru)
     async fetchSearchHistories() {
       this.isHistoryLoading = true;
       this.historyError = null;
       try {
         const userToken = Cookies.get("user_token");
 
-        // Jika tidak ada token, tidak perlu fetch dan tampilkan pesan
         if (!userToken) {
           this.historyError = "Silakan login untuk melihat riwayat pencarian.";
-          this.histories = []; // Kosongkan riwayat
-          return; // Hentikan eksekusi
+          this.histories = []; 
+          return; 
         }
 
         const response = await axios.get(`${API_BASE_URL}/search-histories`, {
@@ -410,12 +488,11 @@ export default {
           },
         });
 
-        // Update data `histories` di komponen dengan `this`
         this.histories = response.data;
 
       } catch (err) {
         this.historyError = "Gagal memuat riwayat pencarian. " + (err.response?.data?.message || err.message);
-        this.histories = []; // Kosongkan jika error
+        this.histories = []; 
         console.error(this.historyError);
       } finally {
         this.isHistoryLoading = false;
@@ -424,22 +501,20 @@ export default {
 
     handleSearchAgain(searchTerm) {
       console.log(`Searching again for: ${searchTerm}`);
-      // Menggunakan Vue Router untuk navigasi
       this.$router.push({
-        name: 'Katalog', // Ganti dengan nama route katalog Anda
+        name: 'Katalog', 
         query: { search: encodeURIComponent(searchTerm) }
       });
     },
 
-    // 2. KATEGORI (Diperbarui dengan Loading/Error)
     async fetchCategories() {
       this.isCategoryLoading = true;
       this.categoryError = null;
       try {
-        const fetchedCategories = await fetchCategories(); // Menggunakan API lama yang diimpor
+        const fetchedCategories = await fetchCategories(); 
         this.categories = fetchedCategories;
         if (fetchedCategories.length > 0) {
-          this.selectedCategory = ''; // Reset pilihan kategori
+          this.selectedCategory = ''; 
         }
       } catch (err) {
         this.categoryError = err.message || 'Terjadi kesalahan saat mengambil data kategori.';
@@ -448,13 +523,12 @@ export default {
       }
     },
 
-    // 3. UNIT (Diperbarui dengan Loading/Error)
     async fetchUnits() {
       this.isUnitLoading = true;
       this.unitError = null;
       try {
-        const response = await fetchUnits(); // Menggunakan API lama yang diimpor
-        this.units = response.data || response; // Menyesuaikan jika respons API berubah
+        const response = await fetchUnits(); 
+        this.units = response.data || response; 
       } catch (err) {
         this.unitError = err.message || 'Gagal mengambil data satuan.';
       } finally {
@@ -462,7 +536,6 @@ export default {
       }
     },
 
-    // 4. FAQ (Baru)
     async fetchFaqs() {
       this.isFaqLoading = true;
       this.faqError = null;
@@ -476,7 +549,6 @@ export default {
       }
     },
 
-    // 5. BEST SELLERS (Baru)
     async fetchBestSellers() {
       this.isBestSellerLoading = true;
       this.bestSellerError = null;
@@ -490,18 +562,15 @@ export default {
       }
     },
 
-    // 6. TOGGLE FAQ (Dipertahankan)
     toggleFaq(index) {
       this.activeIndex = this.activeIndex === index ? null : index;
     },
 
-    // 7. ANIMASI FAQ (Dipertahankan)
     beforeEnter(el) { el.style.height = '0'; },
     enter(el) { el.style.height = el.scrollHeight + 'px'; },
     beforeLeave(el) { el.style.height = el.scrollHeight + 'px'; },
     leave(el) { el.style.height = '0'; },
 
-    // 8. PENCARIAN UTAMA (Mengambil logika kompleks dari kode baru)
     async searchProducts() {
       const term = this.searchQuery.trim();
 
@@ -517,26 +586,21 @@ export default {
         params.set('category', this.selectedCategory);
       }
 
-      // Menggunakan selectedUnits (ARRAY) dan menggabungkannya dengan koma
-      if (this.selectedUnits) { // Jika selectedUnit punya nilai (tidak kosong)
+      if (this.selectedUnits) { 
         params.set('unit', this.selectedUnits);
 }
 
       const queryString = params.toString();
 
-      // LOGIKA BARU: Melakukan AJAX GET ke backend untuk memicu
-      // penyimpanan riwayat dan/atau validasi login sebelum navigasi
       try {
         await axios.get(`${API_BASE_URL}/products?${queryString}`, {
-          withCredentials: true // Penting untuk mengirim cookie (misalnya untuk otentikasi)
+          withCredentials: true 
         });
 
-        // Setelah backend berhasil memproses (misalnya menyimpan riwayat), update riwayat lokal
         this.fetchSearchHistories();
 
-        // Navigasi ke halaman produk menggunakan Vue Router
         this.$router.push({
-          name: 'Katalog', // Ganti dengan nama route katalog Anda
+          name: 'Katalog',
           query: {
             search: term,
             ...(this.selectedCategory && { category: this.selectedCategory }),

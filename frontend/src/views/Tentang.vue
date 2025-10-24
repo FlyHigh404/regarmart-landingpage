@@ -2,15 +2,14 @@
   <div>
     <section class="relative w-screen py-16 overflow-hidden">
       <img src="/buahkiri.svg" alt="Decor Left" class="absolute top-0 left-0 h-full 
-              w-[100px] sm:w-[180px] md:w-[300px] lg:w-[370px] 
-              object-cover select-none pointer-events-none animate-float transition-all duration-300" />
+             w-[100px] sm:w-[180px] md:w-[300px] lg:w-[370px] 
+             object-cover select-none pointer-events-none animate-float transition-all duration-300" />
 
       <img src="/buahkanan.svg" alt="Decor Right" class="absolute top-0 right-0 h-full 
-              w-[100px] sm:w-[180px] md:w-[300px] lg:w-[370px] 
-              object-cover select-none pointer-events-none animate-float transition-all duration-300" />
+             w-[100px] sm:w-[180px] md:w-[300px] lg:w-[370px] 
+             object-cover select-none pointer-events-none animate-float transition-all duration-300" />
 
 
-      <!-- Konten -->
       <div class="relative z-10 text-center max-w-2xl mx-auto px-23 sm:px-17 lg:px-9">
         <h1 class="text-2xl sm:text-3xl md:text-[30px] lg:text-[38px] font-extrabold leading-snug mb-4 text-center">
           <span class="block">
@@ -26,9 +25,8 @@
         </p>
       </div>
 
-      <!-- Card Features -->
       <div class="relative z-10 mt-12 flex justify-center items-center gap-6 md:gap-10 lg:gap-11 max-w-6xl mx-auto 
-            scale-[0.85] sm:scale-[0.9] md:scale-[0.95] lg:scale-[1] transition-transform duration-300">
+             scale-[0.85] sm:scale-[0.9] md:scale-[0.95] lg:scale-[1] transition-transform duration-300">
         <div
           class="flex flex-col justify-center items-center text-center transition w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] h-[230px]">
           <div class="flex justify-center items-center p-6 mb-4">
@@ -56,41 +54,39 @@
     </section>
 
 
-    <!--Gambar Animasi-->
     <section class="relative w-screen py-12 bg-white mt-5 lg:mt-[80px]">
       <div class="flex gap-6 animate-slide">
         <img src="/gambaranimasi1.png" alt="Sayuran 1" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi2.png" alt="Sayuran 2" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi3.png" alt="Sayuran 3" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi4.png" alt="Sayuran 1" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi5.png" alt="Sayuran 2" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
         <img src="/gambaranimasi1.png" alt="Sayuran 1" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi2.png" alt="Sayuran 2" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi3.png" alt="Sayuran 3" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi4.png" alt="Sayuran 1" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
 
         <img src="/gambaranimasi5.png" alt="Sayuran 2" class="rounded-xl object-cover flex-shrink-0 
-                  w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
+                     w-[300px] h-[180px] sm:w-[400px] sm:h-[240px] md:w-[553px] md:h-[330px]" />
       </div>
     </section>
 
-    <!-- Visi Misi -->
     <section class=" px-8 md:px-8 lg:px-[145px] mt-[80px]">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-[#1C1C1E]">
@@ -122,7 +118,7 @@
           class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] flex-1 h-full md:mt-0 lg:mt-6">
           <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
             <div class="relative pt-[60%] bg-[#26A81D]">
-              <img src="/komitmen.png" alt="Innovative & User Centric Technology"
+              <img src="/komitmen.png" alt="Pelayanan & Komitmen"
                 class="absolute inset-0 w-full h-full object-cover">
             </div>
           </div>
@@ -140,13 +136,13 @@
           class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px]">
           <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
             <div class="relative pt-[60%] bg-[#26A81D]">
-              <img src="/komitmen.png" alt="Innovative & User Centric Technology"
+              <img src="/komitmen.png" alt="Kualitas Produk"
                 class="absolute inset-0 w-full h-full object-cover">
             </div>
           </div>
           <div class="px-6 py-8 flex flex-col flex-grow">
             <h3 class="font-extrabold mb-4 text-[#26A81D] text-center">
-              Pelayanan & Komitmen
+              Kualitas Produk
             </h3>
             <p class="text-[14px] text-gray-700 text-center">
               Panganku Fresh menghadirkan produk segar dari petani lokal, berkualitas dan terpercaya.
@@ -156,7 +152,6 @@
       </div>
     </section>
 
-    <!--Temukan Kami-->
     <section class="mt-[150px] bg-white px-4 sm:px-8 lg:px-24">
       <h2 class="text-center text-2xl md:text-3xl font-bold mb-12">
         Temukan Kami di Sini
@@ -196,7 +191,7 @@
 
       <div class="w-full lg:px-[50px]">
         <iframe class="w-full h-96 rounded-xl shadow"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.2392017392497!2d112.79621507407388!3d-7.326621172050476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fba8d73e8d0d%3A0x7b3edcd3e2d78df5!2sJl.%20Medokan%20Sawah%20No.32%2C%20Surabaya!5e0!3m2!1sen!2sid!4v1695912334567!5m2!1sen!2sid"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.170468979313!2d112.79155257404412!3d-7.340266192663953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fb39d89286d9%3A0x6b87654a9d033a82!2sJl.%20Medokan%20Sawah%20No.32%2C%20Medokan%20Ayu%2C%20Kec.%20Rungkut%2C%20Surabaya%2C%20Jawa%20Timur%2060295!5e0!3m2!1sid!2sid!4v1709623871146!5m2!1sid!2sid"
           allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
       </div>
@@ -241,6 +236,21 @@
 </style>
 
 <script>
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'Tentang Kami - Regar Mart',
+  meta: [
+    {
+      name: 'description',
+      content: 'Pelajari lebih lanjut tentang Regar Mart, visi, misi, dan komitmen kami dalam menyediakan produk segar berkualitas untuk Anda.'
+    },
+    {
+      name: 'keywords',
+      content: 'Tentang Regar Mart, Visi Regar Mart, Misi Regar Mart, Komitmen Pelayanan, Produk Segar, Belanja Online'
+    }
+  ]
+})
 export default {
   name: "VisionMissionPage",
 };

@@ -116,9 +116,32 @@
 </template>
 
 <script setup>
+import { useHead } from '@vueuse/head'
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import axios from 'axios';
 import Pagination from '@/components/Pagination.vue';
+
+useHead({
+  title: 'Testimoni Pelanggan - Regar Mart',
+  meta: [
+    {
+      name: 'description',
+      content: 'Baca testimoni dari pelanggan Regar Mart yang telah merasakan kemudahan belanja kebutuhan harian secara online dengan produk segar dan layanan terbaik.',
+    },
+    {
+      name: 'keywords',
+      content: 'testimoni pelanggan, ulasan pelanggan, pengalaman belanja, Regar Mart, belanja online, produk segar, layanan pelanggan',
+    },
+    {
+      property: 'og:title',
+      content: 'Testimoni Pelanggan - Regar Mart',
+    },
+    {
+      property: 'og:description',
+      content: 'Baca testimoni dari pelanggan Regar Mart yang telah merasakan kemudahan belanja kebutuhan harian secara online dengan produk segar dan layanan terbaik.',
+    },
+  ],
+});
 
 const testimonials = ref([]);
 const currentPage = ref(1);
