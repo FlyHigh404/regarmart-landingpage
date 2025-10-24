@@ -118,11 +118,11 @@
                 <h2 class="text-lg sm:text-xl font-bold text-[#1B1F1B]">{{ $t('bestSellerText') }}</h2>
                 <div class="flex space-x-1">
                   <button @click="prevBestSeller"
-                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm">
+                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm cursor-pointer">
                     &lt;
                   </button>
                   <button @click="nextBestSeller"
-                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm">
+                    class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center border border-gray-300 rounded-[6px] text-black hover:bg-gray-100 transition-colors text-sm cursor-pointer">
                     &gt;
                   </button>
                 </div>
@@ -314,7 +314,7 @@
         <div class="bg-white rounded-lg shadow-2xl relative p-3 max-w-lg w-[90%] mx-auto">
 
           <button @click="closeQuickView"
-            class="absolute top-0 right-0 m-2 text-white bg-black/50 hover:bg-black/70 rounded-full p-2 z-10">
+            class="absolute top-0 right-0 m-2 text-white bg-black/50 hover:bg-black/70 rounded-full p-2 z-10 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
