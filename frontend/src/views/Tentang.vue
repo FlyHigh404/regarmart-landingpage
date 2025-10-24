@@ -91,7 +91,7 @@
     </section>
 
     <!-- Visi Misi -->
-    <section class=" px-3 md:px-8 lg:px-[145px] mt-[80px]">
+    <section class=" px-8 md:px-8 lg:px-[145px] mt-[80px]">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-[#1C1C1E]">
           Kami Hadir <span class="text-[#26A81D]">untuk Anda</span>
@@ -101,7 +101,7 @@
       <div class="text-lg grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
         <div data-aos="flip-left" data-aos-duration="1000"
-          class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px]">
+          class="bg-white shadow-lg overflow-hidden flex flex-col rounded-[12px] w-full h-auto">
           <div class="w-full overflow-hidden rounded-t-[12px] rounded-[12px]">
             <div class="relative pt-[60%] bg-[#26A81D]">
               <img src="/toko.png" alt="Sustainability & Environmental Impact"
@@ -113,8 +113,7 @@
               Awal Berdiri & Visi
             </h3>
             <p class="text-[14px] text-gray-700 text-center">
-              Panganku Fresh hadir dengan visi menyediakan bahan pangan segar, sehat, dan terjangkau. Kami menggabungkan
-              penjualan online & offline untuk memudahkan pelanggan.
+              Panganku Fresh hadir dengan visi menyediakan pangan segar, sehat, dan terjangkau.
             </p>
           </div>
         </div>
@@ -132,9 +131,7 @@
               Pelayanan & Komitmen
             </h3>
             <p class="text-[14px] text-gray-700 text-center">
-              Kami bukan sekadar tempat belanja, tapi mitra keluarga & usaha kuliner. Dengan layanan ramah & cepat, kami
-              berkomitmen menjaga kepuasan pelanggan melalui kualitas terbaik, transparansi harga, dan layanan siap
-              bantu.
+              Kami bukan sekadar tempat belanja, tapi mitra keluarga. Dengan layanan ramah, cepat, dan transparan, kami selalu menjaga kepuasan pelanggan.
             </p>
           </div>
         </div>
@@ -152,9 +149,7 @@
               Pelayanan & Komitmen
             </h3>
             <p class="text-[14px] text-gray-700 text-center">
-              Kami bukan sekadar tempat belanja, tapi mitra keluarga & usaha kuliner. Dengan layanan ramah & cepat, kami
-              berkomitmen menjaga kepuasan pelanggan melalui kualitas terbaik, transparansi harga, dan layanan siap
-              bantu.
+              Panganku Fresh menghadirkan produk segar dari petani lokal, berkualitas dan terpercaya.
             </p>
           </div>
         </div>

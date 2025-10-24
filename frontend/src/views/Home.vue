@@ -63,7 +63,7 @@
                   <div class="text-sm flex flex-wrap gap-2 text-black">
                     <label v-for="unit in units" :key="unit.id" class="flex items-center space-x-2 cursor-pointer">
                       <input type="radio" name="satuan" class="form-radio text-green-600 focus:ring-green-500 h-4 w-4"
-                        :value="unit.id" v-model="selectedUnit" />
+                        :value="unit.id" v-model="selectedUnits" />
                       <span class="font-semibold">{{ unit.name }}</span>
                     </label>
                   </div>
@@ -283,11 +283,11 @@
           <span class="text-[#26A81D]">Frequently </span>Ask Question
         </h2>
 
-        <div v-if="isLoading" class="text-center p-10 text-gray-500">
+        <div v-if="isHistoryLoading" class="text-center p-10 text-gray-500">
           Memuat pertanyaan dan jawaban...
         </div>
 
-        <div v-else-if="error"
+        <div v-else-if="faqError"
           class="text-center p-10 text-red-700 bg-red-100 border border-red-400 rounded-lg mx-auto max-w-lg">
           🚨 Error: {{ error }}
         </div>
@@ -350,7 +350,7 @@ export default {
       // 1. Pencarian
       searchQuery: '', // Kata kunci pencarian
       selectedCategory: '', // ID Kategori yang dipilih (di Options API, lebih mudah pakai string/ID tunggal)
-      selectedUnits: [],    // ID Satuan Produk yang dipilih (ARRAY, meniru kode baru)
+      selectedUnits: '',    // ID Satuan Produk yang dipilih (ARRAY, meniru kode baru)
 
       // 2. Data Master & Konten (Meniru state ref() dari kode baru)
       categories: [],
@@ -518,9 +518,9 @@ export default {
       }
 
       // Menggunakan selectedUnits (ARRAY) dan menggabungkannya dengan koma
-      if (this.selectedUnits.length > 0) {
-        params.set('unit', this.selectedUnits.join(','));
-      }
+      if (this.selectedUnits) { // Jika selectedUnit punya nilai (tidak kosong)
+        params.set('unit', this.selectedUnits);
+}
 
       const queryString = params.toString();
 

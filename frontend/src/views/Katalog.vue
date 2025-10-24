@@ -4,7 +4,7 @@ import { ref, computed, onMounted, watch, reactive } from 'vue'
 import Pagination from '@/components/Pagination.vue'
 import { fetchProducts, fetchCategories, fetchUnits } from '@/services/productService';
 
-const router = { // Simulasi router sederhana untuk history API
+const router = { 
   replace: (url) => {
     window.history.replaceState(null, '', url);
   },
@@ -17,9 +17,7 @@ const getParamsFromUrl = () => {
   const url = router.current();
   return {
     searchQuery: url.searchParams.get('s') || '',
-    // Pastikan Number() digunakan, dan jika tidak ada, gunakan null.
     categoryFilter: url.searchParams.get('cat') ? Number(url.searchParams.get('cat')) : null,
-    // Map ke Number untuk array unit filters
     unitFilters: url.searchParams.get('unit') ? url.searchParams.get('unit').split(',').map(id => Number(id)).filter(id => !isNaN(id)) : [],
     isPromoFilter: url.searchParams.get('promo') || null,
     sortBy: url.searchParams.get('sort') || '',
@@ -35,7 +33,7 @@ const isLoading = ref(false);
 const isError = ref(false);
 const errorMessage = ref(null);
 
-// 🔹 Filter & Sort Parameters (Akan di-watch untuk memuat ulang produk)
+// 🔹 Filter & Sort Parameters
 const filterParams = reactive({
   searchQuery: initialParams.searchQuery,
   categoryFilter: initialParams.categoryFilter,
@@ -47,7 +45,7 @@ const filterParams = reactive({
 const localFilterParams = reactive({
   searchQuery: initialParams.searchQuery,
   categoryFilter: initialParams.categoryFilter,
-  unitFilters: [...initialParams.unitFilters], // Gunakan spread untuk mencegah reactive issues
+  unitFilters: [...initialParams.unitFilters], 
   isPromoFilter: initialParams.isPromoFilter,
 });
 
@@ -94,12 +92,8 @@ const updateUrlWithParams = () => {
 const ADMIN_WA_NUMBER = import.meta.env.VITE_ADMIN_WA_NUMBER || '6285263759398';
 const getWhatsappLink = (productName) => {
   const text = `Halo, saya tertarik dengan produk *${productName}* yang ada di katalog Anda. Apakah produk ini masih tersedia?`;
-  // Mengembalikan tautan WA dengan encoding URL
   return `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodeURIComponent(text)}`;
 };
-
-
-// --- COMPUTED PROPERTIES ---
 
 // 🔹 Hitung total halaman berdasarkan jumlah item
 const totalPages = computed(() => {
@@ -191,7 +185,7 @@ const toggleUnitFilter = (unitId) => {
   }
 };
 
-// 🟢 Terapkan Filter (untuk modal mobile & tombol desktop)
+// 🟢 Terapkan Filter
 const applyFilter = () => {
   filterParams.categoryFilter = localFilterParams.categoryFilter;
   filterParams.isPromoFilter = localFilterParams.isPromoFilter;
