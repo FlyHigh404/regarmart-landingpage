@@ -138,13 +138,19 @@
                 <p>Belum ada produk terlaris saat ini.</p>
               </div>
 
-              <div v-else class="relative">
-                <div class="overflow-hidden">
+              <div v-else class="relative overflow-hidden">
+                <div class="overflow-visible">
                   <div class="flex transition-transform duration-500 ease-in-out pb-4" :style="{
-                    transform: `translateX(-${(currentBestSellerIndex / itemsPerSlide) * 100}%)`
+                    transform: `translateX(-${(currentBestSellerIndex / itemsPerSlideComputed) * 100}%)`
                   }">
                     <div v-for="(product, index) in [...bestSellers, ...bestSellers]" :key="`${product.id}-${index}`"
-                      class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0 w-[240px] md:w-[220px] mx-2">
+                      class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300 flex flex-col flex-shrink-0"
+                      :class="{
+                        'w-full mx-0': itemsPerSlideComputed === 1,
+                        'w-1/2 md:w-1/2 lg:w-1/2 px-2': itemsPerSlideComputed > 1,
+                        'min-w-full': itemsPerSlideComputed === 1,
+                        'min-w-[50%]': itemsPerSlideComputed > 1,
+                      }">
 
                       <div
                         class="flex justify-center items-center h-40 sm:h-36 bg-gray-50 rounded-t-xl overflow-hidden">
@@ -361,7 +367,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'; // Import computed
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -404,9 +410,9 @@ const activeIndex = ref(null);
 
 // Slider Produk Terlaris
 const currentBestSellerIndex = ref(0);
-const itemsPerSlide = 2;
 let autoSlideInterval = null;
 const isTransitioning = ref(false);
+const windowWidth = ref(window.innerWidth);
 
 // Quick View State
 const isQuickViewOpen = ref(false);
@@ -414,6 +420,61 @@ const quickViewImage = ref('');
 
 // WhatsApp Configuration
 const ADMIN_WA_NUMBER = import.meta.env.VITE_ADMIN_WA_NUMBER || '6281281139274';
+
+const itemsPerSlideComputed = computed(() => {
+  return windowWidth.value < 768 ? 1 : 2;
+});
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+// Fungsi SLIDER PRODUK TERLARIS 
+function nextBestSeller() {
+  const step = itemsPerSlideComputed.value;
+  if (bestSellers.value.length === 0 || isTransitioning.value) return;
+
+  isTransitioning.value = true;
+
+  if (currentBestSellerIndex.value + step >= bestSellers.value.length) {
+    currentBestSellerIndex.value = 0;
+  } else {
+    currentBestSellerIndex.value += step;
+  }
+
+  setTimeout(() => {
+    isTransitioning.value = false;
+  }, 500);
+}
+
+function prevBestSeller() {
+  const step = itemsPerSlideComputed.value;
+  if (bestSellers.value.length === 0 || isTransitioning.value) return;
+
+  isTransitioning.value = true;
+
+  if (currentBestSellerIndex.value - step < 0) {
+    const totalItems = bestSellers.value.length;
+    const maxIndex = Math.floor((totalItems - 1) / step) * step;
+    currentBestSellerIndex.value = maxIndex;
+  } else {
+    currentBestSellerIndex.value -= step;
+  }
+
+  setTimeout(() => {
+    isTransitioning.value = false;
+  }, 500);
+}
+
+
+function startAutoSlide() {
+  if (autoSlideInterval) {
+    clearInterval(autoSlideInterval);
+  }
+  autoSlideInterval = setInterval(() => {
+    nextBestSeller();
+  }, 5000);
+}
 
 // Fungsi Quick View
 const openQuickView = (imageUrl) => {
@@ -569,48 +630,12 @@ async function searchProducts() {
   }
 }
 
-// SLIDER PRODUK TERLARIS 
-function nextBestSeller() {
-  if (bestSellers.value.length === 0 || isTransitioning.value) return;
-
-  isTransitioning.value = true;
-
-  if (currentBestSellerIndex.value + itemsPerSlide >= bestSellers.value.length) {
-    currentBestSellerIndex.value = 0;
-  } else {
-    currentBestSellerIndex.value += itemsPerSlide;
-  }
-
-  setTimeout(() => {
-    isTransitioning.value = false;
-  }, 500);
-}
-
-function prevBestSeller() {
-  if (bestSellers.value.length === 0 || isTransitioning.value) return;
-
-  isTransitioning.value = true;
-
-  if (currentBestSellerIndex.value - itemsPerSlide < 0) {
-    const maxIndex = Math.floor((bestSellers.value.length - 1) / itemsPerSlide) * itemsPerSlide;
-    currentBestSellerIndex.value = maxIndex;
-  } else {
-    currentBestSellerIndex.value -= itemsPerSlide;
-  }
-
-  setTimeout(() => {
-    isTransitioning.value = false;
-  }, 500);
-}
-
-function startAutoSlide() {
-  autoSlideInterval = setInterval(() => {
-    nextBestSeller();
-  }, 5000);
-}
 
 // LIFECYCLE HOOKS 
 onMounted(async () => {
+  window.addEventListener('resize', updateWindowWidth);
+  updateWindowWidth();
+
   await Promise.all([
     fetchSearchHistories(),
     fetchCategories(),
@@ -623,6 +648,7 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowWidth);
   if (autoSlideInterval) {
     clearInterval(autoSlideInterval);
   }
