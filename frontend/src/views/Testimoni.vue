@@ -11,7 +11,8 @@
             {{ $rt(text) }}
           </span>
         </h1>
-        <p class="text-[#6D706E] text-sm sm:text-lg mx-auto max-w-3xl mb-10 px-4 sm:px-0" v-html="$t('testimonials.subtitle')"></p>
+        <p class="text-[#6D706E] text-sm sm:text-lg mx-auto max-w-3xl mb-10 px-4 sm:px-0"
+          v-html="$t('testimonials.subtitle')"></p>
       </div>
     </section>
 
@@ -156,12 +157,12 @@ const API_BASE_URL = import.meta.env.VITE_BACKEND_API_URL;
 const ITEMS_PER_PAGE = 4;
 const LOCAL_STORAGE_KEY = 'currentPageTestimonial';
 
-const fetchTestimonials = async (page, isInitial = false) => {
+const fetchTestimonials = async (page, isInitial = false, lang = 'id') => {
   if (isInitial) isLoading.value = true;
   else isPageChanging.value = true;
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/testimonials`, {
+    const response = await axios.get(`${API_BASE_URL}/testimonials?lang=${lang}`, {
       params: { page, limit: ITEMS_PER_PAGE },
     });
 
@@ -204,14 +205,18 @@ const checkScreenSize = () => {
 };
 
 watch(currentPage, (newPage, oldPage) => {
-  if (oldPage !== null) fetchTestimonials(newPage, false);
+  if (oldPage !== null) fetchTestimonials(newPage, false, locale.value);
+});
+
+watch(locale, (newLang) => {
+  fetchTestimonials(currentPage.value, true, newLang);
 });
 
 onMounted(() => {
   const savedPage = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (savedPage) currentPage.value = parseInt(savedPage, 10);
 
-  fetchTestimonials(currentPage.value, true);
+  fetchTestimonials(currentPage.value, true, locale.value);
   checkScreenSize();
   window.addEventListener('resize', checkScreenSize);
 });

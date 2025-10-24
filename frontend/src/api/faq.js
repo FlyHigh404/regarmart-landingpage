@@ -2,9 +2,9 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_API_URL;
 
-export const getFaqs = async () => {
+export const getFaqs = async (lang = 'id') => {
   try {
-    const response = await axios.get(`${BASE_URL}/faqs`);
+    const response = await axios.get(`${BASE_URL}/faqs?lang=${lang}`);
     console.log(response);
     if (response.data.success && Array.isArray(response.data.data)) {
       return response.data.data;

@@ -3,7 +3,9 @@ import catchAsync from "../utils/catchAsync.js";
 import faqModel from "../models/faq.model.js";
 
 const getFaqs = catchAsync(async (req, res) => {
-  const faqs = await faqModel.findAll(['id', 'question', 'answer']);
+  const lang = req.query.lang || 'id';
+
+  const faqs = await faqModel.findAll(lang);
 
   if (!faqs || faqs.length === 0) {
     return res.status(httpStatus.OK).json({

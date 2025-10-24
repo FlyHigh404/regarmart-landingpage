@@ -3,7 +3,9 @@ import catchAsync from '../utils/catchAsync.js';
 import testimonialModel from '../models/testimonial.model.js';
 
 const getTestimonials = catchAsync(async (req, res) => {
-  const testimonials = await testimonialModel.findAll(req.query);
+  const lang = req.query.lang || 'id';
+
+  const testimonials = await testimonialModel.findAll(req.query, lang);
 
   if (!testimonials.data || testimonials.data.length === 0) {
     return res.status(httpStatus.OK).json({

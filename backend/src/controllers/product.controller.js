@@ -7,13 +7,15 @@ const getProducts = catchAsync(async (req, res) => {
   const { search } = req.query;
   const userToken = req.userToken;
 
+  const lang = req.query.lang || 'id';
+
   if (search && userToken) {
     searchHistoryModel
       .create(userToken, search.trim())
       .catch((err) => console.error(err));
   }
 
-  const products = await productModel.findAll(req.query);
+  const products = await productModel.findAll(req.query, lang);
 
   if (!products.data || products.data.length === 0) {
     return res.status(httpStatus.OK).json({
@@ -32,7 +34,9 @@ const getProducts = catchAsync(async (req, res) => {
 });
 
 const getBestSellers = catchAsync(async (req, res) => {
-  const products = await productModel.findBestSellers();
+  const lang = req.query.lang || 'id';
+
+  const products = await productModel.findBestSellers(lang);
 
   if (!products || products.length === 0) {
     return res.status(httpStatus.OK).json({

@@ -331,7 +331,7 @@
 
 <script setup>
 import { useHead } from '@vueuse/head'
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import {
@@ -524,10 +524,10 @@ function handleSearchAgain(searchTerm) {
 }
 
 // KATEGORI 
-async function fetchCategories() {
+async function fetchCategories(lang) {
   isCategoryLoading.value = true;
   try {
-    const fetchedCategories = await apiFetchCategories();
+    const fetchedCategories = await apiFetchCategories(lang);
     categories.value = fetchedCategories;
     if (fetchedCategories.length > 0) {
       selectedCategory.value = '';
@@ -539,10 +539,10 @@ async function fetchCategories() {
 }
 
 // UNIT 
-async function fetchUnits() {
+async function fetchUnits(lang) {
   isUnitLoading.value = true;
   try {
-    const response = await apiFetchUnits();
+    const response = await apiFetchUnits(lang);
     units.value = response.data || response;
   } catch (err) {
   } finally {
@@ -551,11 +551,11 @@ async function fetchUnits() {
 }
 
 // FAQ 
-async function fetchFaqs() {
+async function fetchFaqs(lang) {
   isFaqLoading.value = true;
   error.value = null;
   try {
-    const data = await getFaqs();
+    const data = await getFaqs(lang);
     faqData.value = data;
   } catch (err) {
     error.value = err.message || 'Terjadi kesalahan saat mengambil data FAQ.';
@@ -565,11 +565,11 @@ async function fetchFaqs() {
 }
 
 // BEST SELLERS
-async function fetchBestSellers() {
+async function fetchBestSellers(lang) {
   isBestSellerLoading.value = true;
   bestSellerError.value = null;
   try {
-    const data = await getBestSellers();
+    const data = await getBestSellers(lang);
     bestSellers.value = data;
   } catch (err) {
     bestSellerError.value = err.message || 'Gagal mengambil data produk terlaris.';
@@ -624,17 +624,25 @@ async function searchProducts() {
 }
 
 
-// LIFECYCLE HOOKS 
+// LIFECYCLE HOOKS
+
+watch(locale, (newLang) => {
+  fetchCategories(newLang),
+    fetchFaqs(newLang),
+    fetchUnits(newLang),
+    fetchBestSellers(newLang)
+});
+
 onMounted(async () => {
   window.addEventListener('resize', updateWindowWidth);
   updateWindowWidth();
 
   await Promise.all([
     fetchSearchHistories(),
-    fetchCategories(),
-    fetchFaqs(),
-    fetchUnits(),
-    fetchBestSellers()
+    fetchCategories(locale.value),
+    fetchFaqs(locale.value),
+    fetchUnits(locale.value),
+    fetchBestSellers(locale.value)
   ]);
 
   startAutoSlide();

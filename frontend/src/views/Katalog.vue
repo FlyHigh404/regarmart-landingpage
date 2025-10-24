@@ -128,8 +128,9 @@ const loadProducts = async () => {
 
   const params = {
     ...filterParams,
-    currentPage: currentPage.value,
-    itemsPerPage: itemsPerPage.value,
+    page: currentPage.value, 
+    limit: itemsPerPage.value,
+    lang: locale.value 
   };
 
   try {
@@ -139,7 +140,7 @@ const loadProducts = async () => {
     itemsPerPage.value = result.meta.itemsPerPage;
 
     if (result.data.length === 0 && currentPage.value > 1 && totalItemsCount.value > 0) {
-      currentPage.value = 1; 
+      currentPage.value = 1;
     }
   } catch (err) {
     isError.value = true;
@@ -152,12 +153,21 @@ const loadProducts = async () => {
 };
 
 const loadFilters = async () => {
-  categories.value = await fetchCategories();
-  let fetchedUnits = await fetchUnits();
-  units.value = fetchedUnits.map(unit => ({
-    ...unit,
-    isSelected: initialParams.unitFilters.includes(unit.id)
-  }));
+  try {
+    const lang = locale.value;
+    const [fetchedCategories, fetchedUnits] = await Promise.all([
+      fetchCategories(lang),
+      fetchUnits(lang)
+    ]);
+
+    categories.value = fetchedCategories;
+    units.value = fetchedUnits.map(unit => ({
+      ...unit,
+      isSelected: filterParams.unitFilters.includes(unit.id) 
+    }));
+  } catch (error) {
+    console.error("Gagal memuat data filter:", error);
+  }
 };
 
 // 🔹 Fungsi untuk berpindah halaman
@@ -228,19 +238,18 @@ const resetFilter = () => {
 
 // 🟢 Watcher: Panggil loadProducts setiap kali parameter filter/sort/page berubah
 watch(() => ({
-  categoryFilter: filterParams.categoryFilter,
-  unitFilters: filterParams.unitFilters,
-  isPromoFilter: filterParams.isPromoFilter,
-  sortBy: filterParams.sortBy,
-  searchQuery: filterParams.searchQuery,
+  ...filterParams, 
   currentPage: currentPage.value
 }), () => {
   updateUrlWithParams();
-  loadProducts();
+  loadProducts(); 
 }, { deep: true, immediate: false });
 
+watch(locale, () => {
+  loadFilters();
+  loadProducts();
+});
 
-// 🟢 Ambil data filter dan produk awal saat komponen dimuat
 onMounted(() => {
   loadFilters();
   loadProducts();
@@ -495,7 +504,9 @@ onMounted(() => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                 </path>
               </svg>
-              <p class="text-lg font-semibold text-gray-600">Memuat produk...</p>
+              <p class="text-lg font-semibold text-gray-600">
+                {{ locale === "id" ? "Memuat Produk..." : "Loading Products..." }}
+              </p>
             </div>
 
             <div v-else-if="isError"

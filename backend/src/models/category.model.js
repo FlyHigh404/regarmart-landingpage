@@ -1,17 +1,25 @@
 import prisma from "../config/prisma.js";
 
-const findAll = async (columns = []) => {
-  const selects = columns.reduce((acc, column) => {
-    acc[column] = true;
-    return acc;
-  }, {});
-
-  return prisma.category.findMany({
-    select: Object.keys(selects).length > 0 ? selects : undefined,
+const findAll = async (lang = 'id') => {
+  const categoriesFromDb = await prisma.category.findMany({
+    select: {
+      id: true,
+      name_id: true,
+      name_eng: true,
+    },
     orderBy: {
       id: 'asc',
     },
   });
+
+  const categories = categoriesFromDb.map(category => {
+    return {
+      id: category.id,
+      name: lang === 'eng' ? category.name_eng : category.name_id,
+    };
+  });
+
+  return categories;
 };
 
 export default { findAll };

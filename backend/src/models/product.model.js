@@ -2,7 +2,7 @@ import prisma from "../config/prisma.js";
 import { Prisma } from '@prisma/client';
 import { getMappedProducts } from '../services/whatsappLink.service.js';
 
-const findAll = async (queryParams = {}) => {
+const findAll = async (queryParams = {}, lang = 'id') => {
   const {
     search = null,
     category = null,
@@ -21,9 +21,12 @@ const findAll = async (queryParams = {}) => {
 
   const whereConditions = [];
 
+
   if (search && search.trim() !== "") {
     const searchPattern = `%${search}%`;
-    whereConditions.push(Prisma.sql`(p.name LIKE ${searchPattern} OR p.description LIKE ${searchPattern})`);
+    whereConditions.push(
+      Prisma.sql`(p.name_id LIKE ${searchPattern} OR p.name_eng LIKE ${searchPattern} OR p.description_id LIKE ${searchPattern} OR p.description_eng LIKE ${searchPattern})`
+    );
   }
 
   if (category && !isNaN(category)) {
@@ -49,6 +52,11 @@ const findAll = async (queryParams = {}) => {
   const whereClause =
     whereConditions.length > 0 ? Prisma.sql`WHERE ${Prisma.join(whereConditions, " AND ")}` : Prisma.empty;
   
+  const nameCol = lang === 'eng' ? Prisma.sql`p.name_eng` : Prisma.sql`p.name_id`;
+  const descCol = lang === 'eng' ? Prisma.sql`p.description_eng` : Prisma.sql`p.description_id`;
+  const categoryNameCol = lang === 'eng' ? Prisma.sql`c.name_eng` : Prisma.sql`c.name_id`;
+  const unitNameCol = lang === 'eng' ? Prisma.sql`u.name_eng` : Prisma.sql`u.name_id`;
+  
   const countQuery = prisma.$queryRaw`
     SELECT COUNT(*) as total
     FROM products p
@@ -73,11 +81,11 @@ const findAll = async (queryParams = {}) => {
 
   const dataQuery = prisma.$queryRaw`
     SELECT 
-      p.id, p.name, p.description, p.is_promo,
+      p.id, ${nameCol} AS name, ${descCol} AS description, p.is_promo,
       p.base_price, p.promo_price, p.stock, p.image_url,
       p.created_at, p.total_sold,
-      c.name AS category_name,
-      u.name AS unit_name,
+      ${categoryNameCol} AS category_name,
+      ${unitNameCol} AS unit_name,
       CASE 
         WHEN p.is_promo = TRUE AND p.promo_price IS NOT NULL 
         THEN p.promo_price 
@@ -109,13 +117,36 @@ const findAll = async (queryParams = {}) => {
   };
 };
 
-const findBestSellers = async () => {
-  const products = await prisma.product.findMany({
+const findBestSellers = async (lang = 'id') => {
+  const productsFromDb = await prisma.product.findMany({
+    select: {
+      id: true,
+      isPromo: true,
+      basePrice: true,
+      promoPrice: true,
+      imageUrl: true,
+      totalSold: true,
+      name_id: true,
+      name_eng: true,
+      description_id: true,
+      description_eng: true,
+    },
     orderBy: { totalSold: "desc" },
     take: 6,
   });
 
-  return getMappedProducts(products);
+  const translatedProducts = productsFromDb.map(p => ({
+    id: p.id,
+    name: lang === 'eng' ? p.name_eng : p.name_id,
+    description: lang === 'eng' ? p.description_eng : p.description_id,
+    isPromo: p.isPromo,
+    basePrice: p.basePrice,
+    promoPrice: p.promoPrice,
+    imageUrl: p.imageUrl,
+    totalSold: p.totalSold,
+  }));
+
+  return getMappedProducts(translatedProducts);
 };
 
 export default { findAll, findBestSellers };
