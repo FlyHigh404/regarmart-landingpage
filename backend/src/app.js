@@ -41,7 +41,7 @@ app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Endpoint tidak ditemukan'));
 });
 
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
