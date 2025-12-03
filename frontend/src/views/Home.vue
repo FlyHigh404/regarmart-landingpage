@@ -159,9 +159,9 @@
 
                   <div class="p-3 sm:p-4 flex flex-col flex-grow">
                     <h3 class="text-sm font-bold mb-1 line-clamp-2">{{ product.name }}</h3>
-                    <p :class="[product.stock > 0 ? 'text-green-600' : 'text-red-500']"
+                    <p :class="[product.stock > 0 ? 'text-red-500' : 'text-green-600']"
                       class="font-semibold text-[10px] sm:text-[12px] mb-1">
-                      {{ product.stock > 0 ? $t('availableStock') : $t('notAvailableStock') }}
+                      {{ product.stock > 0 ? $t('notAvailableStock') : $t('availableStock') }}
                     </p>
                     <p class="text-gray-600 text-[9px] sm:text-[10px] mb-2 flex-grow line-clamp-3">
                       {{ product.description || '-' }}
