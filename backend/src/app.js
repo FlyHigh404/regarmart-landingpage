@@ -27,10 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  // res.send('API is running..., please use /api for main routes');
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+//   // res.send('API is running..., please use /api for main routes');
+// });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -39,10 +43,6 @@ app.use('/api', apiRoutes);
 // handle 404
 app.use((req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Endpoint tidak ditemukan'));
-});
-
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.use(globalErrorHandler);
